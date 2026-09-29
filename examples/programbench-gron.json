@@ -1,0 +1,13 @@
+{
+  "instance": "tomnomnom__gron.88a6234",
+  "distro": "Ubuntu-24.04",
+  "codex": "/home/YOUR_USER/tools/codex/bin/codex",
+  "auth": "C:/Users/YOUR_USER/.codex/auth.json",
+  "python": "/home/YOUR_USER/programbench-venv/bin/python",
+  "repository": ".local/programbench",
+  "model": "gpt-6-sol",
+  "effort": "medium",
+  "candidates": 2,
+  "attemptMs": 480000,
+  "totalMs": 1800000
+}

@@ -1,0 +1,10 @@
+{
+  "repository": "https://github.com/FeSens/auto-arch-tournament.git",
+  "commit": "3a506537e7f323d56daf36990b8d7eafc87df129",
+  "riscvFormal": "https://github.com/YosysHQ/riscv-formal.git",
+  "riscvFormalCommit": "c992aa61fdfe0846c5ed90324c596202a1c69b76",
+  "downloads": [
+    {"name":"oss-cad-suite-linux-x64-20260716.tgz","url":"https://github.com/YosysHQ/oss-cad-suite-build/releases/download/2026-07-16/oss-cad-suite-linux-x64-20260716.tgz","sha256":"3e041570d0bd4c94c4fa56dd148c27e959f3992c8251038bcfa8913af4c09703"},
+    {"name":"xpack-riscv-none-elf-gcc-15.2.0-1-linux-x64.tar.gz","url":"https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v15.2.0-1/xpack-riscv-none-elf-gcc-15.2.0-1-linux-x64.tar.gz","sha256":"aaaa8060c914851a3e5ee1ba82cc3d6f80972f90638a05c6e823a37557a33758"}
+  ]
+}

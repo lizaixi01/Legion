@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.runs/
+.local/
+.env
+*.log
+*.lnk
+.chats/
+.engineering/
+__pycache__/

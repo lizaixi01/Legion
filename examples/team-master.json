@@ -1,0 +1,89 @@
+{
+  "output": "../.runs",
+  "codex": "../.local/codex-runtime/node_modules/@openai/codex-win32-x64/vendor/x86_64-pc-windows-msvc/bin/codex.exe",
+  "model": "gpt-6-sol",
+  "effort": "high",
+  "concurrency": 2,
+  "maxAttempts": 4,
+  "attemptMs": 120000,
+  "totalMs": 600000,
+  "tasks": [
+    {
+      "id": "left",
+      "goal": "Write answer.json with sum equal to 19 + 23.",
+      "dependsOn": [],
+      "routes": [
+        "Compute directly",
+        "Use a short program to compute and save the answer"
+      ],
+      "requiredChecks": [
+        "sum"
+      ],
+      "outputs": [
+        "answer.json"
+      ],
+      "checker": {
+        "command": "$node",
+        "args": [
+          "./check-team.mjs",
+          "{workspace}",
+          "42"
+        ],
+        "timeoutMs": 10000
+      }
+    },
+    {
+      "id": "right",
+      "goal": "Write answer.json with sum equal to 20 + 22.",
+      "dependsOn": [],
+      "routes": [
+        "Compute directly"
+      ],
+      "requiredChecks": [
+        "sum"
+      ],
+      "outputs": [
+        "answer.json"
+      ],
+      "checker": {
+        "command": "$node",
+        "args": [
+          "./check-team.mjs",
+          "{workspace}",
+          "42"
+        ],
+        "timeoutMs": 10000
+      }
+    },
+    {
+      "id": "combine",
+      "goal": "Read inputs/left/answer.json and inputs/right/answer.json. Write answer.json whose sum is the sum of the two input sum values.",
+      "dependsOn": [
+        "left",
+        "right"
+      ],
+      "routes": [
+        "Combine the verified inputs"
+      ],
+      "requiredChecks": [
+        "sum"
+      ],
+      "outputs": [
+        "answer.json"
+      ],
+      "checker": {
+        "command": "$node",
+        "args": [
+          "./check-team.mjs",
+          "{workspace}",
+          "84"
+        ],
+        "timeoutMs": 10000
+      }
+    }
+  ],
+  "master": {
+    "timeoutMs": 60000,
+    "policy": "codex"
+  }
+}

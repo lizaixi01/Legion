@@ -1,0 +1,32 @@
+{
+  "name": "proactive-agent",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "tsx src/cli.ts",
+    "test": "tsx --test tests/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc",
+    "demo": "tsx src/cli.ts demo",
+    "demo:goal": "tsx src/cli.ts demo-goal",
+    "team": "tsx src/team-cli.ts",
+    "demo:team": "tsx src/team-cli.ts demo",
+    "ui": "tsx src/ui-server.ts",
+    "desktop": "npm run build && node desktop/launch.cjs",
+    "benchmark": "tsx src/benchmark-cli.ts",
+    "research": "tsx src/research-cli.ts"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.3",
+    "electron": "44.4.5",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2"
+  },
+  "dependencies": {
+    "zod": "4.6.5"
+  }
+}

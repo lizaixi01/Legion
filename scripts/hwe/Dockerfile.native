@@ -1,0 +1,4 @@
+FROM proactive-hwe:local
+ARG http_proxy
+ARG https_proxy
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends python3-jsonschema python3-matplotlib && rm -rf /var/lib/apt/lists/*
