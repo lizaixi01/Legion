@@ -53,7 +53,7 @@ export function createEngineeringService(root:string,node:string,deps?:{decideFa
   async function save(r:RecordState){await writeFile(join(dir(r.id),'state.json'),JSON.stringify(r,null,2));}
   async function load(id:string){if(records.has(id))return records.get(id)!;const r=JSON.parse(await readFile(join(dir(id),'state.json'),'utf8')) as RecordState;if(['planning','running','integrating'].includes(r.status)){r.status='interrupted';r.error='执行进程不属于当前窗口；保留证据，未自动接管。';}return r;}
   async function detail(id:string){const r=await load(id);let team:unknown=null;if(r.runId)try{team=JSON.parse(await readFile(join(root,'.runs',r.runId,'state.json'),'utf8'));}catch{/* First checkpoint may not yet exist. */}const {files:_files,...view}=r;return {...view,team};}
-  async function list(){await mkdir(base,{recursive:true});const names=await readdir(base);const values=await Promise.all(names.filter(n=>/^[a-f0-9-]{36}$/.test(n)).map(async n=>{try{const r=await load(n);return {id:r.id,title:r.goal.slice(0,32),status:r.status};}catch{return null;}}));return values.filter(v=>v!==null);}
+  async function list(){await mkdir(base,{recursive:true});const names=await readdir(base);const values=await Promise.all(names.filter(n=>/^[a-f0-9-]{36}$/.test(n)).map(async n=>{try{const r=await load(n);return {id:r.id,title:r.goal.slice(0,32),project:r.project,status:r.status};}catch{return null;}}));return values.filter(v=>v!==null);}
   async function plan(input:{project:string;goal:string;options:ChatOptions;workerOptions?:ModelSelection}){
     if(active)throw Error('已有工程任务执行中');
     if(!input.goal?.trim()||input.goal.length>50000)throw Error('请输入任务目标');

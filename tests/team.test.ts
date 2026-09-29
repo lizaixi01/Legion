@@ -170,3 +170,10 @@ test('competition preserves dependency handoff and uses declared order when both
  });
  assert.equal(state.status,'completed');assert.equal(state.tasks.a?.selectedCandidate,'candidate-1');assert.equal(state.tasks.b?.selectedCandidate,'candidate-1');
 });
+test('checker without artifact hashes cannot certify bytes changed during verification',async()=>{
+ const state=await runTeam({runDir:await root(),tasks:[task('a')],concurrency:1,maxAttempts:1,attemptMs:2000,totalMs:10000},{worker:async r=>{await writeFile(join(r.workspace,'result.txt'),'original');return {status:'completed',sessionId:'a',durationMs:1,usage:[]};},check:async workspace=>{await writeFile(join(workspace,'result.txt'),'changed');return report('pass');}});
+ assert.notEqual(state.tasks.a?.status,'accepted');assert.match(state.tasks.a?.reason??'',/changed/);
+});
+test('downstream cannot silently change the pinned dependency copy',async()=>{
+ const state=await runTeam({runDir:await root(),tasks:[task('a'),task('b',['a'])],concurrency:1,maxAttempts:1,attemptMs:2000,totalMs:10000},{worker:async(r,t)=>{if(t.id==='b')await writeFile(join(r.workspace,'inputs','a','result.txt'),'changed dependency');await writeFile(join(r.workspace,'result.txt'),'output');return {status:'completed',sessionId:t.id,durationMs:1,usage:[]};},check:async()=>report('pass')});assert.notEqual(state.tasks.b?.status,'accepted');
+});

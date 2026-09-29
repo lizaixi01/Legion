@@ -5,6 +5,7 @@ const fs=require('node:fs');
 // A packaged install keeps the program files read-only inside the app bundle, so the
 // code root and the writable data root are resolved separately.
 const packaged=app.isPackaged;
+const applicationTitle=packaged?'Legion':'Legion Beta';
 const codeRoot=packaged?app.getAppPath():path.resolve(__dirname,'..');
 const root=packaged?app.getPath('userData'):path.resolve(__dirname,'..');
 const profileDir=packaged?root:path.join(root,'.gui-profile');
@@ -41,7 +42,7 @@ if(!app.requestSingleInstanceLock())app.quit();
 else {
 app.on('second-instance',()=>{if(win&&!win.isDestroyed()){if(win.isMinimized())win.restore();win.show();win.focus();}});
 app.whenReady().then(async()=>{
-  app.setAppUserModelId('local.legion');
+  app.setAppUserModelId(packaged?'local.legion':'local.legion.beta');
   try{const cached=JSON.parse(fs.readFileSync(accountCapacityCache,'utf8'));if(Array.isArray(cached)&&cached.every(a=>a&&typeof a.backend==='string'&&typeof a.observedAt==='string'))accountCapacityData=cached;}catch{}
   const {createDesktopService}=await import(pathToFileURL(path.join(codeRoot,'dist/src/desktop-service.js')).href);
   process.env.PROACTIVE_NODE=resolveNode();
@@ -64,7 +65,8 @@ app.whenReady().then(async()=>{
       return new Response(bytes,{status:200,headers:{'Content-Type':type,'Cache-Control':'no-store'}});
     }catch{return new Response('Not found',{status:404});}
   });
-  win=new BrowserWindow({width:1400,height:900,minWidth:980,minHeight:650,title:'Legion',backgroundColor:'#181818',show:false,webPreferences:{preload:path.join(__dirname,'preload.cjs'),contextIsolation:true,nodeIntegration:false,sandbox:true}});
+  win=new BrowserWindow({width:1400,height:900,minWidth:980,minHeight:650,title:applicationTitle,backgroundColor:'#181818',show:false,webPreferences:{preload:path.join(__dirname,'preload.cjs'),contextIsolation:true,nodeIntegration:false,sandbox:true}});
+  win.on('page-title-updated',event=>{event.preventDefault();win.setTitle(applicationTitle);});
   win.webContents.setWindowOpenHandler(()=>({action:'deny'}));
   win.webContents.on('will-navigate',event=>event.preventDefault());
   win.webContents.session.setPermissionRequestHandler((_contents,_permission,callback)=>callback(false));
@@ -73,6 +75,7 @@ app.whenReady().then(async()=>{
   const {accountCapacities}=await import(pathToFileURL(path.join(codeRoot,'dist/src/account-capacity.js')).href);readAccountCapacity=accountCapacities;
   const {createPoolService}=await import(pathToFileURL(path.join(codeRoot,'dist/src/pool-service.js')).href);poolService=createPoolService(root);
   const methods={
+    projectInfo:()=>({path:root,name:path.basename(root)}),
     poolStart:input=>poolService.start(input),poolSnapshot:()=>poolService.snapshot(),poolStop:()=>poolService.stop(),
     accountCapacity:()=>{if(!accountCapacityData)return refreshAccountCapacity();if(Date.now()-Math.max(...accountCapacityData.map(a=>Date.parse(a.observedAt)||0))>5*60_000)void refreshAccountCapacity();return accountCapacityData;},
     researchList:()=>research.list(),researchDetail:id=>research.detail(id),researchStart:input=>{if(chats.isActive()||engineering.isActive()||service.isActive())throw Error('请先停止当前执行');return research.start(input);},researchStop:()=>research.stop(),researchFolder:async id=>{const error=await shell.openPath(research.folder(id));if(error)throw Error(error);},
@@ -82,7 +85,7 @@ app.whenReady().then(async()=>{
     engineeringStart:(id,configuration)=>{if(chats.isActive()||service.isActive()||research.isActive())throw Error('请先停止当前执行');return engineering.start(id,configuration);},
     engineeringList:()=>engineering.list(),engineeringDetail:async id=>{const detail=await engineering.detail(id);selectedProject=detail.project;return detail;},engineeringStop:()=>engineering.stop(),
     engineeringFolder:async id=>{const error=await shell.openPath(await engineering.folder(id));if(error)throw Error(error);},
-    models:()=>modelCatalog(),chatList:()=>chats.list(),chatDetail:id=>chats.detail(id),chatSend:input=>{if(input.project&&input.project!==selectedProject)throw Error('请先选择项目目录');if(engineering.isActive()||research.isActive())throw Error('请先停止工程任务');return chats.send(input);},chatStop:()=>chats.stop(),list:()=>service.list(),detail:id=>service.detail(id),start:input=>{if(engineering.isActive()||chats.isActive()||research.isActive())throw Error('请先停止当前执行');return service.start(input);},stop:()=>service.stop(),artifact:(id,task,file)=>service.artifact(id,task,file)};
+    models:()=>modelCatalog(),chatList:()=>chats.list(),chatDetail:id=>chats.detail(id),chatSend:input=>{if(input.project&&input.project!==selectedProject)throw Error('请先选择项目目录');if(engineering.isActive()||research.isActive())throw Error('请先停止工程任务');return chats.send(input);},chatStop:()=>chats.stop(),chatSetPinned:(id,pinned)=>chats.setPinned(id,pinned),chatDelete:id=>chats.deleteChat(id),chatArchiveProject:project=>chats.archiveProject(project),list:()=>service.list(),detail:id=>service.detail(id),start:input=>{if(engineering.isActive()||chats.isActive()||research.isActive())throw Error('请先停止当前执行');return service.start(input);},stop:()=>service.stop(),artifact:(id,task,file)=>service.artifact(id,task,file)};
   for(const [name,fn] of Object.entries(methods))ipcMain.handle('manager:'+name,(event,...args)=>{
     const source=new URL(event.senderFrame.url);
     if(event.sender!==win.webContents||event.senderFrame!==win.webContents.mainFrame||source.protocol!=='proactive:'||source.host!=='app')throw Error('Untrusted caller');

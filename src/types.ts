@@ -4,6 +4,7 @@ export interface Artifact { path: string; sha256: string }
 export interface CheckReport { checks: Check[]; artifacts: Artifact[] }
 export type WorkerStatus = 'completed' | 'error' | 'timeout' | 'cancelled';
 export interface WorkerResult {
+  acceptance?: import("./acceptance.js").Acceptance;
   status: WorkerStatus;
   sessionId?: string;
   durationMs: number;

@@ -193,6 +193,11 @@ export async function runTeam(raw: TeamConfig, deps: TeamDependencies): Promise<
         if (worker.status !== 'completed') { unit.status = worker.status; unit.reason = worker.detail; return; }
         if (!worker.sessionId || (unit.sessionId && unit.sessionId !== worker.sessionId) || (!unit.sessionId && unit.attempts.slice(0, -1).some(a => a.worker.sessionId === worker.sessionId)) || Object.values(state.tasks).some(other => other !== unit && other.attempts.some(a => a.worker.sessionId === worker.sessionId))) throw Error('Missing, changed, or shared worker session identity');
         unit.sessionId = worker.sessionId; unit.status = 'checking'; await event('check_started', { task: task.id, number });
+        const assertDependencies=async()=>{for(const id of task.dependsOn)for(const artifact of state.tasks[id]!.artifacts){if(hash(await artifactBytes(join(workspace,'inputs',id),artifact.path))!==artifact.sha256)throw Error('Pinned dependency changed: '+id+'/'+artifact.path);}};
+        await assertDependencies();
+        const beforeCheck = new Map<string,string|null>();
+        for(const path of task.outputs){try{beforeCheck.set(path,hash(await artifactBytes(workspace,path)));}catch{beforeCheck.set(path,null);}}
+        await writeFile(join(evidenceDir,'candidate-manifest.json'),JSON.stringify({taskId:task.id,attempt:number,files:Object.fromEntries(beforeCheck),dependencies:Object.fromEntries(task.dependsOn.map(id=>[id,state.tasks[id]!.artifacts]))},null,2));
         let report = ReportSchema.parse(await deps.check(workspace, evidenceDir, signal, task)); attempt.report = report;
         await writeFile(join(evidenceDir, 'check.json'), JSON.stringify(report, null, 2));
         let verified = false;
@@ -226,9 +231,11 @@ export async function runTeam(raw: TeamConfig, deps: TeamDependencies): Promise<
           }
           if (decision.action === 'accept') {
             if (outcome !== 'pass') throw Error('Master cannot accept without all required checks');
+            await assertDependencies();
             const snapshot = join(config.runDir, 'accepted', task.id);
             for (const path of task.outputs) {
               const bytes = await artifactBytes(workspace, path); const sha256 = hash(bytes);
+              if(beforeCheck.get(path)!==sha256)throw Error('Artifact changed since verification began');
               const claimed = report.artifacts.find(a => a.path === path);
               if (claimed && claimed.sha256 !== sha256) throw Error('Artifact changed since verification');
               const target = join(snapshot, path); await mkdir(dirname(target), { recursive: true }); await writeFile(target, bytes, { flag: 'wx' });

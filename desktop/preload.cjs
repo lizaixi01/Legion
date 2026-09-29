@@ -1,5 +1,6 @@
 const {contextBridge,ipcRenderer}=require('electron');
 contextBridge.exposeInMainWorld('manager',{
+  projectInfo:()=>ipcRenderer.invoke('manager:projectInfo'),
   poolStart:input=>ipcRenderer.invoke('manager:poolStart',input),poolSnapshot:()=>ipcRenderer.invoke('manager:poolSnapshot'),poolStop:()=>ipcRenderer.invoke('manager:poolStop'),
   accountCapacity:()=>ipcRenderer.invoke('manager:accountCapacity'),
   onAccountCapacityUpdated:callback=>ipcRenderer.on('account-capacity-updated',(_event,data)=>callback(data)),
@@ -21,6 +22,9 @@ contextBridge.exposeInMainWorld('manager',{
   chatDetail:id=>ipcRenderer.invoke('manager:chatDetail',id),
   chatSend:input=>ipcRenderer.invoke('manager:chatSend',input),
   chatStop:()=>ipcRenderer.invoke('manager:chatStop'),
+  chatSetPinned:(id,pinned)=>ipcRenderer.invoke('manager:chatSetPinned',id,pinned),
+  chatDelete:id=>ipcRenderer.invoke('manager:chatDelete',id),
+  chatArchiveProject:project=>ipcRenderer.invoke('manager:chatArchiveProject',project),
   list:()=>ipcRenderer.invoke('manager:list'),
   detail:id=>ipcRenderer.invoke('manager:detail',id),
   start:input=>ipcRenderer.invoke('manager:start',input),

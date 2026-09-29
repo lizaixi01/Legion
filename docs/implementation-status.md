@@ -262,3 +262,39 @@ Command Code 使用 DeepSeek-v4.1-flash/high。非交互模式写入需要 --yol
 快捷方式路径修正（2026-09-29）：用户反馈 WSH 找不到 LocalAppData 下 launch.vbs；检查时该文件存在且 cscript 可执行，未确认其消失原因。桌面和项目快捷方式现在直接引用项目内 desktop/launch-windows.vbs，脚本从 LocalAppData 读取既有启动配置。已用更新后的快捷方式经 ShellExecute 验证可见窗口。
 
 启动入口简化（2026-09-29）：根据快捷方式属性反馈，将桌面「Proactive Agent 启动」改为直接指向项目 electron.exe，并将 desktop/main.cjs 配为入口。Electron 主进程从 LocalAppData/ProactiveAgent/current.json 读取匹配主项目的 Node 路径，CLI worker 使用此路径。去掉 PowerShell/VBS/build 中转；直接 ShellExecute 启动并验证生命周期记录 window-shown。
+
+## 2026-09-29 — General project conversation before engineering workflows
+
+The desktop composer always calls chatSend, regardless of project selection or delegation mode. A selected directory is persisted as chat.project and used as the primary Agent working directory; it is not eagerly copied through projectFiles. Empty/non-Node/binary/large projects can therefore be opened without a test baseline. Workspace-write now edits the selected project directly; read-only remains read-only. Existing engineering/HWE verification APIs and historical records remain available but are not implicit prerequisites for conversation.
+
+The outer Minimal Agent handles greetings, identity questions, thanks and short small talk with GPT-6 Luna at low reasoning, read-only access and no sub-agents. Other messages continue through the selected direct Codex or managed Agent path. Substantive tasks can still delegate; worker directories live under the turn evidence directory to avoid creating agents/ in the selected project. Relative artifact links resolve against the persisted project, retaining containment checks. A chat cannot silently switch project directories after starting.
+
+Minimal Agent now uses the local Codex app-server JSON-RPC stream. Final-answer deltas are persisted as they arrive and rendered in the conversation before the completed item replaces the draft. The CLI remains the path for all other messages. On the installed Codex app-server, a local handshake passed and a real Luna/low small-talk turn completed with 23 delta events plus one final event in 7.5 seconds; this reduces blank waiting but does not reduce model/network first-token latency. The app-server protocol is experimental and may change with Codex upgrades.
+
+Sidebar conversations without an assigned project now appear directly above project folders. Pinned chats have a persistent top section; each chat row menu can pin/unpin or delete, with deletion confirmation in the renderer and an active-run guard in the service. Build, renderer/main/preload syntax checks and 6 chat-service tests passed, including pin persistence, deletion, and refusal to delete an active chat.
+
+Verification: 117/117 tests, TypeScript build and renderer syntax checks passed. Includes all three modes, non-Node project with binary content above the old size limit, persistence across service restart, project link containment and actual composer routing. Real Sol/medium auto-mode smoke `.chats/671d5f96-f9e3-49f3-852f-90c982b76530` completed: greeted user and read hello.py in a testless Python directory, no delegated workers. Functional correctness of arbitrary future tasks remains dependent on task-specific validation.
+Installed Legion updated with matching executable/ASAR after graceful close; user profile preserved. Actual installed GUI greeting completed (hi → Hi!, no workers) and screenshot inspected: .playwright-cli/page-2026-09-29T12-37-57-137Z.png. GUI-DEVELOPMENT.md corrected to describe the installed shortcut rather than the obsolete script launcher.
+
+## 2026-09-29 — Independent challenge, repair and re-verification
+
+Delegated artifact tasks now carry explicit acceptance criteria. After submission, a fresh Codex challenger receives only the contract (not implementation claims or source) and generates one executable assertion script per criterion. The challenge is frozen across at most two repair attempts. The original Worker backend performs repairs using concrete failure logs. Parent cancellation/deadline bounds the entire loop.
+
+`src/challenge.ts` runs checks against copied regular-file snapshots under Node's permission model (snapshot reads, no writes/child processes; not an OS sandbox or network isolation guarantee). A missing-candidate control must fail, and malformed checks/declared limitations remain unverified. Contract, verifier and artifact hashes plus all version results are retained. Final acceptance rechecks live and snapshot artifact hashes. A Manager success message or direct-work fallback cannot bypass unsuccessful delegated acceptance. Historical failures remain in the version list and a repaired accepted version can complete that task.
+
+The first validation adapter supports assertions over JSON/text and pure JavaScript modules with built-in Node libraries. It does NOT establish Python/RTL/UI simulation support, adversarial-code security, exhaustive correctness, semantic adequacy of every LLM-written test, or multi-artifact integration correctness. Unsupported tasks remain unverified; ordinary conversation is still available without a test baseline. Skills/cron/event-driven scheduling are not implemented by this change. Manager direct execution and subagent-off tasks do not gain independent functional acceptance from this change.
+
+GUI now displays submission, independent challenge, validation, repair, accepted and unverified states, with expandable failed/passed version evidence and fingerprints. This change is in source/Beta; stable installation was not updated.
+
+Verification: initial complete suite 123/123 passed; after adding malformed-check classification, targeted challenge tests 7/7 and build passed (124 tests now present). Real controlled smoke `.chats/da5bb483-6e84-4a37-9238-89be9214ca36`: deterministic Manager/initial defect injection, real Sol/medium independent challenger and repair Worker, completed in about 94 seconds. First candidate implemented Math.min, failed max(2,7); second implemented Math.max and passed the SAME verifier hash. This is a controlled integration check, not a benchmark or evidence of general efficiency improvement. Evidence summary: .local/challenge-smoke-result.json.
+Final verification: 124/124 complete-suite tests passed. GUI evidence panels were exercised with Playwright using the actual managementView function and stylesheet plus the real smoke record in an isolated preview; both version panels expanded, long logs were bounded, screenshot inspected at .playwright-cli/page-2026-09-29T13-26-31-898Z.png. Restarting Beta with a debugging port was rejected by automatic policy review; no forced restart was attempted, so full desktop recheck is not claimed.
+
+### 2026-09-29：统一证据验收增量
+
+详见 [统一证据验收](acceptance-loop.md)。work / delegate / finish 和关闭 delegation 的工程交付共用验收门槛；Manager/Worker/Challenger 接已有队列，依赖任务复用 team DAG 与已验收快照。新增契约、候选 manifest、运行时功能证据、根产物检查、角色/skill 注入审计、预算与排他 attempt 记录。修复 team checker 不提供 hash 时的版本绑定缺口。
+
+此前“独立生成测试通过即可 accepted”的结论已收紧：生成测试属于审查提案，必须另有宿主安装的功能验证器覆盖需求。当前生产内置仅支持严格匹配的 JSON 数值聚合任务；其他任务可执行但仍可能未验证。离线 demo 证明错误候选→真实反例→修复→根产物验收，不代表多 Agent 效果测评。真实模型 smoke 明确 opt-in，本轮未运行；HWE 实验未启动或修改。
+
+UI 展示执行与验收不同状态，旧历史不升级为验收通过。真实浏览器视觉检查被自动审批审核拒绝，保留未验证说明；未改稳定安装包。
+
+最终验证：typecheck、build 通过，151/151 测试通过；`demo:acceptance` 在 `.local/acceptance-demo-1790695167856/` 完成两次实施和最终验收。默认真实 smoke 拒绝启动已验证，未调用模型。依赖副本发生变化也会使下游验收失败，不能静默替换固定输入。

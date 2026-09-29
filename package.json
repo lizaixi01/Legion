@@ -23,7 +23,9 @@
     "desktop": "npm run build && node desktop/launch.cjs",
     "benchmark": "tsx src/benchmark-cli.ts",
     "research": "tsx src/research-cli.ts",
-    "dist": "npm run build && electron-builder --win nsis"
+    "dist": "npm run build && electron-builder --win nsis",
+    "demo:acceptance": "tsx src/acceptance-demo.ts",
+    "smoke:acceptance": "tsx src/acceptance-smoke.ts"
   },
   "build": {
     "appId": "local.legion",

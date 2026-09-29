@@ -27,3 +27,10 @@ test('chat link opening resolves existing outputs and rejects escaping paths or 
  await assert.rejects(resolveChatLink(root,id,'missing.html'));
  assert.equal((await resolveChatLink(root,id,'https://example.com/a')).kind,'web');
 });
+
+test('project chat links resolve against the persisted project and reject escapes',async()=>{
+ const root=await mkdtemp(join(tmpdir(),'project-links-')),id='bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb';const chat=join(root,'.chats',id),project=join(root,'project');await mkdir(chat,{recursive:true});await mkdir(project);await writeFile(join(chat,'chat.json'),JSON.stringify({project}));await writeFile(join(project,'notes.md'),'hello');assert.equal((await resolveChatLink(root,id,'./notes.md')).target,join(project,'notes.md'));await assert.rejects(resolveChatLink(root,id,'../other.md'),/目录/);
+});
+test('runtime evidence links stay within the current chat turn',async()=>{
+ const root=await mkdtemp(join(tmpdir(),'evidence-link-')),id='aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',turn='bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb';const dir=join(root,'.chats',id),workspace=join(dir,'workspace'),evidence=join(dir,'turns',turn);await mkdir(workspace,{recursive:true});await mkdir(evidence,{recursive:true});await writeFile(join(dir,'chat.json'),JSON.stringify({managementDir:turn}));await writeFile(join(evidence,'functional.json'),'{}');assert.equal((await resolveChatLink(root,id,join(evidence,'functional.json'))).target,join(evidence,'functional.json'));await assert.rejects(resolveChatLink(root,id,join(dir,'chat.json')),/不在/);
+});
