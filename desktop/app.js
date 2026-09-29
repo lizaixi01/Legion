@@ -117,12 +117,14 @@ function renderCapacity(panel,accounts,updating=false){
    }
   }else{
    const limits=a.data?.rateLimits;
-   const windows=[['5 小时窗口',limits?.primary],['每周窗口',limits?.secondary]];
-   for(const [label,w] of windows)if(w&&typeof w.usedPercent==='number'){
+   const windows=[limits?.primary,limits?.secondary].filter(Boolean);
+   for(const [index,w] of windows.entries())if(typeof w.usedPercent==='number'){
+    const minutes=Number(w.windowDurationMins);
+    const label=minutes===300?'5 小时窗口':minutes===10080?'每周窗口':Number.isFinite(minutes)&&minutes>0?`${minutes%1440===0?minutes/1440+' 天':minutes%60===0?minutes/60+' 小时':minutes+' 分钟'}窗口`:`用量窗口 ${index+1}`;
     const remaining=Math.max(0,Math.min(100,100-w.usedPercent));
     const row=document.createElement('p');row.className='capacity-usage';row.textContent=`${label}：剩余 ${remaining.toFixed(0)}%`;panel.append(row);
    }
-   if(!windows.some(([,w])=>w)){const p=document.createElement('p');p.textContent='服务未提供用量窗口';panel.append(p);}
+   if(!windows.length){const p=document.createElement('p');p.textContent='服务未提供用量窗口';panel.append(p);}
   }
   const time=document.createElement('small');time.textContent=`更新于 ${new Date(a.observedAt).toLocaleTimeString()}`;panel.append(time);
  }

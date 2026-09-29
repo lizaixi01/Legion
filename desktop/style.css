@@ -20,7 +20,7 @@
 #chat-search{margin:6px 5px;width:calc(100% - 10px);padding:10px 12px;color:var(--text);background:var(--surface);border:1px solid #b7a6ff55;border-radius:9px;font:inherit;outline-color:var(--accent)}
 .section{color:var(--muted);margin:30px 14px 8px;font-size:14px}.project{background:transparent;color:#d8d1f2;padding:11px 12px}.project:hover{background:var(--hover)}
 .chat{padding:10px 12px 10px 28px;border-radius:9px;font-size:15px;color:#c9c5de}.chat.selected{background:#b7a6ff20;color:#f1ecff}
-button:hover{background:var(--hover)}.icon{color:var(--muted)}#topbar{height:62px;padding:0 26px;font-size:16px;border-bottom:1px solid transparent}#title:empty:after{content:'Proactive Agent';color:var(--muted)}
+button:hover{background:var(--hover)}.icon{color:var(--muted)}#topbar{height:62px;padding:0 26px;font-size:16px;border-bottom:1px solid transparent}#title:empty:after{content:'Legion';color:var(--muted)}
 #messages{max-width:920px;padding:30px 38px}.message{font-size:17px;line-height:1.85;margin-bottom:30px}.message.user{background:#ffffff0c;border:1px solid var(--line);border-radius:18px;padding:12px 20px}.message.assistant{padding:0}.message pre,#research-panel pre{background:#201e37;border:1px solid var(--line)}
 .message details{padding:10px 0;border-bottom:1px solid var(--line)}.message summary{color:var(--muted);font-size:15px;line-height:1.6}.message summary:hover{color:var(--text)}.message a{color:#c7baff}
 .activity{color:var(--muted);font-size:15px}.activity::before{color:var(--accent)}

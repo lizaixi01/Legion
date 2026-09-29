@@ -1,17 +1,31 @@
 const { app, BrowserWindow, ipcMain, Menu, dialog, protocol, net, shell } = require('electron');
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
-const root=path.resolve(__dirname,'..');
 const fs=require('node:fs');
-const startupLog=path.join(root,'.gui-profile','lifecycle.log');
+// A packaged install keeps the program files read-only inside the app bundle, so the
+// code root and the writable data root are resolved separately.
+const packaged=app.isPackaged;
+const codeRoot=packaged?app.getAppPath():path.resolve(__dirname,'..');
+const root=packaged?app.getPath('userData'):path.resolve(__dirname,'..');
+const profileDir=packaged?root:path.join(root,'.gui-profile');
+if(!packaged&&!process.env.PROACTIVE_NODE){try{const configText=fs.readFileSync(path.join(process.env.LOCALAPPDATA||'', 'ProactiveAgent','current.json'),'utf8').replace(/^\uFEFF/,'');const config=JSON.parse(configText);if(path.resolve(config.projectRoot)===root)process.env.PROACTIVE_NODE=config.node;}catch{}}
+function resolveNode(){
+  if(process.env.PROACTIVE_NODE)return process.env.PROACTIVE_NODE;
+  const name=process.platform==='win32'?'node.exe':'node';
+  for(const dir of (process.env.PATH||'').split(path.delimiter)){if(!dir)continue;const candidate=path.join(dir,name);try{if(fs.statSync(candidate).isFile())return candidate;}catch{}}
+  // No Node.js installed: reuse Electron's bundled Node runtime for child processes.
+  process.env.ELECTRON_RUN_AS_NODE='1';
+  return process.execPath;
+}
+const startupLog=path.join(profileDir,'lifecycle.log');
 function recordLifecycle(message){try{fs.mkdirSync(path.dirname(startupLog),{recursive:true});fs.appendFileSync(startupLog,`${new Date().toISOString()} pid=${process.pid} ${message}\n`);}catch{}}
 recordLifecycle('starting');
 app.on('will-quit',()=>recordLifecycle('will-quit'));
 protocol.registerSchemesAsPrivileged([{scheme:'proactive',privileges:{standard:true,secure:true,supportFetchAPI:true}}]);
-app.setPath('userData',path.join(root,'.gui-profile'));
+app.setPath('userData',profileDir);
 let win, service, chats, engineering, research, poolService, selectedProject, quitting=false;
 let accountCapacityData=null,accountCapacityTask=null,readAccountCapacity;
-const accountCapacityCache=path.join(root,'.gui-profile','account-capacity.json');
+const accountCapacityCache=path.join(profileDir,'account-capacity.json');
 function refreshAccountCapacity(){
   if(accountCapacityTask)return accountCapacityTask;
   if(!readAccountCapacity)return Promise.reject(Error('Account capacity reader is not ready'));
@@ -29,33 +43,35 @@ app.on('second-instance',()=>{if(win&&!win.isDestroyed()){if(win.isMinimized())w
 app.whenReady().then(async()=>{
   app.setAppUserModelId('local.legion');
   try{const cached=JSON.parse(fs.readFileSync(accountCapacityCache,'utf8'));if(Array.isArray(cached)&&cached.every(a=>a&&typeof a.backend==='string'&&typeof a.observedAt==='string'))accountCapacityData=cached;}catch{}
-  const {createDesktopService}=await import(pathToFileURL(path.join(root,'dist/src/desktop-service.js')).href);
-  if(!process.env.PROACTIVE_NODE)throw Error('请使用项目启动器启动桌面应用');
+  const {createDesktopService}=await import(pathToFileURL(path.join(codeRoot,'dist/src/desktop-service.js')).href);
+  process.env.PROACTIVE_NODE=resolveNode();
   service=createDesktopService(root,process.env.PROACTIVE_NODE);
-  const {createChatService}=await import(pathToFileURL(path.join(root,'dist/src/chat-service.js')).href);
+  const {createChatService}=await import(pathToFileURL(path.join(codeRoot,'dist/src/chat-service.js')).href);
   chats=createChatService(root);
-  const {createEngineeringService}=await import(pathToFileURL(path.join(root,'dist/src/engineering.js')).href);
+  const {createEngineeringService}=await import(pathToFileURL(path.join(codeRoot,'dist/src/engineering.js')).href);
   engineering=createEngineeringService(root,process.env.PROACTIVE_NODE);
-  const {createResearchService}=await import(pathToFileURL(path.join(root,'dist/src/research-service.js')).href);
+  const {createResearchService}=await import(pathToFileURL(path.join(codeRoot,'dist/src/research-service.js')).href);
   research=createResearchService(root);
-  const {modelCatalog}=await import(pathToFileURL(path.join(root,'dist/src/chat-options.js')).href);
+  const {modelCatalog}=await import(pathToFileURL(path.join(codeRoot,'dist/src/chat-options.js')).href);
   protocol.handle('proactive',request=>{
     const url=new URL(request.url);
     const files={'/':'index.html','/index.html':'index.html','/app.js':'app.js','/research.js':'research.js','/style.css':'style.css','/message-links.js':'../dist/src/message-links.js'};
     if(url.host!=='app'||!Object.hasOwn(files,url.pathname))return new Response('Not found',{status:404});
-    return net.fetch(pathToFileURL(path.join(__dirname,files[url.pathname])).href).then(response=>{
-      const headers=new Headers(response.headers);headers.set('Cache-Control','no-store');
-      return new Response(response.body,{status:response.status,headers});
-    });
+    // Reading through fs keeps this working when the app is packaged into an asar archive.
+    try{
+      const bytes=fs.readFileSync(path.join(__dirname,files[url.pathname]));
+      const type=url.pathname.endsWith('.css')?'text/css':url.pathname.endsWith('.js')?'text/javascript':'text/html';
+      return new Response(bytes,{status:200,headers:{'Content-Type':type,'Cache-Control':'no-store'}});
+    }catch{return new Response('Not found',{status:404});}
   });
   win=new BrowserWindow({width:1400,height:900,minWidth:980,minHeight:650,title:'Legion',backgroundColor:'#181818',show:false,webPreferences:{preload:path.join(__dirname,'preload.cjs'),contextIsolation:true,nodeIntegration:false,sandbox:true}});
   win.webContents.setWindowOpenHandler(()=>({action:'deny'}));
   win.webContents.on('will-navigate',event=>event.preventDefault());
   win.webContents.session.setPermissionRequestHandler((_contents,_permission,callback)=>callback(false));
   win.webContents.session.setPermissionCheckHandler(()=>false);
-  const {resolveChatLink}=await import(pathToFileURL(path.join(root,'dist/src/chat-links.js')).href);
-  const {accountCapacities}=await import(pathToFileURL(path.join(root,'dist/src/account-capacity.js')).href);readAccountCapacity=accountCapacities;
-  const {createPoolService}=await import(pathToFileURL(path.join(root,'dist/src/pool-service.js')).href);poolService=createPoolService(root);
+  const {resolveChatLink}=await import(pathToFileURL(path.join(codeRoot,'dist/src/chat-links.js')).href);
+  const {accountCapacities}=await import(pathToFileURL(path.join(codeRoot,'dist/src/account-capacity.js')).href);readAccountCapacity=accountCapacities;
+  const {createPoolService}=await import(pathToFileURL(path.join(codeRoot,'dist/src/pool-service.js')).href);poolService=createPoolService(root);
   const methods={
     poolStart:input=>poolService.start(input),poolSnapshot:()=>poolService.snapshot(),poolStop:()=>poolService.stop(),
     accountCapacity:()=>{if(!accountCapacityData)return refreshAccountCapacity();if(Date.now()-Math.max(...accountCapacityData.map(a=>Date.parse(a.observedAt)||0))>5*60_000)void refreshAccountCapacity();return accountCapacityData;},

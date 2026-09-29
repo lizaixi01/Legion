@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "main": "desktop/main.cjs",
   "engines": {
     "node": ">=22"
   },
@@ -21,11 +22,49 @@
     "ui": "tsx src/ui-server.ts",
     "desktop": "npm run build && node desktop/launch.cjs",
     "benchmark": "tsx src/benchmark-cli.ts",
-    "research": "tsx src/research-cli.ts"
+    "research": "tsx src/research-cli.ts",
+    "dist": "npm run build && electron-builder --win nsis"
+  },
+  "build": {
+    "appId": "local.legion",
+    "productName": "Legion",
+    "directories": {
+      "output": "dist-release",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/**/*",
+      "desktop/**/*",
+      "package.json",
+      "!**/*.map"
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": false,
+      "createStartMenuShortcut": true,
+      "runAfterFinish": true,
+      "shortcutName": "Legion",
+      "artifactName": "Legion-Setup-${version}.${ext}",
+      "include": "build/installer.nsh"
+    }
   },
   "devDependencies": {
     "@types/node": "26.6.3",
     "electron": "44.4.5",
+    "electron-builder": "^26.15.3",
     "tsx": "4.23.15",
     "typescript": "7.0.2"
   },

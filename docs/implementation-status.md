@@ -260,3 +260,5 @@ Command Code 使用 DeepSeek-v4.1-flash/high。非交互模式写入需要 --yol
 启动入口补充（2026-09-29）：桌面及项目快捷方式改用 wscript.exe → launch.vbs → 隐藏 PowerShell 构建启动，避免控制台闪窗。Electron 增加 .gui-profile/lifecycle.log，记录启动、窗口显示、renderer 退出及应用退出。使用 Explorer ShellExecute 冷启动验证可见窗口。用户报告的未启动现象本次未复现，不能视为已确定根因。
 
 快捷方式路径修正（2026-09-29）：用户反馈 WSH 找不到 LocalAppData 下 launch.vbs；检查时该文件存在且 cscript 可执行，未确认其消失原因。桌面和项目快捷方式现在直接引用项目内 desktop/launch-windows.vbs，脚本从 LocalAppData 读取既有启动配置。已用更新后的快捷方式经 ShellExecute 验证可见窗口。
+
+启动入口简化（2026-09-29）：根据快捷方式属性反馈，将桌面「Proactive Agent 启动」改为直接指向项目 electron.exe，并将 desktop/main.cjs 配为入口。Electron 主进程从 LocalAppData/ProactiveAgent/current.json 读取匹配主项目的 Node 路径，CLI worker 使用此路径。去掉 PowerShell/VBS/build 中转；直接 ShellExecute 启动并验证生命周期记录 window-shown。
