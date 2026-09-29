@@ -98,6 +98,6 @@ const server = createServer(async (req, res) => {
     json({ error: 'Not found' }, 404);
   } catch (error) { json({ error: error instanceof Error ? error.message : String(error) }, 400); }
 });
-server.listen(port, '127.0.0.1', () => console.log(`Proactive Agent: http://127.0.0.1:${port}`));
+server.listen(port, '127.0.0.1', () => console.log(`Legion: http://127.0.0.1:${port}`));
 server.on('error', error => { console.error(error); process.exitCode = 1; });
 for (const signal of ['SIGINT', 'SIGTERM'] as const) process.once(signal, () => { active?.controller.abort(); server.close(); });

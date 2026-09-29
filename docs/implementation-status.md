@@ -254,3 +254,9 @@ GUI 提供 off / auto / fixed 三种委派模式。auto 允许主 Agent 自行�
 Command Code 使用 DeepSeek-v4.1-flash/high。非交互模式写入需要 --yolo，因此只在配套 workspace-mod.mjs 启用：允许限定目录内文件工具，阻止 shell、委派、网络工具及越界/符号链接。此工具门控不是操作系统沙箱。Codex 保留 Sol 后端。普通目标外部检查只覆盖文件存在、哈希、JSON/JS 语法，不宣称功能正确；工程测试覆盖范围按计划显示。
 
 验证：111/111 离线测试、类型检查及构建通过。修正旧测试中 /0.5/ 会误匹配时间戳的断言，改为检查评分字段泄漏。真实双后端记录 .local/managed-smoke-1790678020780：Manager 分配两个独立任务，Codex alpha.json 与 Command Code beta.json 均完成，文件内容另行核对符合请求，约 58 秒。此前写入被 CLI 门控阻止的试跑保留为失败证据。未重跑 HWE。Electron CDP 实际检查三个选项切换、默认数量 10，并截图检查黑色主题布局；主界面移除手动任务队列入口。
+
+启动修复（2026-09-29）：桌面快捷方式遇到无可见窗口的已有实例时，second-instance 现在 restore/show/focus。Windows 启动脚本按退出码判断构建和启动结果，避免把 Electron stderr 诊断误报为致命错误；统一 UTF-8 日志。脚本源码保存在 desktop/launch-windows.ps1，部署到 LocalAppData/ProactiveAgent/launch.ps1。已通过真实桌面快捷方式验证首次打开和重复点击复用同一可见窗口。
+
+启动入口补充（2026-09-29）：桌面及项目快捷方式改用 wscript.exe → launch.vbs → 隐藏 PowerShell 构建启动，避免控制台闪窗。Electron 增加 .gui-profile/lifecycle.log，记录启动、窗口显示、renderer 退出及应用退出。使用 Explorer ShellExecute 冷启动验证可见窗口。用户报告的未启动现象本次未复现，不能视为已确定根因。
+
+快捷方式路径修正（2026-09-29）：用户反馈 WSH 找不到 LocalAppData 下 launch.vbs；检查时该文件存在且 cscript 可执行，未确认其消失原因。桌面和项目快捷方式现在直接引用项目内 desktop/launch-windows.vbs，脚本从 LocalAppData 读取既有启动配置。已用更新后的快捷方式经 ShellExecute 验证可见窗口。

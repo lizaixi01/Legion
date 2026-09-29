@@ -2,14 +2,33 @@ const { app, BrowserWindow, ipcMain, Menu, dialog, protocol, net, shell } = requ
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
 const root=path.resolve(__dirname,'..');
+const fs=require('node:fs');
+const startupLog=path.join(root,'.gui-profile','lifecycle.log');
+function recordLifecycle(message){try{fs.mkdirSync(path.dirname(startupLog),{recursive:true});fs.appendFileSync(startupLog,`${new Date().toISOString()} pid=${process.pid} ${message}\n`);}catch{}}
+recordLifecycle('starting');
+app.on('will-quit',()=>recordLifecycle('will-quit'));
 protocol.registerSchemesAsPrivileged([{scheme:'proactive',privileges:{standard:true,secure:true,supportFetchAPI:true}}]);
 app.setPath('userData',path.join(root,'.gui-profile'));
 let win, service, chats, engineering, research, poolService, selectedProject, quitting=false;
+let accountCapacityData=null,accountCapacityTask=null,readAccountCapacity;
+const accountCapacityCache=path.join(root,'.gui-profile','account-capacity.json');
+function refreshAccountCapacity(){
+  if(accountCapacityTask)return accountCapacityTask;
+  if(!readAccountCapacity)return Promise.reject(Error('Account capacity reader is not ready'));
+  accountCapacityTask=readAccountCapacity(root).then(data=>{
+    accountCapacityData=data.map(item=>item.available?item:accountCapacityData?.find(old=>old.backend===item.backend&&old.available)||item);
+    try{fs.mkdirSync(path.dirname(accountCapacityCache),{recursive:true});fs.writeFileSync(accountCapacityCache,JSON.stringify(accountCapacityData));}catch{}
+    if(win&&!win.isDestroyed())win.webContents.send('account-capacity-updated',accountCapacityData);
+    return accountCapacityData;
+  }).finally(()=>{accountCapacityTask=null;});
+  return accountCapacityTask;
+}
 if(!app.requestSingleInstanceLock())app.quit();
 else {
-app.on('second-instance',()=>{if(win){if(win.isMinimized())win.restore();win.focus();}});
+app.on('second-instance',()=>{if(win&&!win.isDestroyed()){if(win.isMinimized())win.restore();win.show();win.focus();}});
 app.whenReady().then(async()=>{
-  app.setAppUserModelId('local.proactive.agent');
+  app.setAppUserModelId('local.legion');
+  try{const cached=JSON.parse(fs.readFileSync(accountCapacityCache,'utf8'));if(Array.isArray(cached)&&cached.every(a=>a&&typeof a.backend==='string'&&typeof a.observedAt==='string'))accountCapacityData=cached;}catch{}
   const {createDesktopService}=await import(pathToFileURL(path.join(root,'dist/src/desktop-service.js')).href);
   if(!process.env.PROACTIVE_NODE)throw Error('请使用项目启动器启动桌面应用');
   service=createDesktopService(root,process.env.PROACTIVE_NODE);
@@ -29,17 +48,17 @@ app.whenReady().then(async()=>{
       return new Response(response.body,{status:response.status,headers});
     });
   });
-  win=new BrowserWindow({width:1400,height:900,minWidth:980,minHeight:650,title:'Proactive Agent',backgroundColor:'#181818',show:false,webPreferences:{preload:path.join(__dirname,'preload.cjs'),contextIsolation:true,nodeIntegration:false,sandbox:true}});
+  win=new BrowserWindow({width:1400,height:900,minWidth:980,minHeight:650,title:'Legion',backgroundColor:'#181818',show:false,webPreferences:{preload:path.join(__dirname,'preload.cjs'),contextIsolation:true,nodeIntegration:false,sandbox:true}});
   win.webContents.setWindowOpenHandler(()=>({action:'deny'}));
   win.webContents.on('will-navigate',event=>event.preventDefault());
   win.webContents.session.setPermissionRequestHandler((_contents,_permission,callback)=>callback(false));
   win.webContents.session.setPermissionCheckHandler(()=>false);
   const {resolveChatLink}=await import(pathToFileURL(path.join(root,'dist/src/chat-links.js')).href);
-  const {accountCapacities}=await import(pathToFileURL(path.join(root,'dist/src/account-capacity.js')).href);
+  const {accountCapacities}=await import(pathToFileURL(path.join(root,'dist/src/account-capacity.js')).href);readAccountCapacity=accountCapacities;
   const {createPoolService}=await import(pathToFileURL(path.join(root,'dist/src/pool-service.js')).href);poolService=createPoolService(root);
   const methods={
     poolStart:input=>poolService.start(input),poolSnapshot:()=>poolService.snapshot(),poolStop:()=>poolService.stop(),
-    accountCapacity:()=>accountCapacities(root),
+    accountCapacity:()=>{if(!accountCapacityData)return refreshAccountCapacity();if(Date.now()-Math.max(...accountCapacityData.map(a=>Date.parse(a.observedAt)||0))>5*60_000)void refreshAccountCapacity();return accountCapacityData;},
     researchList:()=>research.list(),researchDetail:id=>research.detail(id),researchStart:input=>{if(chats.isActive()||engineering.isActive()||service.isActive())throw Error('请先停止当前执行');return research.start(input);},researchStop:()=>research.stop(),researchFolder:async id=>{const error=await shell.openPath(research.folder(id));if(error)throw Error(error);},
     chatOpenLink:async(id,target)=>{const link=await resolveChatLink(root,id,target);if(link.kind==='web')await shell.openExternal(link.target);else if(link.kind==='reveal')shell.showItemInFolder(link.target);else {const error=await shell.openPath(link.target);if(error)throw Error(error);}},
     chooseProject:async()=>{const result=await dialog.showOpenDialog(win,{title:'选择 JavaScript 项目',properties:['openDirectory']});if(result.canceled)return null;selectedProject=result.filePaths[0];return {path:selectedProject,name:path.basename(selectedProject)};},
@@ -58,14 +77,16 @@ app.whenReady().then(async()=>{
     {label:'编辑',submenu:[{role:'copy',label:'复制'},{role:'selectAll',label:'全选'}]},
     {label:'视图',submenu:[{role:'reload',label:'刷新'},{role:'togglefullscreen',label:'全屏'},{role:'resetZoom',label:'实际大小'},{role:'zoomIn',label:'放大'},{role:'zoomOut',label:'缩小'}]},
   ]));
-  win.once('ready-to-show',()=>win.show());
+  win.once('ready-to-show',()=>{win.show();win.focus();recordLifecycle('window-shown');});
+  win.webContents.on('render-process-gone',(_event,details)=>recordLifecycle('renderer-gone '+JSON.stringify(details)));
   win.on('close',event=>{
     if(!quitting&&(service.isActive()||chats.isActive()||engineering.isActive()||research.isActive()||poolService.isActive())){
       event.preventDefault();void dialog.showMessageBox(win,{type:'question',buttons:['继续运行','停止并退出'],defaultId:0,cancelId:0,message:'任务仍在执行',detail:'退出前将停止本次运行的执行进程，保留已有证据。'}).then(async result=>{if(result.response===1){quitting=true;await Promise.all([service.stop(),chats.stop(),engineering.stop(),research.stop(),poolService.stop()]);app.quit();}});
     }
   });
+  if(!accountCapacityData||Date.now()-Math.max(...accountCapacityData.map(a=>Date.parse(a.observedAt)||0))>5*60_000)void refreshAccountCapacity().catch(()=>{});
   await win.loadURL('proactive://app/');
-}).catch(error=>{dialog.showErrorBox('Proactive Agent 启动失败',String(error));app.quit();});
+}).catch(error=>{recordLifecycle('startup-error '+String(error));dialog.showErrorBox('Legion 启动失败',String(error));app.quit();});
 app.on('window-all-closed',()=>app.quit());
 }
 

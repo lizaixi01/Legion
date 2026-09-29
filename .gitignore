@@ -6,5 +6,6 @@ dist/
 *.log
 *.lnk
 .chats/
+.gui-profile/account-capacity.json
 .engineering/
 __pycache__/

@@ -5,7 +5,7 @@ import { hash } from './provenance.js';
 
 export async function lockWorkspace(workspace: string, runDir: string): Promise<() => Promise<void>> {
   const canonical = await realpath(workspace);
-  const root = join(tmpdir(), 'proactive-agent-workspace-locks');
+  const root = join(tmpdir(), 'legion-workspace-locks');
   await mkdir(root, { recursive: true });
   const path = join(root, `${hash(process.platform === 'win32' ? canonical.toLowerCase() : canonical)}.json`);
   try {

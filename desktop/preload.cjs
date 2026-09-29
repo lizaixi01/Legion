@@ -2,6 +2,7 @@ const {contextBridge,ipcRenderer}=require('electron');
 contextBridge.exposeInMainWorld('manager',{
   poolStart:input=>ipcRenderer.invoke('manager:poolStart',input),poolSnapshot:()=>ipcRenderer.invoke('manager:poolSnapshot'),poolStop:()=>ipcRenderer.invoke('manager:poolStop'),
   accountCapacity:()=>ipcRenderer.invoke('manager:accountCapacity'),
+  onAccountCapacityUpdated:callback=>ipcRenderer.on('account-capacity-updated',(_event,data)=>callback(data)),
   researchList:()=>ipcRenderer.invoke('manager:researchList'),
   researchDetail:id=>ipcRenderer.invoke('manager:researchDetail',id),
   researchStart:input=>ipcRenderer.invoke('manager:researchStart',input),

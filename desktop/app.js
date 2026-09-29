@@ -102,15 +102,37 @@ $('agents-view').onclick=()=>{const open=$('details').hidden||$('panel-title').t
 setInterval(()=>void refreshAgents(),1500);
 
 const capacityButton=document.getElementById('capacity-button');
+function renderCapacity(panel,accounts,updating=false){
+ panel.replaceChildren();
+ for(const a of accounts){
+  const h=document.createElement('h3');h.textContent=a.backend==='codex'?'Codex · Sol':'Command Code · DeepSeek';panel.append(h);
+  if(!a.available){const p=document.createElement('p');p.textContent='账户信息暂不可用';panel.append(p);continue;}
+  if(a.backend==='commandcode'){
+   const credits=a.data?.credits?.monthlyCredits;
+   const balance=document.createElement('p');balance.textContent=`Credits 余额：${typeof credits==='number'?credits.toFixed(2):'暂不可用'}`;panel.append(balance);
+   for(const [name,w] of Object.entries(a.data?.windows??{}))if(w&&typeof w==='object'&&'cap' in w){
+    const used=Number(w.used),cap=Number(w.cap),remaining=Number.isFinite(used)&&Number.isFinite(cap)&&cap>0?Math.max(0,Math.min(100,(cap-used)/cap*100)):null;
+    const row=document.createElement('p');row.className='capacity-usage';row.textContent=`${name==='fiveHour'?'5 小时窗口':name==='weekly'?'每周窗口':name}：${remaining===null?'暂不可用':`剩余 ${remaining.toFixed(1)}%`}`;panel.append(row);
+    if(remaining!==null){const detail=document.createElement('small');detail.textContent=`已用 ${used.toFixed(2)} / ${cap} credits`;panel.append(detail);}
+   }
+  }else{
+   const limits=a.data?.rateLimits;
+   const windows=[['5 小时窗口',limits?.primary],['每周窗口',limits?.secondary]];
+   for(const [label,w] of windows)if(w&&typeof w.usedPercent==='number'){
+    const remaining=Math.max(0,Math.min(100,100-w.usedPercent));
+    const row=document.createElement('p');row.className='capacity-usage';row.textContent=`${label}：剩余 ${remaining.toFixed(0)}%`;panel.append(row);
+   }
+   if(!windows.some(([,w])=>w)){const p=document.createElement('p');p.textContent='服务未提供用量窗口';panel.append(p);}
+  }
+  const time=document.createElement('small');time.textContent=`更新于 ${new Date(a.observedAt).toLocaleTimeString()}`;panel.append(time);
+ }
+ if(updating){const status=document.createElement('small');status.className='capacity-refreshing';status.textContent='正在更新…';panel.append(status);}
+}
+window.manager.onAccountCapacityUpdated(accounts=>{const panel=document.getElementById('capacity-panel');if(panel)renderCapacity(panel,accounts);});
 capacityButton.addEventListener('click',async()=>{
  const old=document.getElementById('capacity-panel');if(old){old.remove();capacityButton.setAttribute('aria-expanded','false');return;}
  capacityButton.setAttribute('aria-expanded','true');const panel=document.createElement('section');panel.id='capacity-panel';panel.className='capacity-panel';panel.textContent='正在读取账户…';document.body.append(panel);
- try{const accounts=await window.manager.accountCapacity();panel.replaceChildren();for(const a of accounts){const h=document.createElement('h3');h.textContent=a.backend==='codex'?'Codex · Sol':'Command Code · DeepSeek';panel.append(h);const p=document.createElement('p');if(!a.available){p.textContent='账户信息暂不可用';panel.append(p);continue;}
- if(a.backend==='commandcode'){p.textContent=`剩余 credits：${(typeof a.data.credits?.monthlyCredits==='number'?a.data.credits.monthlyCredits.toFixed(2):'未知')}`;panel.append(p);for(const [name,w] of Object.entries(a.data.windows??{})){if(w&&typeof w==='object'&&'cap' in w){const row=document.createElement('p');row.textContent=`${name==='fiveHour'?'5 小时':name==='weekly'?'每周':name}：${Number(w.used).toFixed(2)} / ${w.cap}`;panel.append(row);}}}
- else {const r=a.data.rateLimits;for(const [label,w] of [['当前窗口',r?.primary],['次要窗口',r?.secondary]])if(w){const row=document.createElement('p');row.textContent=`${label}：剩余 ${Math.max(0,100-w.usedPercent)}%`;panel.append(row);}if(!r){p.textContent='服务未提供用量窗口';panel.append(p);}}
- const time=document.createElement('small');time.textContent=`更新于 ${new Date(a.observedAt).toLocaleTimeString()}`;panel.append(time);}
- const note=document.createElement('p');note.textContent='并发上限：服务未公布；实测结果单独记录。';panel.append(note);
- }catch{panel.textContent='账户读取失败，点击关闭后重试。';}
+ try{const accounts=await window.manager.accountCapacity();if(panel.isConnected)renderCapacity(panel,accounts);}catch{if(panel.isConnected)panel.textContent='账户读取失败，关闭后重试。';}
 });
 
 let poolTimer;

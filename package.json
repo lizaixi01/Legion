@@ -1,10 +1,13 @@
 {
-  "name": "proactive-agent",
+  "name": "legion",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "engines": {
     "node": ">=22"
+  },
+  "bin": {
+    "legion": "bin/legion.cjs"
   },
   "scripts": {
     "start": "tsx src/cli.ts",
