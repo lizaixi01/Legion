@@ -22,10 +22,14 @@
     "ui": "tsx src/ui-server.ts",
     "desktop": "npm run build && node desktop/launch.cjs",
     "benchmark": "tsx src/benchmark-cli.ts",
+    "saasbench": "tsx src/saasbench-cli.ts",
     "research": "tsx src/research-cli.ts",
     "dist": "npm run build && electron-builder --win nsis",
     "demo:acceptance": "tsx src/acceptance-demo.ts",
-    "smoke:acceptance": "tsx src/acceptance-smoke.ts"
+    "smoke:acceptance": "tsx src/acceptance-smoke.ts",
+    "engineering": "npm run build && node dist/src/engineering-run-cli.js",
+    "demo:resume": "tsx src/engineering-resume-demo.ts",
+    "smoke:resume": "npm run build && node dist/src/engineering-run-cli.js smoke"
   },
   "build": {
     "appId": "local.legion",

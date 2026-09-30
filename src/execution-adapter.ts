@@ -12,7 +12,7 @@ export interface ExecutionAdapter {
   stop():Promise<void>;
   grade(selected:{path:string;sha256:string},signal:AbortSignal):Promise<unknown>;
 }
-export async function runAdapter(root:string,config:Omit<TeamConfig,'runDir'>,adapter:ExecutionAdapter,signal:AbortSignal,options:{gradeCompletedBaseline?:boolean}={}){
+export async function runAdapter(root:string,config:Omit<TeamConfig,'runDir'>,adapter:ExecutionAdapter,signal:AbortSignal,options:{gradeCompletedBaseline?:boolean;policy?:Pick<TeamDependencies,'decide'|'canVerify'>}={}){
   if(options.gradeCompletedBaseline&&(config.competition||config.tasks.length!==1||config.maxAttempts!==1))throw Error('Baseline requires exactly one task and one worker call');
   await mkdir(root);let state:Record<string,unknown>={status:'preparing',startedAt:new Date().toISOString()};
   const save=()=>writeFile(join(root,'execution.json'),JSON.stringify(state,null,2));await save();
@@ -20,7 +20,7 @@ export async function runAdapter(root:string,config:Omit<TeamConfig,'runDir'>,ad
   try {
     const provenance=await adapter.prepare(signal);await writeFile(join(root,'provenance.json'),JSON.stringify(provenance,null,2));
     signal.throwIfAborted();state.status='running';await save();
-    const team=await runTeam({...config,runDir:join(root,'team')},{worker:adapter.worker,check:adapter.check,signal});
+    const team=await runTeam({...config,runDir:join(root,'team')},{worker:adapter.worker,check:adapter.check,signal,...options.policy});
     const baselineFinished=options.gradeCompletedBaseline&&Object.values(team.tasks).every(t=>t.attempts.length===1&&((t.attempts[0]?.worker.status==='completed'&&t.status==='failed')||t.attempts[0]?.worker.status==='timeout'));
     if(team.status!=='completed'&&!baselineFinished){state.status=signal.aborted?'cancelled':'incomplete';return state;}
     signal.throwIfAborted();state.publicChecksPassed=team.status==='completed';state.workerTimedOut=Object.values(team.tasks).some(t=>t.attempts.some(a=>a.worker.status==='timeout'));
