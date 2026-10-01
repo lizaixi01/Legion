@@ -3,7 +3,7 @@ import {resolve,join} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {randomUUID} from 'node:crypto';
 import {runResearch,type ResearchConfig,type ResearchDeps} from './research-loop.js';
-import {createHweDeps,hweCall,verifyHwe,hweFingerprint} from './hwe.js';
+import {createHweDeps,hweCall,verifyHwe,hweFingerprint,fingerprintMatches,fingerprintDifferences} from './hwe.js';
 import {hash} from './provenance.js';
 import {linuxPath} from './programbench.js';
 import {lockWorkspace} from './lock.js';
@@ -21,14 +21,22 @@ async function injectedDeps(root:string,config:ResearchConfig):Promise<ResearchD
  if(typeof imported.createDeps!=='function')throw Error('PROACTIVE_ARM_DEPS must export createDeps(root, config)');
  return imported.createDeps(root,config) as ResearchDeps;
 }
-if(action==='readiness'){
+if(action==='preflight'){
+ // Read-only readiness gate: no model, baseline rerun or scoring call.
+ const readiness=resolve('.local/hwe-readiness'),ready=JSON.parse(await readFile(join(readiness,'ready.json'),'utf8'));
+ const baselineMatches=hash(await readFile(join(readiness,'baseline.tar.gz')))===ready.sha256;
+ const environment=await hweFingerprint(),differences=fingerprintDifferences(ready.environment,environment);
+ const matches=baselineMatches&&differences.length===0;
+ console.log(JSON.stringify({matches,baselineMatches,differences,environment,scope:'Readiness compatibility only; no candidate has been scored'},null,2));
+ if(!matches)process.exitCode=1;
+}else if(action==='readiness'){
  const root=resolve('.local/hwe-readiness');await mkdir(root,{recursive:true});const owner='hwe-readiness';const release=await lockWorkspace(root,root);
  try{
   const archive=join(root,'baseline.tar.gz');await hweCall('baseline',root,owner,{archive:linuxPath(archive)},60000,controller.signal);
   const environment=await hweFingerprint(),baselineHash=hash(await readFile(archive)),reports=[];
   for(let i=0;i<2;i++){const dir=join(root,'check-'+randomUUID());console.log('Baseline verification: '+dir);const report=await verifyHwe(archive,dir,owner,controller.signal);reports.push({dir,report});console.log(JSON.stringify(report));if(report.status!=='pass')throw Error('Baseline gate failed; inspect '+dir);}
   if(JSON.stringify(reports[0]!.report.metrics)!==JSON.stringify(reports[1]!.report.metrics)||JSON.stringify((reports[0]!.report.checks.fpga as {seeds:unknown}).seeds)!==JSON.stringify((reports[1]!.report.checks.fpga as {seeds:unknown}).seeds))throw Error('Baseline verification is not reproducible');
-  if(JSON.stringify(await hweFingerprint())!==JSON.stringify(environment)||hash(await readFile(archive))!==baselineHash)throw Error('Environment or baseline changed during readiness');
+  if(!fingerprintMatches(environment,await hweFingerprint())||hash(await readFile(archive))!==baselineHash)throw Error('Environment or baseline changed during readiness');
   await writeFile(join(root,'ready.json'),JSON.stringify({at:new Date().toISOString(),environment,sha256:hash(await readFile(archive)),evidence:reports[1]!.report,repeats:reports},null,2));console.log('HWE readiness passed twice');
  }finally{await hweCall('stop',join(root,'cleanup'),owner,{},60000);await release();}
 }else if(action==='summary'){

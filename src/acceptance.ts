@@ -5,6 +5,7 @@ import {z} from 'zod';
 import {digest,hashOutputs,snapshotOutputs,type AcceptanceContract} from './challenge.js';
 import {ReportSchema,commandChecker} from './checker.js';
 import {checkOutcome} from './run.js';
+import {withinDeadline} from './deadline.js';
 import type {CheckReport} from './types.js';
 
 export interface Acceptance {status:'pending'|'checking'|'accepted'|'rejected'|'unverified'|'blocked'|'not_applicable';candidateId?:string;uncovered:string[];detail:string;evidence?:string}
@@ -36,7 +37,7 @@ export async function verifyCandidate(contract:FrozenContract,candidate:Candidat
  const ensure=async()=>{if(signal?.aborted||Date.now()>=contract.budget.deadline)throw Error('Acceptance cancelled or deadline exceeded');if(candidate.contractHash!==digest(JSON.stringify(contract))||JSON.stringify(candidate.dependencies)!==JSON.stringify(contract.dependencies)||await hashOutputs(candidate.snapshot,contract.outputs)!==candidate.artifactHash)throw Error('Stale candidate/contract/dependency evidence');};
  await ensure();
  await writeFile(join(dir,'verification-plan.json'),JSON.stringify({candidateId:candidate.candidateId,contractHash:candidate.contractHash,artifactHash:candidate.artifactHash,dependencies:candidate.dependencies,environment:candidate.environment,verifier:verifier?{id:verifier.id,version:verifier.version,adapterHash:digest(verifier.check.toString())}:null},null,2),{flag:'wx'});
- if(verifier){try{report=ReportSchema.parse(await verifier.check(candidate,contract,dir,signal));}catch(error){report={checks:[{id:required[0]??'verifier',status:'error',detail:String(error)}],artifacts:[]};}}
+ if(verifier){try{report=ReportSchema.parse(await withinDeadline(contract.budget.deadline,signal,bounded=>verifier.check(candidate,contract,dir,bounded)));}catch(error){report={checks:[{id:required[0]??'verifier',status:'error',detail:String(error)}],artifacts:[]};}}
  await ensure();const outcome=checkOutcome(report,required);
  const status:Acceptance['status']=required.length&&verifier&&outcome==='pass'?'accepted':outcome==='fail'?'rejected':outcome==='error'?'blocked':'unverified';
  const evidence=join(dir,'functional.json');const result:FunctionalEvidence={candidate,contract:structuredClone(contract),verifier:verifier?{id:verifier.id,version:verifier.version}:null,report,acceptance:{status,candidateId:candidate.candidateId,uncovered:required.filter(id=>report.checks.find(c=>c.id===id)?.status!=='pass'),detail:verifier?'Host functional checks; coverage limited to frozen requirements':'No trusted functional verifier; review evidence alone cannot certify delivery',evidence}};

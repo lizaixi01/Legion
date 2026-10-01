@@ -5,5 +5,6 @@ files={str(p.relative_to(r)):hashlib.sha256(p.read_bytes()).hexdigest() for fold
 extra=[r/'Makefile',r/'cores/baseline/core.yaml',pathlib.Path(oss)/'share/manifest.json']
 extra += [pathlib.Path(oss)/'libexec'/name for name in ['yosys','nextpnr-himbaechel','verilator_bin','sby','yices-smt2']]
 extra += [pathlib.Path(xpack)/'bin'/('riscv-none-elf-'+name) for name in ['gcc','as','ld']]
-extra_files={str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in extra}
+repo_inputs={r/'Makefile':'repo:Makefile',r/'cores/baseline/core.yaml':'repo:cores/baseline/core.yaml'}
+extra_files={repo_inputs.get(p,str(p)):hashlib.sha256(p.read_bytes()).hexdigest() for p in extra}
 print(json.dumps({'commit':output(['git','-C',repo,'rev-parse','HEAD']),'riscvFormal':output(['git','-C',repo+'/formal/riscv-formal','rev-parse','HEAD']),'image':output(['docker','image','inspect',image,'--format','{{.Id}}']),'filesSha256':hashlib.sha256(json.dumps(files,sort_keys=True).encode()).hexdigest(),'oss':oss,'xpack':xpack,'verifierSha256':hashlib.sha256(pathlib.Path(__file__).with_name('evaluate.py').read_bytes()).hexdigest(),'additionalInputs':extra_files}))

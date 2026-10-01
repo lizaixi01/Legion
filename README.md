@@ -49,3 +49,11 @@ npm run desktop     # 开发态启动
 npm test            # 行为测试
 npm run dist        # 构建 Windows 安装包到 dist-release/
 ```
+
+### 可恢复工程任务
+
+桌面新聊天中选择项目并开启“工程任务”，审核 Manager 提出的需求与测试后执行。安全暂停后可在原任务恢复；旧版本记录仅供查看历史。运行离线恢复演示：`npm run demo:resume`（不调用模型）。CLI、预算、验收与恢复限制见 [恢复设计说明](docs/resumable-engineering.md)。
+
+### Codex runtime for local Legion
+
+Run `npm run runtime:install` before starting a fresh development or experiment checkout. This installs the pinned Codex CLI **0.159.2** under `.local/codex-runtime`. Primary sessions, engineering tasks, workers and capacity probes use that project runtime, not the CLI found on PATH. Include the runtime in an experiment snapshot and record its version; do not upgrade a frozen experiment in place. The separate legacy Linux benchmark harness has its own runtime configuration.

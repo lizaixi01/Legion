@@ -1,0 +1,7 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {mkdtemp,writeFile} from 'node:fs/promises';import {tmpdir} from 'node:os';import {join} from 'node:path';import {runTeam,type TeamConfig} from '../src/team.js';
+test('team pauses at a node boundary and resumes only after revalidating accepted nodes',async()=>{
+ const base=await mkdtemp(join(tmpdir(),'resume-team-'));const config:TeamConfig={runDir:join(base,'run'),tasks:['a','b'].map((id,i)=>({id,goal:id,dependsOn:i?['a']:[],routes:['one'],requiredChecks:['ok'],outputs:[id+'.txt']})),concurrency:1,maxAttempts:1,attemptMs:1000,totalMs:10000};let pause=false;const calls:string[]=[];let verifies=0;
+ const deps={worker:async(r:any,t:any)=>{calls.push(t.id);await writeFile(join(r.workspace,t.id+'.txt'),t.id);return {status:'completed' as const,sessionId:t.id,durationMs:1,usage:[]};},check:async()=>({checks:[{id:'ok',status:'pass' as const,detail:'ok'}],artifacts:[]}),pauseRequested:()=>pause,onEvent:async(e:any)=>{if(e.type==='task_finished')pause=true;}};
+ const first=await runTeam(config,deps);assert.equal(first.status,'paused');assert.deepEqual(calls,['a']);pause=false;
+ const second=await runTeam(config,{...deps,onEvent:undefined,resume:{state:first,deadline:Date.now()+5000,revalidate:async()=>{verifies++;return true;}}} as any);assert.equal(second.status,'completed');assert.deepEqual(calls,['a','b']);assert.equal(verifies,1);
+});

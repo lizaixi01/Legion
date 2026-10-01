@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain, Menu, dialog, protocol, net, shell } = requ
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
 const fs=require('node:fs');
+const {readClipboardFiles}=require('./clipboard-files.cjs');
 // A packaged install keeps the program files read-only inside the app bundle, so the
 // code root and the writable data root are resolved separately.
 const packaged=app.isPackaged;
@@ -24,7 +25,8 @@ recordLifecycle('starting');
 app.on('will-quit',()=>recordLifecycle('will-quit'));
 protocol.registerSchemesAsPrivileged([{scheme:'proactive',privileges:{standard:true,secure:true,supportFetchAPI:true}}]);
 app.setPath('userData',profileDir);
-let win, service, chats, engineering, research, poolService, selectedProject, quitting=false;
+let win, service, chats, engineering, poolService, selectedProject, quitting=false;
+const selectedAttachments=new Set();
 let accountCapacityData=null,accountCapacityTask=null,readAccountCapacity;
 const accountCapacityCache=path.join(profileDir,'account-capacity.json');
 function refreshAccountCapacity(){
@@ -49,22 +51,10 @@ app.whenReady().then(async()=>{
   service=createDesktopService(root,process.env.PROACTIVE_NODE);
   const {createChatService}=await import(pathToFileURL(path.join(codeRoot,'dist/src/chat-service.js')).href);
   chats=createChatService(root);
-  const {createEngineeringService}=await import(pathToFileURL(path.join(codeRoot,'dist/src/engineering.js')).href);
-  engineering=createEngineeringService(root,process.env.PROACTIVE_NODE);
-  const {createResearchService}=await import(pathToFileURL(path.join(codeRoot,'dist/src/research-service.js')).href);
-  research=createResearchService(root);
+  const {createEngineeringProduct}=await import(pathToFileURL(path.join(codeRoot,'dist/src/engineering-product.js')).href);
+  engineering=createEngineeringProduct(root,process.env.PROACTIVE_NODE);
   const {modelCatalog}=await import(pathToFileURL(path.join(codeRoot,'dist/src/chat-options.js')).href);
-  protocol.handle('proactive',request=>{
-    const url=new URL(request.url);
-    const files={'/':'index.html','/index.html':'index.html','/app.js':'app.js','/research.js':'research.js','/style.css':'style.css','/message-links.js':'../dist/src/message-links.js'};
-    if(url.host!=='app'||!Object.hasOwn(files,url.pathname))return new Response('Not found',{status:404});
-    // Reading through fs keeps this working when the app is packaged into an asar archive.
-    try{
-      const bytes=fs.readFileSync(path.join(__dirname,files[url.pathname]));
-      const type=url.pathname.endsWith('.css')?'text/css':url.pathname.endsWith('.js')?'text/javascript':'text/html';
-      return new Response(bytes,{status:200,headers:{'Content-Type':type,'Cache-Control':'no-store'}});
-    }catch{return new Response('Not found',{status:404});}
-  });
+  protocol.handle('proactive',require('./resources.cjs').serveDesktopResource);
   win=new BrowserWindow({width:1400,height:900,minWidth:980,minHeight:650,title:applicationTitle,backgroundColor:'#181818',show:false,webPreferences:{preload:path.join(__dirname,'preload.cjs'),contextIsolation:true,nodeIntegration:false,sandbox:true}});
   win.on('page-title-updated',event=>{event.preventDefault();win.setTitle(applicationTitle);});
   win.webContents.setWindowOpenHandler(()=>({action:'deny'}));
@@ -78,14 +68,20 @@ app.whenReady().then(async()=>{
     projectInfo:()=>({path:root,name:path.basename(root)}),
     poolStart:input=>poolService.start(input),poolSnapshot:()=>poolService.snapshot(),poolStop:()=>poolService.stop(),
     accountCapacity:()=>{if(!accountCapacityData)return refreshAccountCapacity();if(Date.now()-Math.max(...accountCapacityData.map(a=>Date.parse(a.observedAt)||0))>5*60_000)void refreshAccountCapacity();return accountCapacityData;},
-    researchList:()=>research.list(),researchDetail:id=>research.detail(id),researchStart:input=>{if(chats.isActive()||engineering.isActive()||service.isActive())throw Error('请先停止当前执行');return research.start(input);},researchStop:()=>research.stop(),researchFolder:async id=>{const error=await shell.openPath(research.folder(id));if(error)throw Error(error);},
     chatOpenLink:async(id,target)=>{const link=await resolveChatLink(root,id,target);if(link.kind==='web')await shell.openExternal(link.target);else if(link.kind==='reveal')shell.showItemInFolder(link.target);else {const error=await shell.openPath(link.target);if(error)throw Error(error);}},
-    chooseProject:async()=>{const result=await dialog.showOpenDialog(win,{title:'选择 JavaScript 项目',properties:['openDirectory']});if(result.canceled)return null;selectedProject=result.filePaths[0];return {path:selectedProject,name:path.basename(selectedProject)};},
-    engineeringPlan:input=>{if(input.project!==selectedProject)throw Error('请先选择项目目录');if(chats.isActive()||service.isActive()||research.isActive())throw Error('请先停止当前执行');return engineering.plan(input);},
-    engineeringStart:(id,configuration)=>{if(chats.isActive()||service.isActive()||research.isActive())throw Error('请先停止当前执行');return engineering.start(id,configuration);},
+    pasteFiles:async()=>{const paths=await readClipboardFiles();if(!paths.length)return [];if(paths.length>30)throw Error('最多添加 30 个附件');const resolved=paths.map(p=>fs.realpathSync(p));for(const p of resolved){const info=fs.statSync(p);if(!info.isFile()&&!info.isDirectory())throw Error('附件类型不支持');}for(const p of resolved)selectedAttachments.add(p);return resolved;},
+    registerDroppedFiles:paths=>{if(!Array.isArray(paths)||!paths.length||paths.length>30||paths.some(p=>typeof p!=='string'||!path.isAbsolute(p)))throw Error('一次最多添加 30 个本地文件或文件夹');const resolved=[...new Set(paths.map(p=>fs.realpathSync(p)))];for(const p of resolved){const info=fs.statSync(p);if(!info.isFile()&&!info.isDirectory())throw Error('不支持该附件类型');}for(const p of resolved)selectedAttachments.add(p);return resolved;},
+    chooseFiles:async()=>{const result=await dialog.showOpenDialog(win,{title:"添加文件",properties:["openFile","multiSelections"]});if(result.canceled)return [];for(const file of result.filePaths)selectedAttachments.add(file);return result.filePaths;},
+    chooseProject:async()=>{const result=await dialog.showOpenDialog(win,{title:'选择项目',properties:['openDirectory']});if(result.canceled)return null;selectedProject=result.filePaths[0];return {path:selectedProject,name:path.basename(selectedProject)};},
+    goalStart:input=>{if(input.project&&input.project!==selectedProject)throw Error('请先选择项目目录');if(chats.isActive()||service.isActive())throw Error('请先停止当前执行');return engineering.startGoal({...input,project:input.project||root});},
+    engineeringSupport:project=>{if(project!==selectedProject)throw Error('请先选择项目目录');return engineering.support(project);},
+    engineeringPlan:input=>{if(input.project!==selectedProject)throw Error('请先选择项目目录');if(chats.isActive()||service.isActive())throw Error('请先停止当前执行');return engineering.plan(input);},
+    engineeringApprove:(id,hash)=>{if(chats.isActive()||service.isActive())throw Error("请先停止当前执行");return engineering.approve(id,hash);},
+    engineeringResume:id=>{if(chats.isActive()||service.isActive())throw Error("请先停止当前执行");return engineering.resume(id);},engineeringPause:()=>engineering.pause(),engineeringCancel:id=>engineering.cancel(id),
+    engineeringStart:(id,configuration)=>{if(chats.isActive()||service.isActive())throw Error('请先停止当前执行');return engineering.start(id,configuration);},
     engineeringList:()=>engineering.list(),engineeringDetail:async id=>{const detail=await engineering.detail(id);selectedProject=detail.project;return detail;},engineeringStop:()=>engineering.stop(),
     engineeringFolder:async id=>{const error=await shell.openPath(await engineering.folder(id));if(error)throw Error(error);},
-    models:()=>modelCatalog(),chatList:()=>chats.list(),chatDetail:id=>chats.detail(id),chatSend:input=>{if(input.project&&input.project!==selectedProject)throw Error('请先选择项目目录');if(engineering.isActive()||research.isActive())throw Error('请先停止工程任务');return chats.send(input);},chatStop:()=>chats.stop(),chatSetPinned:(id,pinned)=>chats.setPinned(id,pinned),chatDelete:id=>chats.deleteChat(id),chatArchiveProject:project=>chats.archiveProject(project),list:()=>service.list(),detail:id=>service.detail(id),start:input=>{if(engineering.isActive()||chats.isActive()||research.isActive())throw Error('请先停止当前执行');return service.start(input);},stop:()=>service.stop(),artifact:(id,task,file)=>service.artifact(id,task,file)};
+    models:()=>modelCatalog(),chatList:()=>chats.list(),chatDetail:id=>chats.detail(id),chatSend:input=>{if(input.attachments&&(!Array.isArray(input.attachments)||input.attachments.some(p=>!selectedAttachments.has(p))))throw Error("请重新选择或拖入附件");if(input.project&&input.project!==selectedProject)throw Error('请先选择项目目录');if(engineering.isActive())throw Error('请先停止工程任务');return chats.send(input);},chatStop:()=>chats.stop(),chatSetPinned:(id,pinned)=>chats.setPinned(id,pinned),chatDelete:id=>chats.deleteChat(id),chatArchiveProject:project=>chats.archiveProject(project),list:()=>service.list(),detail:id=>service.detail(id),start:input=>{if(engineering.isActive()||chats.isActive())throw Error('请先停止当前执行');return service.start(input);},stop:()=>service.stop(),artifact:(id,task,file)=>service.artifact(id,task,file)};
   for(const [name,fn] of Object.entries(methods))ipcMain.handle('manager:'+name,(event,...args)=>{
     const source=new URL(event.senderFrame.url);
     if(event.sender!==win.webContents||event.senderFrame!==win.webContents.mainFrame||source.protocol!=='proactive:'||source.host!=='app')throw Error('Untrusted caller');
@@ -99,8 +95,8 @@ app.whenReady().then(async()=>{
   win.once('ready-to-show',()=>{win.show();win.focus();recordLifecycle('window-shown');});
   win.webContents.on('render-process-gone',(_event,details)=>recordLifecycle('renderer-gone '+JSON.stringify(details)));
   win.on('close',event=>{
-    if(!quitting&&(service.isActive()||chats.isActive()||engineering.isActive()||research.isActive()||poolService.isActive())){
-      event.preventDefault();void dialog.showMessageBox(win,{type:'question',buttons:['继续运行','停止并退出'],defaultId:0,cancelId:0,message:'任务仍在执行',detail:'退出前将停止本次运行的执行进程，保留已有证据。'}).then(async result=>{if(result.response===1){quitting=true;await Promise.all([service.stop(),chats.stop(),engineering.stop(),research.stop(),poolService.stop()]);app.quit();}});
+    if(!quitting&&(service.isActive()||chats.isActive()||engineering.isActive()||poolService.isActive())){
+      event.preventDefault();void dialog.showMessageBox(win,{type:'question',buttons:['继续运行','暂停工程并退出'],defaultId:0,cancelId:0,message:'任务仍在执行',detail:'工程任务将在安全边界暂停；其他执行停止。无法干净暂停时保留中断记录。'}).then(async result=>{if(result.response===1){quitting=true;await engineering.stop();await Promise.all([service.stop(),chats.stop(),poolService.stop()]);app.quit();}});
     }
   });
   if(!accountCapacityData||Date.now()-Math.max(...accountCapacityData.map(a=>Date.parse(a.observedAt)||0))>5*60_000)void refreshAccountCapacity().catch(()=>{});

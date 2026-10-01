@@ -8,6 +8,8 @@ import {execute} from './process.js';
 import {hash} from './provenance.js';
 import {linuxPath} from './programbench.js';
 import {parseCodexLog} from './codex.js';
+import {fingerprintMatches} from './hwe-fingerprint.js';
+export {fingerprintMatches,fingerprintDifferences} from './hwe-fingerprint.js';
 import {ResearchDecisionSchema,type ResearchConfig,type ResearchDeps,type Evidence,type Candidate} from './research-loop.js';
 
 const moduleBase=resolve(dirname(fileURLToPath(import.meta.url)),'..');
@@ -15,14 +17,11 @@ const projectRoot=existsSync(join(moduleBase,'package.json'))?moduleBase:resolve
 async function recordImplementation(root:string){
  const destination=join(root,'implementation');await mkdir(destination,{recursive:true});
  const extension=import.meta.url.endsWith('.ts')?'ts':'js',moduleDir=dirname(fileURLToPath(import.meta.url));
- const files=[...['hwe','hwe-ordinary','hwe-native','research-cli','research-loop','research-summary','run-deadline','process','codex','provenance','programbench'].map(name=>join(moduleDir,`${name}.${extension}`)),...['bridge.py','evaluate.py','fingerprint.py','relay.py','native-codex.py','session-usage.py','toolchain-lock.json'].map(name=>join(projectRoot,'scripts/hwe',name))];
+ const files=[...['hwe','hwe-fingerprint','hwe-ordinary','hwe-native','research-cli','research-loop','research-summary','run-deadline','process','codex','provenance','programbench'].map(name=>join(moduleDir,`${name}.${extension}`)),...['bridge.py','evaluate.py','fingerprint.py','relay.py','native-codex.py','session-usage.py','toolchain-lock.json'].map(name=>join(projectRoot,'scripts/hwe',name))];
  const manifest=[];
  for(const source of files){const bytes=await readFile(source),name=source.split(/[\\/]/).at(-1)!;await writeFile(join(destination,name),bytes);manifest.push({source,sha256:hash(bytes)});}
  await writeFile(join(destination,'manifest.json'),JSON.stringify(manifest,null,2));
 }
-
-/** Readiness is reusable only while the recorded environment fingerprint is unchanged. */
-export function fingerprintMatches(expected:unknown,current:unknown):boolean{return JSON.stringify(current)===JSON.stringify(expected);}
 
 export function hweSettings(root:string,owner:string){return {root:linuxPath(root),owner,distro:'Ubuntu-24.04',repository:linuxPath(resolve(projectRoot,'.local/hwe-bench')),scripts:linuxPath(resolve(projectRoot,'scripts/hwe')),image:'proactive-hwe:local',oss:'/home/zaixi/.cache/proactive-hwe-tools/20260716/oss-cad-suite',xpack:'/home/zaixi/.cache/proactive-hwe-tools/xpack-riscv-none-elf-gcc-15.2.0-1',codex:'/home/zaixi/.cache/proactive-pb-tools/package/vendor/x86_64-unknown-linux-musl/bin/codex',proxyScript:linuxPath(resolve(projectRoot,'scripts/programbench/model_proxy.py')),auth:'/mnt/c/Users/HUAWEI/.codex/auth.json',egressProxy:'http://172.21.112.1:7897'};}
 export async function hweCall(action:string,dir:string,owner:string,payload:Record<string,unknown>,timeoutMs:number,signal?:AbortSignal){
@@ -45,7 +44,7 @@ export function classifyHweEvidence(e:Evidence):Evidence {
 }
 export function createHweDeps(root:string,config:ResearchConfig,workMode:'task'|'hypothesis'='hypothesis'):ResearchDeps {
  const owner='research-'+hash(root).slice(0,16);
- async function environmentUnchanged(){const saved=JSON.parse(await readFile(join(root,'environment.json'),'utf8'));if(JSON.stringify(await hweFingerprint())!==JSON.stringify(saved.environment))throw Error('Verification environment changed during run');}
+ async function environmentUnchanged(){const saved=JSON.parse(await readFile(join(root,'environment.json'),'utf8'));if(!fingerprintMatches(saved.environment,await hweFingerprint()))throw Error('Verification environment changed during run');}
  return {
   baseline:async(dir,signal)=>{
    await mkdir(dir,{recursive:true});const source=resolve(projectRoot,'.local/hwe-readiness'),ready=JSON.parse(await readFile(join(source,'ready.json'),'utf8'));

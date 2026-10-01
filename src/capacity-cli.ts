@@ -2,7 +2,7 @@ import {mkdir,writeFile} from 'node:fs/promises';
 import {resolve,join} from 'node:path';
 import {randomUUID} from 'node:crypto';
 import {WorkerPool,type Backend} from './worker-pool.js';
-import {workerSpecs,accountCapacities} from './account-capacity.js';
+import {workerSpecsFor,accountCapacities} from './account-capacity.js';
 const root=process.cwd(),batch=join(root,'.capacity','probe-'+Date.now());
 await mkdir(batch,{recursive:true});
 const controller=new AbortController();process.on('SIGINT',()=>controller.abort());
@@ -18,7 +18,7 @@ for(const mode of modes.filter(m=>!process.argv[3]||process.argv[3].split(",").i
    const results=await Promise.all(Array.from({length:level},async(_,i)=>{
     const backend:Backend=mode==='mixed'?(i%2?'codex':'commandcode'):mode;
     const id=randomUUID(),nonce=randomUUID();
-    const result=await pool.submit({...workerSpecs[backend],modPath:join(root,"scripts/capacity/probe-mod.mjs")},{id,prompt:`Do not use tools or delegate. Reply with exactly this string, without quotes: ${nonce}`,workspace:join(batch,id,'workspace'),logDir:join(batch,id,'logs'),timeoutMs:120000},controller.signal);
+    const result=await pool.submit({...workerSpecsFor(root)[backend],modPath:join(root,"scripts/capacity/probe-mod.mjs")},{id,prompt:`Do not use tools or delegate. Reply with exactly this string, without quotes: ${nonce}`,workspace:join(batch,id,'workspace'),logDir:join(batch,id,'logs'),timeoutMs:120000},controller.signal);
     return {backend,id,...result,valid:result.status==='completed'&&result.text.trim()===nonce};
    }));
    passed=results.every(r=>r.valid);report.push({mode,level,wave,results,passed,durationMs:Date.now()-started});

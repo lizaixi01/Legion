@@ -14,7 +14,7 @@
     "start": "tsx src/cli.ts",
     "test": "tsx --test tests/*.test.ts",
     "typecheck": "tsc --noEmit",
-    "build": "tsc",
+    "build": "tsc && node desktop/build-renderer.cjs",
     "demo": "tsx src/cli.ts demo",
     "demo:goal": "tsx src/cli.ts demo-goal",
     "team": "tsx src/team-cli.ts",
@@ -29,7 +29,8 @@
     "smoke:acceptance": "tsx src/acceptance-smoke.ts",
     "engineering": "npm run build && node dist/src/engineering-run-cli.js",
     "demo:resume": "tsx src/engineering-resume-demo.ts",
-    "smoke:resume": "npm run build && node dist/src/engineering-run-cli.js smoke"
+    "smoke:resume": "npm run build && node dist/src/engineering-run-cli.js smoke",
+    "runtime:install": "npm install --prefix .local/codex-runtime --save-exact @openai/codex@0.159.2"
   },
   "build": {
     "appId": "local.legion",
@@ -71,10 +72,12 @@
     "@types/node": "26.6.3",
     "electron": "44.4.5",
     "electron-builder": "^26.15.3",
+    "esbuild": "0.28.2",
     "tsx": "4.23.15",
     "typescript": "7.0.2"
   },
   "dependencies": {
+    "marked": "18.0.14",
     "zod": "4.6.5"
   }
 }

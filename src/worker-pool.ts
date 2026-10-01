@@ -4,7 +4,7 @@ import {execute} from './process.js';
 export type Backend='codex'|'commandcode';
 export type Outcome='completed'|'rate-limited'|'quota'|'auth'|'transport'|'error'|'timeout'|'cancelled';
 export interface WorkerSpec{backend:Backend;model:string;effort:string;command:string;prefix:string[];modPath?:string;permission?:'read-only'|'workspace-write'|'danger-full-access';schemaPath?:string;outputPath?:string}
-export interface Job{ id:string;prompt:string;workspace:string;logDir:string;timeoutMs:number;sessionId?:string }
+export interface Job{ id:string;prompt:string;workspace:string;logDir:string;timeoutMs:number;sessionId?:string;deadline?:number }
 export interface Result{status:Outcome;durationMs:number;sessionId?:string;text:string;usage:unknown;detail?:string}
 export function failureKind(code:number|null,message:string):Outcome{
  if(/usage limit|insufficient credits|quota|credit balance/i.test(message)||code===10)return 'quota';
@@ -32,7 +32,7 @@ export function parseOutput(backend:Backend,output:string,exitCode:number|null):
 export async function runWorker(spec:WorkerSpec,job:Job,signal?:AbortSignal):Promise<Result>{
  if(spec.backend==='commandcode'){const config=JSON.parse(await readFile(join(process.env.USERPROFILE!,'.commandcode/config.json'),'utf8'));if(config.reasoningEffort?.[spec.model]!==spec.effort)throw Error('Command Code account effort differs from requested effort; configure it before launching the pool');}
  await mkdir(job.workspace,{recursive:true});await mkdir(job.logDir,{recursive:true});
- await writeFile(join(job.logDir,'invocation.json'),JSON.stringify({backend:spec.backend,model:spec.model,effort:spec.effort,args:workerArgs(spec,job),workspace:job.workspace},null,2));
+ await writeFile(join(job.logDir,'invocation.json'),JSON.stringify({backend:spec.backend,command:spec.command,model:spec.model,effort:spec.effort,args:workerArgs(spec,job),workspace:job.workspace},null,2));
  const execution=await execute({command:spec.command,args:workerArgs(spec,job),cwd:job.workspace,logDir:job.logDir,input:job.prompt,timeoutMs:job.timeoutMs,signal,env:{...process.env,NO_COLOR:'1'}});
  await writeFile(join(job.logDir,'execution.json'),JSON.stringify(execution,null,2));
  let result:Result;
@@ -50,17 +50,19 @@ export class WorkerPool{
  submit(spec:WorkerSpec,job:Job,signal?:AbortSignal){if(this.limits[spec.backend]===0)return Promise.reject(Error('Backend disabled'));return new Promise<Result>(resolve=>{const cancel=()=>this.drain();const settle=(r:Result)=>{signal?.removeEventListener('abort',cancel);resolve(r);};this.pending.push({spec,job,signal,resolve:settle});signal?.addEventListener('abort',cancel,{once:true});this.drain();});}
  private drain(){
   for(let i=0;i<this.pending.length;){const p=this.pending[i]!,b=p.spec.backend;
+   if(p.job.deadline!==undefined&&Date.now()>=p.job.deadline){this.pending.splice(i,1);p.resolve({status:'timeout',durationMs:0,text:'',usage:null,detail:'Queue deadline reached; not launched'});continue;}
    if(p.signal?.aborted||this.blocked.has(b)){this.pending.splice(i,1);p.resolve({status:p.signal?.aborted?'cancelled':this.blocked.get(b)!,durationMs:0,text:'',usage:null,detail:'Not launched'});continue;}
    if(this.active.codex+this.active.commandcode>=this.total||this.active[b]>=this.limits[b]||(this.cooldown[b]??0)>Date.now()){i++;continue;}
    this.pending.splice(i,1);this.active[b]++;
-   void this.runner(p.spec,p.job,p.signal).catch((e:unknown):Result=>({status:'error',durationMs:0,text:'',usage:null,detail:String(e)})).then(r=>{
+   const job=p.job.deadline===undefined?p.job:{...p.job,timeoutMs:Math.max(1,Math.min(p.job.timeoutMs,p.job.deadline-Date.now()))};
+   void Promise.resolve().then(()=>this.runner(p.spec,job,p.signal)).catch((e:unknown):Result=>({status:'error',durationMs:0,text:'',usage:null,detail:String(e)})).then(r=>{
     if(r.status==='quota'||r.status==='auth')this.blocked.set(b,r.status);
     if(r.status==='rate-limited'){this.limits[b]=Math.max(1,Math.floor(this.limits[b]/2));this.cooldown[b]=Date.now()+30000;}
     this.active[b]--;p.resolve(r);this.drain();
    });
   }
   if(this.timer)clearTimeout(this.timer);
-  const next=Object.values(this.cooldown).filter(t=>t>Date.now());if(this.pending.length&&next.length)this.timer=setTimeout(()=>this.drain(),Math.min(...next)-Date.now()+1);
+  const next=[...Object.values(this.cooldown),...this.pending.map(p=>p.job.deadline).filter((t):t is number=>t!==undefined)].filter(t=>t>Date.now());if(this.pending.length&&next.length)this.timer=setTimeout(()=>this.drain(),Math.min(...next)-Date.now()+1);
  }
 }
 

@@ -30,6 +30,44 @@ test('chat cancellation stops work and concurrent sends cannot start overlapping
   assert.equal((await service.detail(first.id)).status,'cancelled');
 });
 
+test('chat hides drafts and interim completed messages until the worker finishes, then publishes the reply once',async()=>{
+ const root=await mkdtemp(join(tmpdir(),'chat-bulk-'));
+ let ready!:()=>void,finish!:()=>void;
+ const started=new Promise<void>(resolve=>{ready=resolve;}),gate=new Promise<void>(resolve=>{finish=resolve;});
+ const service=createChatService(root,async request=>{
+  await writeFile(join(request.attemptDir,'stdout.jsonl'),[
+   {type:'agent_message_delta',delta:'**正在生成'},
+   {type:'item.completed',item:{type:'agent_message',text:'**完整回复**\n\n- 第一项\n- 第二项'}},
+   {type:'item.started',item:{type:'command_execution'}}
+  ].map(event=>JSON.stringify(event)).join('\n')+'\n');
+  ready();await gate;return {status:'completed' as const,durationMs:1,usage:[]};
+ });
+ const first=await service.send({text:'帮我解释'});await started;
+ try{
+  const running=await service.detail(first.id);
+  assert.equal(running.status,'running');assert.deepEqual(running.messages,[{role:'user',text:'帮我解释'}]);
+  assert.deepEqual(running.live,{activity:'正在执行命令'});
+ }finally{finish();}
+ while(service.isActive())await new Promise(resolve=>setTimeout(resolve,10));
+ const completed=await service.detail(first.id);
+ assert.equal(completed.status,'completed');assert.equal(completed.live,undefined);
+ assert.deepEqual(completed.messages.map(message=>message.text),['帮我解释','**完整回复**\n\n- 第一项\n- 第二项']);
+ assert.deepEqual((await service.detail(first.id)).messages,completed.messages);
+});
+
+test('live progress shows bounded completed commentary without revealing reasoning or final drafts',async()=>{
+ const root=await mkdtemp(join(tmpdir(),'chat-progress-'));let ready!:()=>void,finish!:()=>void;
+ const started=new Promise<void>(r=>{ready=r;}),gate=new Promise<void>(r=>{finish=r;});
+ const service=createChatService(root,async request=>{
+  const events=Array.from({length:12},(_,i)=>({type:'app_server_event',method:'item/completed',params:{item:{id:String(i),type:'agentMessage',phase:'commentary',text:'阶段 '+i}}}));
+  await writeFile(join(request.attemptDir,'stdout.jsonl'),[...events,events[11],{type:'app_server_event',method:'item/completed',params:{item:{id:'secret',type:'reasoning',text:'private reasoning'}}},{type:'app_server_event',method:'item/completed',params:{item:{id:'draft',type:'agentMessage',phase:'final_answer',text:'not finished'}}},{type:'item.completed',item:{type:'agent_message',text:'final reply'}}].map(e=>JSON.stringify(e)).join('\n')+'\n{partial');
+  ready();await gate;return {status:'completed',durationMs:1,usage:[]};
+ });
+ const chat=await service.send({text:'long task'});await started;
+ try{const current=await service.detail(chat.id);assert.deepEqual(current.live?.progress,Array.from({length:8},(_,i)=>'阶段 '+(i+4)));assert.deepEqual(current.messages,[{role:'user',text:'long task'}]);}finally{finish();}
+ while(service.isActive())await new Promise(r=>setTimeout(r,5));assert.equal((await service.detail(chat.id)).live,undefined);
+});
+
 test('chat pin state persists and deleted conversations disappear from the list',async()=>{
  const root=await mkdtemp(join(tmpdir(),'chat-pin-'));
  const worker=async(request:import('../src/types.js').WorkerRequest)=>{await writeFile(join(request.attemptDir,'stdout.jsonl'),JSON.stringify({type:'item.completed',item:{type:'agent_message',text:'done'}})+'\n');return {status:'completed' as const,durationMs:1,usage:[]};};

@@ -10,3 +10,17 @@ test('pool enforces shared and backend limits',async()=>{let active=0,peak=0;con
 test('exhausted account prevents queued launches',async()=>{let calls=0;const pool=new WorkerPool({codex:1,commandcode:1},1,async()=>{calls++;return {...ok,status:'quota'};});const results=await Promise.all([pool.submit(spec,job),pool.submit(spec,job)]);assert.equal(calls,1);assert.ok(results.every(r=>r.status==='quota'));});
 test('recoverable Codex errors do not override completion',()=>{const r=parseOutput('codex','{"type":"error","message":"Reconnecting 502"}\n{"type":"turn.completed","usage":{}}',0);assert.equal(r.status,'completed');});
 test('Command Code requires terminal success',()=>{assert.equal(parseOutput('commandcode','{"type":"result","subtype":"success","finalText":"ok"}',0).status,'completed');assert.equal(parseOutput('commandcode','{"type":"event"}',0).status,'error');});
+
+test('a queued deadline expires without launching or waiting for the active job',async()=>{
+ let release!:()=>void,calls=0;const gate=new Promise<void>(r=>release=r);
+ const pool=new WorkerPool({codex:1,commandcode:0},1,async()=>{calls++;await gate;return ok;});
+ const first=pool.submit(spec,job);const second=pool.submit(spec,{...job,deadline:Date.now()+30});
+ assert.equal((await second).status,'timeout');assert.equal(calls,1);release();await first;
+});
+
+test('queue wait consumes deadline and synchronous runner failures release the slot',async()=>{
+ const timeouts:number[]=[];let calls=0;
+ const pool=new WorkerPool({codex:1,commandcode:0},1,(_spec,next)=>{timeouts.push(next.timeoutMs);if(++calls===1)throw Error('synchronous failure');return Promise.resolve(ok);});
+ const results=await Promise.all([pool.submit(spec,{...job,timeoutMs:1800000,deadline:Date.now()+1000}),pool.submit(spec,job)]);
+ assert.equal(results[0]!.status,'error');assert.equal(results[1]!.status,'completed');assert.ok(timeouts[0]!<=1000);assert.equal(pool.snapshot().active.codex,0);
+});

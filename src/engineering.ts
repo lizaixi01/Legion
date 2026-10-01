@@ -1,3 +1,4 @@
+import {codexRuntime} from './codex-runtime.js';
 import {queuedWorker,backendSpec} from './managed-queue.js';
 import {mkdir,readdir,readFile,writeFile,lstat} from 'node:fs/promises';
 import {join,dirname} from 'node:path';
@@ -14,7 +15,7 @@ import {checkOutcome} from './run.js';
 import {validateChatOptions,type ChatOptions} from './chat-options.js';
 import {validateModelSelection,WorkerConfigurationSchema,type ModelSelection,type WorkerConfiguration} from './model-selection.js';
 
-type RecordState={id:string;goal:string;project:string;status:string;options:ChatOptions;workerOptions?:ModelSelection;execution?:WorkerConfiguration;plan?:Plan;planHash?:string;files:Record<string,string>;baselineTests:string[];error?:string;runId?:string;delivery?:string;integration?:Awaited<ReturnType<typeof frozenCheck>>};
+type RecordState={resumableRequested?:boolean;planningBudget?:{deadline:number;calls:number;startedAt:string};id:string;goal:string;project:string;status:string;options:ChatOptions;workerOptions?:ModelSelection;execution?:WorkerConfiguration;plan?:Plan;planHash?:string;files:Record<string,string>;baselineTests:string[];error?:string;runId?:string;delivery?:string;integration?:Awaited<ReturnType<typeof frozenCheck>>};
 const omitted=new Set(['node_modules','.git','.local','.runs','.chats','.engineering','dist','build','coverage']);
 export async function projectFiles(root:string){
   if((await lstat(root)).isSymbolicLink())throw Error('项目根目录不能是链接');
@@ -32,14 +33,32 @@ export async function projectFiles(root:string){
   }}
   await visit('');return files;
 }
-async function materialize(root:string,files:Record<string,string>){for(const [file,text] of Object.entries(files)){await mkdir(dirname(join(root,file)),{recursive:true});await writeFile(join(root,file),text);}}
-export async function frozenCheck(workspace:string,evidence:string,signal:AbortSignal,files:Record<string,string>,plan:Plan,baselineTests:string[],node=process.execPath){
+export async function materialize(root:string,files:Record<string,string>){for(const [file,text] of Object.entries(files)){await mkdir(dirname(join(root,file)),{recursive:true});await writeFile(join(root,file),text);}}
+export async function frozenCheck(workspace:string,evidence:string,signal:AbortSignal,files:Record<string,string>,plan:Plan,baselineTests:string[],node=process.execPath,secure=false){
   const candidate={...files};const artifacts:{path:string;sha256:string}[]=[];
   for(const file of plan.outputs){let target=workspace;try{for(const part of file.split('/')){target=join(target,part);if((await lstat(target)).isSymbolicLink())throw Error('交付文件不能是链接');}const bytes=await readFile(target);candidate[file]=bytes.toString('utf8');artifacts.push({path:file,sha256:hash(bytes)});}catch(e){if((e as NodeJS.ErrnoException).code==='ENOENT')return {checks:[{id:'node-tests',status:'fail' as const,detail:'缺少声明的交付文件：'+file}],artifacts:[]};throw e;}}
   evidence=join(evidence,'checks');await mkdir(evidence,{recursive:true});
   const root=join(evidence,'replay');await materialize(root,candidate);
   const generated='managed-acceptance.test.mjs';await writeFile(join(root,generated),plan.testSource);
-  const result=await execute({command:node,args:['--test','--test-reporter=tap',...baselineTests,generated],cwd:root,logDir:evidence,timeoutMs:60000,signal,env:{...process.env,NODE_TEST_CONTEXT:undefined}});
+  const guard=join(root,'managed-guard.cjs');if(secure)await writeFile(guard,`
+const {registerHooks}=require('node:module');const allowed=new Set(['test','assert','assert/strict','fs','fs/promises','path','url']);
+const deny=()=>{throw Error('LEGION_CHECK_CAPABILITY_DENIED')};
+for(const key of ['fetch','WebSocket'])Object.defineProperty(globalThis,key,{value:deny,writable:false,configurable:false});
+const get=process.getBuiltinModule.bind(process);Object.defineProperty(process,'getBuiltinModule',{value:id=>allowed.has(id.replace(/^node:/,''))?get(id):deny()});Object.defineProperty(process,'binding',{value:deny});
+registerHooks({resolve(spec,ctx,next){const r=next(spec,ctx);if(r.url.startsWith('node:')&&!allowed.has(r.url.slice(5)))deny();return r;}});
+`);
+  if(secure){
+    const reports: {status:'pass'|'fail'|'error';detail:string}[]=[];
+    for(const [index,file] of [...baselineTests,generated].entries()){
+      const runner=join(root,'managed-runner-'+index+'.mjs');await writeFile(runner,'await import('+JSON.stringify('./'+file)+');');
+      const logDir=join(evidence,String(index));await mkdir(logDir,{recursive:true});const result=await execute({command:node,args:['--permission','--allow-fs-read='+root,'--require',guard,'--test-reporter=tap',runner],cwd:root,logDir,timeoutMs:60000,signal,env:{PATH:process.env.PATH,SystemRoot:process.env.SystemRoot,TEMP:process.env.TEMP,ELECTRON_RUN_AS_NODE:'1'}});
+      const log=await readFile(join(logDir,'stdout.jsonl'),'utf8'),errors=await readFile(join(logDir,'stderr.log'),'utf8');const tests=Number(log.match(/^# tests (\d+)/m)?.[1]??0),passed=Number(log.match(/^# pass (\d+)/m)?.[1]??0);
+      const status=result.status==='completed'&&tests>0&&passed>0?'pass':result.exitCode===1&&tests>0?'fail':'error';reports.push({status,detail:file+'\n'+(log+errors).slice(-6000)});
+    }
+    const status=reports.some(r=>r.status==='error')?'error':reports.some(r=>r.status==='fail')?'fail':'pass';
+    return {checks:[{id:'node-tests',status:status as 'pass'|'fail'|'error',detail:reports.map(r=>r.detail).join('\n')}],artifacts};
+  }
+  const result=await execute({command:node,args:[...(secure?['--permission','--allow-fs-read='+root,'--require',guard,'--test-isolation=none']:[]),'--test','--test-reporter=tap',...baselineTests,generated],cwd:root,logDir:evidence,timeoutMs:60000,signal,env:secure?{PATH:process.env.PATH,SystemRoot:process.env.SystemRoot,TEMP:process.env.TEMP,ELECTRON_RUN_AS_NODE:'1'}:{...process.env,NODE_TEST_CONTEXT:undefined}});
   const log=await readFile(join(evidence,'stdout.jsonl'),'utf8');
   const tests=Number(log.match(/^# tests (\d+)/m)?.[1]??0);
   const status=result.status==='completed'&&tests>0?'pass':result.exitCode===1&&tests>0?'fail':'error';
@@ -47,20 +66,21 @@ export async function frozenCheck(workspace:string,evidence:string,signal:AbortS
 }
 export function createEngineeringService(root:string,node:string,deps?:{decideFactory?:(selection:ModelSelection)=>NonNullable<TeamDependencies['decide']>;plan?:(goal:string,files:Record<string,string>,options:ChatOptions,dir:string,signal:AbortSignal)=>Promise<Plan>;worker?:TeamDependencies['worker'];workerFactory?:(selection:ModelSelection)=>TeamDependencies['worker']}){
   const base=join(root,'.engineering');const records=new Map<string,RecordState>();
+  let handoff=false;
   let active:{controller:AbortController;done?:Promise<void>}|undefined;
-  const command=join(root,'.local/codex-runtime/node_modules/@openai/codex-win32-x64/vendor/x86_64-pc-windows-msvc/bin/codex.exe');
+  const command=codexRuntime(root);
   function dir(id:string){if(!/^[a-f0-9-]{36}$/.test(id))throw Error('无效的工程任务');return join(base,id);}
   async function save(r:RecordState){await writeFile(join(dir(r.id),'state.json'),JSON.stringify(r,null,2));}
   async function load(id:string){if(records.has(id))return records.get(id)!;const r=JSON.parse(await readFile(join(dir(id),'state.json'),'utf8')) as RecordState;if(['planning','running','integrating'].includes(r.status)){r.status='interrupted';r.error='执行进程不属于当前窗口；保留证据，未自动接管。';}return r;}
   async function detail(id:string){const r=await load(id);let team:unknown=null;if(r.runId)try{team=JSON.parse(await readFile(join(root,'.runs',r.runId,'state.json'),'utf8'));}catch{/* First checkpoint may not yet exist. */}const {files:_files,...view}=r;return {...view,team};}
   async function list(){await mkdir(base,{recursive:true});const names=await readdir(base);const values=await Promise.all(names.filter(n=>/^[a-f0-9-]{36}$/.test(n)).map(async n=>{try{const r=await load(n);return {id:r.id,title:r.goal.slice(0,32),project:r.project,status:r.status};}catch{return null;}}));return values.filter(v=>v!==null);}
-  async function plan(input:{project:string;goal:string;options:ChatOptions;workerOptions?:ModelSelection}){
-    if(active)throw Error('已有工程任务执行中');
+  async function plan(input:{project:string;goal:string;options:ChatOptions;workerOptions?:ModelSelection;resumable?:boolean}){
+    if(active||handoff)throw Error('已有工程任务执行中');
     if(!input.goal?.trim()||input.goal.length>50000)throw Error('请输入任务目标');
-    const options=await validateChatOptions(input.options);if(options.permission==='read-only')throw Error('工程任务需要修改项目副本，请先选择「项目内编辑」');options.permission='workspace-write';options.agents=0;if(active)throw Error('已有工程任务执行中');
-    const workerOptions=await validateModelSelection(input.workerOptions??{model:options.model,effort:options.effort});if(active)throw Error('已有工程任务执行中');
+    const options=await validateChatOptions(input.options);if(options.permission==='read-only')throw Error('工程任务需要修改项目副本，请先选择「项目内编辑」');options.permission='workspace-write';options.agents=0;if(active||handoff)throw Error('已有工程任务执行中');
+    const workerOptions=await validateModelSelection(input.workerOptions??{model:options.model,effort:options.effort});if(active||handoff)throw Error('已有工程任务执行中');
     const job={controller:new AbortController(),done:undefined as Promise<void>|undefined};active=job;
-    const r:RecordState={id:randomUUID(),project:input.project,goal:input.goal,status:'planning',options,workerOptions,files:{},baselineTests:[]};
+    const r:RecordState={resumableRequested:input.resumable,planningBudget:input.resumable?{deadline:Date.now()+1200000,calls:1,startedAt:new Date().toISOString()}:undefined,id:randomUUID(),project:input.project,goal:input.goal,status:'planning',options,workerOptions,files:{},baselineTests:[]};
     try{await mkdir(dir(r.id),{recursive:true});records.set(r.id,r);await save(r);}catch(e){active=undefined;throw e;}
     job.done=(async()=>{try{
       r.files=await projectFiles(input.project);r.baselineTests=Object.keys(r.files).filter(f=>/\.(test|spec)\.(mjs|cjs|js)$/.test(f));
@@ -82,10 +102,10 @@ export function createEngineeringService(root:string,node:string,deps?:{decideFa
       r.plan=EngineeringPlan.parse(proposed);if(options.delegation?.mode==='fixed'&&planTasks(r.plan).length>options.delegation.count)throw Error('计划超过子 Agent 数量上限');
       validatePlan(r.plan,r.files);
       r.planHash=hash(JSON.stringify({plan:r.plan,files:r.files}));r.status='ready';
-    }catch(e){r.status=job.controller.signal.aborted?'cancelled':'error';r.error=String(e);}finally{try{await save(r);}finally{active=undefined;}if(r.status==='ready'&&options.delegation?.mode!=='off'&&options.delegation)await start(r.id,{worker:workerOptions,tasks:{},candidates:1});}})();void job.done.catch(()=>{});return {id:r.id};
+    }catch(e){r.status=job.controller.signal.aborted?'cancelled':'error';r.error=String(e);}finally{try{await save(r);}finally{active=undefined;handoff=!!(!input.resumable&&r.status==='ready'&&options.delegation?.mode!=='off'&&options.delegation);}if(handoff)try{await start(r.id,{worker:workerOptions,tasks:{},candidates:1},true);}finally{handoff=false;}}})();void job.done.catch(()=>{});return {id:r.id};
   }
-  async function start(id:string,configuration?:WorkerConfiguration){
-    if(active)throw Error('已有工程任务执行中');const r=await load(id);if(active)throw Error('已有工程任务执行中');if(r.status!=='ready'||!r.plan)throw Error('计划尚不可执行');
+  async function start(id:string,configuration?:WorkerConfiguration,internal=false){
+    if(active||(handoff&&!internal))throw Error('已有工程任务执行中');const r=await load(id);if(active||(handoff&&!internal))throw Error('已有工程任务执行中');if(r.status!=='ready'||!r.plan)throw Error('计划尚不可执行');
     if(hash(JSON.stringify({plan:r.plan,files:r.files}))!==r.planHash)throw Error('计划或项目快照已变化，请重新规划');
     validatePlan(r.plan,r.files);
     const execution=WorkerConfigurationSchema.parse(configuration??{worker:r.workerOptions??{model:r.options.model,effort:r.options.effort},tasks:{}});
@@ -161,5 +181,5 @@ export function createEngineeringService(root:string,node:string,deps?:{decideFa
   }
   async function stop(){active?.controller.abort();await active?.done;}
   async function folder(id:string){const r=await load(id);if(r.status!=='checks_passed'||!r.runId)throw Error('当前没有通过检查的交付');return r.delivery?join(root,'.runs',r.runId,r.delivery):join(root,'.runs',r.runId,'accepted','implementation');}
-  return {plan,start,detail,list,stop,folder,isActive:()=>Boolean(active)};
+  return {plan,start:(id:string,configuration?:WorkerConfiguration)=>start(id,configuration),detail,list,stop,folder,isActive:()=>Boolean(active)||handoff};
 }

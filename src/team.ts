@@ -15,7 +15,7 @@ export type TeamTask = z.infer<typeof TeamTaskSchema>;
 export type TeamConfig = z.infer<typeof TeamConfigSchema>;
 type TaskStatus = 'pending' | 'running' | 'checking' | 'deciding' | 'accepted' | 'failed' | 'unverified' | 'error' | 'blocked' | 'cancelled' | 'timeout';
 export interface TaskState { candidates?: Record<string, TaskState>; selectedCandidate?: string; selectionReport?: CheckReport; status: TaskStatus; route: number; sessionId?: string; workspace?: string; artifacts: Artifact[]; reason?: string; attempts: { route?: number; decisions?: Decision[]; worker: WorkerResult; report?: CheckReport; verification?: CheckReport }[] }
-export interface TeamState { status: 'running' | 'completed' | 'incomplete'; config: TeamConfig; tasks: Record<string, TaskState>; startedAt: string }
+export interface TeamState { status: 'running' | 'completed' | 'incomplete' | 'paused'; config: TeamConfig; tasks: Record<string, TaskState>; startedAt: string }
 export interface Decision { action: 'accept' | 'resume' | 'switch' | 'verify' | 'stop'; reason: string; guidance?: string }
 export interface DecisionInput { task: TeamTask; route: number; routeAttempts: number; report: CheckReport; verified: boolean; canVerify: boolean; remainingAttempts?: number; remainingMs?: number; history?: TaskState['attempts'] }
 export interface DecisionContext { evidenceDir: string; signal: AbortSignal; remainingMs: number }
@@ -28,6 +28,9 @@ export function evidencePolicy(input: DecisionInput): Decision {
   return { action: 'resume', reason: 'Repair explicit failures in the existing session' };
 }
 export interface TeamDependencies {
+  pauseRequested?: () => boolean;
+  checkpoint?: (state: TeamState) => Promise<void>;
+  resume?: {state:TeamState;deadline:number;revalidate:(task:TeamTask,unit:TaskState)=>Promise<boolean>};
   worker: (request: WorkerRequest, task: TeamTask) => Promise<WorkerResult>;
   check: (workspace: string, evidenceDir: string, signal: AbortSignal, task: TeamTask) => Promise<CheckReport>;
   verify?: TeamDependencies['check'];
@@ -70,10 +73,12 @@ export async function runTeam(raw: TeamConfig, deps: TeamDependencies): Promise<
   const config = TeamConfigSchema.parse(raw); validateGraph(config.tasks);
   if(config.competition && (config.concurrency!==1 || config.maxAttempts<2 || config.tasks.some(t=>t.routes.length<2)))throw Error('Competition requires one active task, two routes and at least two total attempts');
   // Exclusive run directory prevents concurrent managers and accidental reuse.
-  await mkdir(config.runDir);
-  const state: TeamState = { status: 'running', config, startedAt: new Date().toISOString(), tasks: Object.fromEntries(config.tasks.map(t => [t.id, { status: 'pending', route: 0, artifacts: [], attempts: [] }])) };
-  const deadline = Date.now() + config.totalMs;
-  const timeout = AbortSignal.timeout(config.totalMs);
+  if(!deps.resume)await mkdir(config.runDir);
+  if(deps.resume&&(config.competition||JSON.stringify(config)!==JSON.stringify(deps.resume.state.config)))throw Error('Resume requires the same frozen team config');
+  const state: TeamState = deps.resume?structuredClone(deps.resume.state): { status: 'running', config, startedAt: new Date().toISOString(), tasks: Object.fromEntries(config.tasks.map(t => [t.id, { status: 'pending', route: 0, artifacts: [], attempts: [] }])) };
+  const deadline = deps.resume?.deadline??Date.now() + config.totalMs;
+  if(deadline<=Date.now())throw Error('Original deadline expired');
+  const timeout = AbortSignal.timeout(Math.max(1,deadline-Date.now()));
   const shutdown = new AbortController();
   const signal = AbortSignal.any([timeout, shutdown.signal, ...(deps.signal ? [deps.signal] : [])]);
   let writes = Promise.resolve();
@@ -90,6 +95,7 @@ export async function runTeam(raw: TeamConfig, deps: TeamDependencies): Promise<
           await new Promise(resolve => setTimeout(resolve, 25 * (retry + 1)));
         }
       }
+      await deps.checkpoint?.(JSON.parse(snapshot) as TeamState);
       await deps.onEvent?.(e);
     });
     return writes;
@@ -163,7 +169,7 @@ export async function runTeam(raw: TeamConfig, deps: TeamDependencies): Promise<
   async function executeTask(task: TeamTask) {
     const unit = state.tasks[task.id]!; let routeAttempts = 0; let guidance: string | undefined;
     try {
-      for (let number = 1; number <= config.maxAttempts; number++) {
+      for (let number = unit.attempts.length+1; number <= config.maxAttempts; number++) {
         if (signal.aborted) { unit.status = deps.signal?.aborted ? 'cancelled' : 'timeout'; return; }
         const base = join(config.runDir, 'tasks', task.id);
         const workspace = join(base, `route-${unit.route}`, 'workspace');
@@ -257,13 +263,18 @@ export async function runTeam(raw: TeamConfig, deps: TeamDependencies): Promise<
     } catch (error) { unit.status = signal.aborted ? deps.signal?.aborted ? 'cancelled' : 'timeout' : 'error'; unit.reason = String(error); }
     finally { await event('task_finished', { task: task.id, status: unit.status, reason: unit.reason }); }
   }
-  await event('team_started', { concurrency: config.concurrency });
+  if(deps.resume){
+    const visited=new Set<string>();const recheck=async(task:TeamTask):Promise<void>=>{if(visited.has(task.id))return;for(const id of task.dependsOn)await recheck(config.tasks.find(t=>t.id===id)!);visited.add(task.id);const unit=state.tasks[task.id]!;if(unit.status==='accepted'){if(task.dependsOn.some(id=>state.tasks[id]!.status!=='accepted')||!await deps.resume!.revalidate(task,unit)){unit.status='unverified';unit.reason='Resume revalidation did not pass';}await event('task_revalidated',{task:task.id,status:unit.status});}else if(unit.status!=='pending')throw Error('Only settled checkpoints can resume; task '+task.id+' is '+unit.status);};
+    for(const task of config.tasks)await recheck(task);
+  }
+  state.status='running';await event(deps.resume?'team_resumed':'team_started', { concurrency: config.concurrency });
   const active = new Map<string, Promise<void>>();
   try {
   while (true) {
     for (const task of config.tasks) {
       const unit = state.tasks[task.id]!;
       if (unit.status !== 'pending') continue;
+      if(deps.pauseRequested?.())continue;
       if (signal.aborted) { unit.status = deps.signal?.aborted ? 'cancelled' : 'timeout'; continue; }
       if (task.dependsOn.some(id => ['failed', 'unverified', 'error', 'blocked', 'cancelled', 'timeout'].includes(state.tasks[id]!.status))) { unit.status = 'blocked'; unit.reason = 'Dependency was not accepted'; continue; }
       if (active.size < config.concurrency && task.dependsOn.every(id => state.tasks[id]!.status === 'accepted')) {
@@ -273,6 +284,7 @@ export async function runTeam(raw: TeamConfig, deps: TeamDependencies): Promise<
       }
     }
     if (!active.size) {
+      if(deps.pauseRequested?.())break;
       for (const unit of Object.values(state.tasks)) if (unit.status === 'pending') { unit.status = 'blocked'; unit.reason = 'Dependency chain was not accepted'; }
       break;
     }
@@ -284,7 +296,7 @@ export async function runTeam(raw: TeamConfig, deps: TeamDependencies): Promise<
     await Promise.allSettled(active.values());
     throw error;
   }
-  state.status = Object.values(state.tasks).every(t => t.status === 'accepted') ? 'completed' : 'incomplete';
+  state.status = Object.values(state.tasks).every(t => t.status === 'accepted') ? 'completed' : deps.pauseRequested?.()&&!signal.aborted&&Object.values(state.tasks).every(t=>t.status==='accepted'||t.status==='pending')?'paused':'incomplete';
   await event('team_finished', { status: state.status });
   await writeFile(join(config.runDir, 'report.md'), ['# Team evidence', '', `Status: ${state.status}`, '', ...Object.entries(state.tasks).map(([id, unit]) => `- ${id}: ${unit.status}; attempts=${unit.attempts.length}; route=${unit.route}; ${unit.reason ?? ''}`), '', 'Workspace write isolation only; not Docker isolation. Acceptance covers declared checks only. Raw usage retained without cost inference.', ''].join('\n'));
   return state;

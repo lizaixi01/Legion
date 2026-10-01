@@ -3,7 +3,8 @@ $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path -Parent $PSScriptRoot
 $logDirectory = Join-Path $projectRoot '.gui-profile'
 New-Item -ItemType Directory -Path $logDirectory -Force | Out-Null
-$logPath = Join-Path $logDirectory 'beta-launch.log'
+$logName = if ($CheckOnly) { 'beta-check.log' } else { 'beta-launch.log' }
+$logPath = Join-Path $logDirectory $logName
 try {
   Set-Location -LiteralPath $projectRoot
   $nodePath = (Get-Command node.exe -ErrorAction Stop).Source
@@ -11,6 +12,10 @@ try {
   $ErrorActionPreference = 'Continue'
   & $nodePath (Join-Path $projectRoot 'node_modules\typescript\bin\tsc') --project $projectRoot 2>&1 | Out-File -LiteralPath $logPath -Append -Encoding UTF8
   $buildCode = $LASTEXITCODE
+  if ($buildCode -eq 0) {
+    & $nodePath (Join-Path $PSScriptRoot 'build-renderer.cjs') 2>&1 | Out-File -LiteralPath $logPath -Append -Encoding UTF8
+    $buildCode = $LASTEXITCODE
+  }
   $ErrorActionPreference = 'Stop'
   if ($buildCode -ne 0) { throw 'Build failed. Legion Beta was not started; no older build was opened.' }
   if ($CheckOnly) { exit 0 }

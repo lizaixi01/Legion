@@ -12,7 +12,7 @@
 
 ## 当前状态
 
-已实现多会话任务调度、规则/LLM Master 决策和 Electron 桌面客户端。桌面应用以自由聊天为主要入口，直接接入 Codex 会话；从聊天自动生成多代理任务图、Docker 隔离和主动桌面观察尚未实现。以下按阶段保留实现记录，每阶段的“下一步”以最新条目为准。
+开发版普通聊天使用可执行的 Codex app-server 主会话，支持文件上下文、双后端动态委派与历史会话恢复；既有工程 DAG、持续目标与 HWE 专用流程继续兼容。通用入口尚未统一所有强制验收、常驻恢复与桌面观察能力。以下按阶段保留实现记录，每阶段的“下一步”以最新条目为准。
 
 ## 初始切片（历史）
 
@@ -298,3 +298,232 @@ Final verification: 124/124 complete-suite tests passed. GUI evidence panels wer
 UI 展示执行与验收不同状态，旧历史不升级为验收通过。真实浏览器视觉检查被自动审批审核拒绝，保留未验证说明；未改稳定安装包。
 
 最终验证：typecheck、build 通过，151/151 测试通过；`demo:acceptance` 在 `.local/acceptance-demo-1790695167856/` 完成两次实施和最终验收。默认真实 smoke 拒绝启动已验证，未调用模型。依赖副本发生变化也会使下游验收失败，不能静默替换固定输入。
+
+## 2026-09-30 — 可恢复工程任务 v0.1
+
+本轮重新核对 HEAD `509c151`：原有 goal-resume、DAG、独立挑战和 WeakMap 验收都存在，缺口是工程产品流程未将它们接成跨进程恢复链路。本机修改前重新执行 typecheck/test/build/acceptance demo，151 项测试通过，日志 `.local/resume-baseline.log`。
+
+新增 `engineering-run.ts` / `engineering-store.ts` 持久化恢复服务，复用 `runTeam`、现有 pool、challenge/acceptance 与工程检查。`engineering-product.ts` 接入桌面 IPC，增加明确批准、暂停、恢复和取消；旧记录历史只读。新增 CLI/offline demo/显式 opt-in smoke。恢复只从安全边界继续，未知在途调用阻塞且保留预算，源项目与验证器版本变化阻塞。当前开发任务没有调用付费模型，没有改动 HWE/SaaSBench 协议或稳定安装包。
+
+详细使用、验收与恢复边界见 [resumable-engineering.md](resumable-engineering.md)。这不代表任意中断安全、多日生产可靠性或效率提升已验证。
+
+本轮最终验证：`npm test` **165/165**；`npm run typecheck`、`npm run build`、桌面 JS 语法检查通过；`npm run demo:acceptance` 与 `npm run demo:resume` 通过。最终日志：`.local/resume-full-tests.log`、`.local/resume-acceptance-demo.log`、`.local/resume-demo.log`。最新恢复演示：`.local/engineering-resume-demo-1790704898699/demo-result.json`，同一 Run 在 epoch 1 暂停、epoch 2 完成，A/B/total 各实施一次，模型 fixture 调用从 1 累计到 3，deadline 不变。真实 smoke 缺少 opt-in 时拒绝启动的检查也通过，记录 `.local/resume-smoke-gate.log`。
+
+未执行真实付费模型 smoke、原生 GUI 视觉检查和多日运行；仅桌面服务接口与前端路由/语法经过自动化验证。开发版本使用新入口，稳定安装包没有替换。
+
+## 2026-09-30 — Worker 模型选择窗口
+
+输入框新增独立 Worker 选择窗口，支持搜索 OpenAI/Codex 模型、选择对应推理强度、重新读取本机模型目录与本地保存。列表沿用 Codex `models_cache.json`，显示缓存来源，不把目录项宣称为已通过账号权限验证。本机当前读取 8 款模型。
+
+`ChatOptions.worker` 单独验证并保存在聊天配置中；普通管理聊天派发 Codex Worker 时应用它，Manager/独立挑战者保留主模型，Command Code 保留其后端配置。工程模式沿用 `workerOptions` 冻结执行配置，重开可恢复任务时从已记录的 Worker 配置显示模型。本轮没有调用付费模型。
+
+验证：完整回归 194/194 通过（.local/worker-model-tests.log）；typecheck、build、desktop/app.js 语法检查通过。未进行原生 GUI 视觉检查。
+
+## 2026-09-30 — 通用对话默认入口
+
+新聊天默认通用对话，选择项目仅提供上下文；切换回历史聊天重置可恢复模式，避免后续消息误入工程规划。工具栏“工程任务”改名“可恢复任务”，移除输入框中的 Node 测试要求，项目入口简化为“选择项目”。
+
+显式启用可恢复任务时，先进行不调用模型的支持检查；缺少 Node 测试或当前快照格式不支持时，保留原输入和项目转入普通对话并显示限制说明。不放宽可恢复运行的冻结检查、批准和验收约束。普通执行缺少验收证据时保留带待验证标签的回复；已被反例否定或基础设施阻塞的结果继续阻止成功宣称。通用验证器覆盖面没有因此扩大。
+
+Electron 使用实际页面和离线接口夹具完成截图与模式切换检查：初始关闭、开启成功、新聊天恢复关闭；结果位于 `.local/general-entry-visual.json` / `.local/general-entry-visual.png`。相关行为回归 18/18 通过，typecheck/build 通过；本轮未调用付费模型。
+完整回归：197/197 通过，日志 `.local/general-entry-tests.log`。
+
+## 2026-09-30 — 持续目标与动态跨轮调度
+
+新增 persistent-goal 服务并接入桌面产品，复用 sharedPool、runTeam、独立挑战、候选验证以及工程持久化锁。Manager 按跨轮证据选择任务、后端、并发和最终候选；失败路线保留。累计模型/验证预算与原截止时间不因恢复重置。轮次中途状态未知时拒绝自动重派；暂停在轮次边界收尾，恢复重验候选。
+
+新增冻结输入的联系人清洗 Host 验证器，真正执行外部 Node 对照，期望值不由模型产生。GUI 显示持续目标、轮次分配、检查与预算，提供暂停、继续、取消和交付入口。设计与边界见 [persistent-goals.md](persistent-goals.md)。默认 24 小时/8 轮/64 次模型调用，尚未实测付费后端长时间可靠性，没有接桌面观察。
+
+三个独立演示进程完成同一 Run 的失败路线 → 暂停 → 换后端成功 → 暂停 → 重验集成交付，调用累计 4/6/7，deadline 保持不变。模型与后端响应为明确离线夹具，外部验证真实执行。Electron 使用实际界面配离线接口完成模式互斥/重置和截图检查，记录 `.local/persistent-goal-visual.json` / `.local/persistent-goal-visual.png`。
+最终验证：完整回归 204/204 通过（`.local/persistent-goal-full-tests.log`）；typecheck/build 与桌面脚本语法通过。额外针对持续目标与输入入口的最终回归另存 `.local/persistent-goal-final-targeted.log`。持久化决策记录同原始数据一起落盘；未重跑 HWE 或进行任何付费模型调用。
+
+## 2026-09-30 — 恢复能力不再作为输入模式
+
+移除输入框“可恢复任务”开关。普通对话与持续目标代表用户意图；保存与恢复属于运行机制。已有工程记录的批准、暂停、继续和验收接口保留，持续目标继续自动保存跨轮证据。普通聊天目前保存消息上下文，尚未拥有持续目标相同的执行检查点恢复；不能把移除按钮理解为任意工具中断后均可无感重放。
+
+参考官方 Codex Goals 文档（https://developers.openai.com/cookbook/examples/codex/using_goals_in_codex）：目标状态属于会话，自动续跑在轮次结束等安全边界发生。保持既有未知在途执行阻塞规则。
+
+验证：入口和持续目标行为测试 11/11 通过（`.local/builtin-recovery-tests.log`）；typecheck、build、桌面脚本语法检查通过。Electron 实际页面配离线接口检查按钮移除、目标切换、新聊天重置、历史目标与交付入口，并查看截图（`.local/builtin-recovery-visual.json` / `.local/builtin-recovery-visual.png`）。未调用付费模型。
+
+## 2026-09-30 — 通用主会话与客户端委派工具
+
+普通聊天改用 Codex app-server 的持久 thread；保留 Codex 原生工具与指令，仅追加管理职责。移除聊天服务中的问候特判和只读 JSON 规划入口。主会话可以直接执行任意项目任务，也能用 dynamic tools 调用双后端队列、读取证据、等待、取消、补充 Worker 指令。线程 ID 在 turn 开始前保存；旧会话迁移携带聊天历史。
+
+GUI 增加原生文件选择、可移除附件和子任务结果。固定子 Agent 数量是上限；关闭委派时运行时拒绝派发。普通主轮次上限为 6 小时。详细边界和真实执行证据见 [primary-agent.md](primary-agent.md)。旧持续目标/工程入口仍兼容；普通执行结果不冒充 Host 验收通过。没有重跑正式 HWE 对照或更改评分规则。
+验证：完整回归 209/209 通过（`.local/primary-verified-tests.log`）；typecheck、build 和桌面脚本语法通过。真实 Sol 主会话读写与命令断言、同 thread 重开续跑、新工具派发 Codex 子任务后主会话独立断言均成功；原始日志确认命令退出码 0。Command Code 新工具分支本轮使用离线执行器测试，未重新做真实 Command Code 模型调用。Electron 实际页面配离线 API 检查附件添加/移除与截图。恢复范围是会话和已记录子任务，不宣称任意中断命令能自动续跑。
+
+## 2026-09-30 — 本地文件拖放
+
+补齐 Electron 拖入附件入口：preload 通过 webUtils.getPathForFile 获取实际磁盘路径，主进程检查存在性与文件/文件夹类型后登记；聊天接收文件夹上下文。拖入高亮、放下清理、去重和可移除附件复用原发送链路，不触发导航或自动发送。目录作为附件上下文，不自动切换当前项目。
+
+20 项相关测试、typecheck/build 与桌面脚本语法检查通过。实际 Electron 页面使用真实 preload 和主进程登记函数，通过 Chromium 原生拖放事件拖入 package.json 与 docs 文件夹；两项均显示且登记路径正确。截图与结果见 `.local/drop-result.png` / `.local/drop-result.json`。未调用模型。
+
+## 2026-09-30 — 文件粘贴与可见附件卡片
+
+补齐输入框 Ctrl+V 文件粘贴：优先使用原生 File 的磁盘路径，Windows Explorer 文件复制使用 STA 剪贴板文件列表读取；普通文本粘贴保持原行为。主进程确认路径后才显示“已添加”，失败给出明确反馈。附件采用横向卡片显示文件名、类型、状态、移除按钮，悬停查看完整路径，顶部显示总数量。“已添加”仅表示本地上下文已加入待发送消息，不表示模型已读取或文件已上传。
+
+使用用户指定的 5 个 PDF 的实际文件路径，在 Electron 原生拖放获得磁盘 File 后通过粘贴事件完成接入：5 张卡片均出现，移除后剩 4 张，登记路径与输入一致；未阅读 PDF 内容。Windows 剪贴板列表读取也单独运行成功，未改写剪贴板。13 项相关回归、typecheck/build 与脚本语法通过；截图 `.local/paste-cards-result.png`，结果 `.local/paste-cards-result.json`，日志 `.local/paste-tests.log`。未调用模型。
+# 桌面附件加载修复（2026-09-30）
+
+正式 proactive 协议曾遗漏 drop-files.js 与 attachment-cards.js，导致 app.js 模块加载失败，拖放和界面初始化均未执行。资源入口现统一为 desktop/resources.cjs；测试必须复用正式资源入口，不能用任意文件均可访问的测试路由替代。新增模块依赖图回归测试，覆盖附件模块和非公开资源拒绝访问。使用正式入口、沙箱 preload 的 Electron 窗口验证 5 个本地 PDF 拖入、粘贴卡片与移除；类型检查和构建通过。粘贴测试使用真实文件对象触发事件，未模拟系统按键。
+
+## 2026-09-30 — 普通主会话的跨轮子任务记录
+
+子任务每次启动、续跑保存独立 attempt.json，并在 task.json 中保留历史指令、模型/推理强度、时间、结果和证据位置。修复成功不覆盖旧失败；旧任务续跑保留已有摘要，不补造缺失历史。legion_tasks 提供历史读取和轮次状态。GUI 分次显示失败和待验证结果，自动刷新保留证据展开状态，历史中断不会仍显示执行中。
+
+派发及续跑登记串行化，Worker 执行仍并行；防止并发续跑同一任务，关闭时等待登记收尾。新增回归覆盖失败→修复→重开读取、同任务并发续跑拒绝和 10 个同时派发请求下的单名额约束。
+
+216/216 全量测试通过（.local/task-history-tests.log）；typecheck、build、renderer 语法通过。正式资源入口与 sandbox preload 的 Electron 窗口用离线数据检查历史展开和截图（.local/task-history-visual.png）。未调用付费模型、未重跑 benchmark。记录不是冻结产物或验收认证，普通入口的强制独立验收仍未全部接通。当前打开窗口需重启 Beta 才加载新的主进程实现。
+
+## 2026-09-30 — 普通主会话交付验收入口
+
+新增 legion_delivery prepare/check/read，复用已有候选快照、独立挑战重放、宿主功能验证与 currentEvidence。登记的契约本轮不可修改，最多三个候选，修复重用同一挑战。未检查/被否定/受阻的已登记交付使主会话不能记为 completed；无契约或无可信覆盖保持 unverified。关闭子 Agent 不启动挑战者。挑战者通过主会话子任务名额及统一队列执行，包含在调用与取消约束内。
+
+GUI 展示根交付要求、候选版本、独立检查和外部检查；聊天服务保存本轮证据位置。旧主会话迁移到含新工具的 thread，以保存的聊天历史提供上下文。适用范围和限制详见 primary-agent.md；当前功能认证范围仍窄，尚不能认证通用 HWE/任意仓库，不自动识别所有必须登记契约的需求，也不是跨轮恢复服务。
+
+全量 220/220 通过（.local/primary-delivery-tests.log）。随后补齐挑战者共享名额并增加测试，最终相关 12/12 通过（.local/primary-delivery-final-targeted.log），typecheck/build 通过。验证错误候选→同检查修复通过→产物变动失效、关闭委派、未知覆盖、检查预算及 app-server 完成门槛。模型与 app-server 响应使用离线夹具，检查进程真实执行。正式 Electron 资源入口配离线接口渲染真实测试证据并查看截图（.local/delivery-visual.png）。未调用付费模型或重跑 benchmark；未重启用户正在使用的实例。
+
+## 2026-09-30 — 主会话跨轮恢复交付要求
+
+legion_delivery 新增 resume，read 提供历史摘要。宿主从当前聊天的已记录轮次定位上一次交付，普通聊天后仍保留 lastDeliveryTurn；工具不接受任意历史文件路径。恢复保留原始需求、输出和已生成挑战，当前状态回到 pending，重新捕获产物并运行检查；旧 accepted 不授予本轮信任。历史内容经过结构验证，坏记录不能污染新契约登记。无关需求仍可 prepare 新任务，继续/新任务的语义判断由主 Agent 完成。
+
+GUI 展示历史结果与本轮验收，保留来源关联。新用户轮次按本轮预算运行，不等于旧持续目标自动重置预算。thread 工具版本更新会迁移已保存聊天上下文。未实现后台常驻或未知命令自动重放。
+
+224/224 全量测试通过（.local/delivery-resume-full.log），typecheck/build 和桌面语法通过；实际 Electron 配离线接口显示跨轮真实测试证据（.local/delivery-resume-visual.png）。覆盖跨轮失败修复、同一挑战复用、历史 PASS 重验、坏记录、新任务与闲聊后保留指针。未调用付费模型、未修改或运行 benchmark。重启 Beta 后加载本轮修改。
+
+## 2026-09-30 — Markdown 回复与完整展示
+
+普通聊天生成期间只提供执行状态；回复在 Worker 结束并保存后一次展示。完成消息的 DOM 保持原位，状态与任务证据单独更新，避免轮询重建历史、打断文本选择和滚动。Markdown 采用 Marked，支持粗体、列表、标题、代码和表格；原始 HTML 仍作为文本，链接沿用受检查的 IPC 打开入口。
+
+渲染器及解析依赖打包为 dist/desktop/message-links.js，由正式资源入口提供。npm run build 与 Beta 启动脚本共用 desktop/build-renderer.cjs；单独运行 tsc 不会更新浏览器包。CheckOnly 使用独立 beta-check.log，避免已运行 Beta 占用启动日志。
+
+19 项相关测试、构建和 Beta CheckOnly 通过。Playwright 在实际 Chromium 页面使用正式资源映射与离线接口，检查截图原文、粗体/列表/代码/表格、生成期间不显示草稿、历史 DOM 零改动与文字选择保留，以及完成回复只新增一次。截图为 .local/message-display-original.png 与 .local/message-display-complete.png。未调用模型；正在运行的 Beta 需关闭并重新打开才能加载新增资源入口和服务实现。
+## 2026-09-30 — Worker 契约与主会话 HWE 检查工具
+
+Worker 派发新增可选结构化契约、输入哈希和 30–1800 秒单次时间限制；保存按次候选快照，续跑不覆盖前次提交。旧调用和调查任务兼容；独立目录仍非操作系统隔离，快照捕获不等于验证通过。GUI 展示任务要求和提交状态。
+
+新增 legion_hwe_check，调用既有 verifyHwe，不修改 bridge、评分与实验配置。核对 readiness 基线及运行前后工具链指纹、输入/固定副本哈希，要求完整有效质量指标；每轮最多三次、同时一个，取消后只清理自身 owner，主轮次结束会取消并等待未完成验证。结果落在当前 turn/hwe-checks，GUI 展示公开检查及指标。此为具体 HWE 验证入口，尚未升级为根任务 accepted 或通用验证器注册，也未补齐任务依赖 DAG。
+
+233/233 全量回归通过（.local/contracts-hwe-tests.log），相关 17 项回归另存 .local/contracts-hwe-final-targeted.log，typecheck/build 与桌面语法通过。Electron 正式资源入口配明确离线 HWE 数据完成视觉检查（.local/hwe-tool-visual.png）。测试用验证器依赖注入，未启动真实 HWE、模型、Docker 或更改正式实验。主线程工具版本更新后按既有方式迁移聊天上下文。
+
+
+
+## 2026-09-30：Manager 的 HWE 决策记录
+
+- 新增 legion_strategy，将保留/淘汰/继续实验的理由绑定到本轮宿主签发的验证证据；禁止选择未通过、被修改或未知的候选证据。
+- 决策保存于当前 turn 的 decisions，聊天详情与 GUI 展示对应时点、证据和尚未启动的下一步计划。
+- 不等于完整目标验收或自动资源再分配；既有统一队列约束不变。没有调用付费模型、Docker 或真实 HWE，也没有修改冻结实验。
+- 新增三项行为回归，验证证据伪造、过期、报告篡改、指标不能由调用者改写、拒绝未通过候选及跨环境比较；类型检查、构建及 Electron GUI 夹具验证通过。
+
+本轮全量回归 236/236 通过（`.local/strategy-tests.log`）；GUI 截图 `.local/strategy-visual.png` 已检查。
+
+
+## 2026-09-30：根据 Codex 源码推进决策派工
+
+实际阅读 openai/codex 固定提交 bcd6d9ab6b9f26f85d76d0c680b3f88b367bffa0 的执行名额、spawn guard、恢复/中断/状态订阅及 goal runtime。参考映射见 docs/primary-agent.md，不把公开 CLI 源码声称为桌面应用的完整实现。
+
+- 决策可附冻结的双后端 Worker 计划，按统一队列名额派发；稳定 allocation/task ID、派发前日志和不可自动重放的未知结果防止重复启动。每个任务保存其决策来源。
+- 主截止时间覆盖排队及实际执行；队列超时不启动；同步启动异常释放名额；正常完成前不得残留待派工计划。
+- 跨轮决策按需提供受限摘要，旧日志不变成当前证据或派工权限。GUI 区分历史，关联实际任务状态。
+- Manager 可批量等待任一 Worker 完成并查询本轮/后端队列容量。已选候选在主会话完成前再次检查，失效时明确报错。
+- 计划的总执行时限为各 Worker 时限之和，不是 token/费用预算或未来账号容量预留。尚未迁移旧持续目标入口，也未实现应用关闭后的常驻执行。
+- 验证使用离线 Worker 和验证器夹具，没有付费模型、Docker、HWE 实验调用；冻结 benchmark 未修改。244 项全量回归通过后增加批量等待回归及候选最终复核覆盖。
+
+
+## 2026-09-30：持续目标复用主 Agent
+
+上一管理派工阶段最终 245/245 回归通过（`.local/manager-dispatch-final-tests.log`）。本阶段继续参考 Codex ext/goal 的空闲续跑与生命周期实现：新持续目标改走普通 chatSend 和主 Agent，不再创建旧领域专用目标；保留旧记录兼容读取。主 Agent 可使用同一套双后端工具、Manager 决策、HWE 验证和交付验收。
+
+传输层登记暂停目标后启动用户轮次，再激活原生 Goal；保持连接等待原生后续轮次，避免第一轮结束就关进程。停止暂停仍活动的 Goal，继续保留原目标和 6 小时原截止时间；普通聊天禁用 Goal 自动执行。原生 complete 与 Legion accepted 分开显示，主目标 token 用量不含独立 Worker。
+
+真实无模型 app-server 探测通过（0 次 turn/start）；离线多轮传输、截止时间恢复、关闭、目标变更、状态落盘失败及 GUI 持续目标入口检查通过。不是付费模型长任务实测，也不等于应用关闭后后台常驻。跨连接的子任务/token 累计预算仍待完善；连接内自动续轮沿用同一宿主限额。
+
+
+## 2026-09-30：目标跨连接预算
+
+原生目标阶段全量 251/251 通过（`.local/native-goal-full-tests.log`）。继续阅读 Codex rollout_budget.rs 的根线程树共享记账后，新增每个持续目标的累计 Worker/复核与 HWE 次数，恢复不刷新上限和截止时间。执行前持久预约、已知结束后结清；未确认的外部结果保留占用并阻止恢复。目标账本使用独占租约，避免两次接管。正常完成也检查未结清调用。GUI 展示累计调用和验证次数，已在实际 Electron 离线夹具中截图检查。无付费模型调用，无真实 benchmark 运行。这里的调用额度不是 token 或服务商容量保证。
+
+
+累计预算阶段全量 257/257 通过（`.local/goal-budget-final-tests.log`），类型与构建通过。随后新增验收冲突回归，复现并修正外部失败被不完整审查降级、独立反例与外部 PASS 冲突仍允许正常结束两处漏洞。持续目标契约和挑战保存到目标目录，模型启动前强制恢复；原聊天指针丢失也不会让模型重新定义要求。损坏记录阻塞，旧 PASS 必须重验。新增离线恢复、弱化要求拒绝和损坏恢复检查通过。
+
+
+验收连续性阶段全量 261/261 通过（`.local/goal-continuity-tests.log`）。随后按 Codex goal 恢复源码修正为先暂停持久目标、再恢复线程，真实本机无模型 API 探测通过；并增加 GUI 阶段进展（明确 commentary，排除 reasoning 和最终草稿），保留证据展开/折叠状态。Electron 截图 `.local/native-goal-visual.png` 已检查。
+
+本阶段最终全量 263/263 通过（.local/goal-progress-tests.log），类型检查与构建通过。仅离线验证和不启动模型轮次的协议探测；未修改或运行冻结 benchmark。
+
+
+
+## 2026-09-30：启动取消与退出清理
+
+继续读取 Codex control/spawn_guard.rs 后，补齐启动过程中取消的边界：请求已取消时不创建进程，会话 ID 落盘期间取消后不发送 turn/start；登记耗时计入原时限。另修复 Worker 清理中的提前返回：一个任务结清报错时仍等待其他任务结束，随后才传播错误并释放目标租约。新增无模型子进程协议测试及失败结清/慢 Worker 并存测试。
+
+启动取消与退出清理全量回归 266/266 通过（.local/cancellation-boundaries-tests.log），类型检查和构建通过。清理测试另使用明确的失败事件同步复验通过。未运行付费模型或 benchmark。
+
+
+
+## 2026-09-30：目标激活与停止竞态
+
+按 Codex goal/api.rs 的状态锁边界，串行化客户端 prepare/activate/close；停止发生在激活 RPC 途中时，等待激活后再暂停。激活响应未知也补发暂停，避免遗留 active 状态。新增暂停在途激活、丢失激活响应两项确定性测试。
+
+激活/停止阶段全量 268/268 通过（.local/native-goal-race-tests.log）。随后补充迟到查询响应不能覆盖较新目标通知的检查；目标生命周期与协议 11 项定向测试通过。避免已完成目标被旧 active 查询回包显示为仍在运行。
+
+
+
+## 2026-09-30：Manager 按需读取子任务证据
+
+阅读 Codex utils/output-truncation 源码后，加入 legion_tasks summary：首尾裁剪长结果，保留所有历史失败计数、最近尝试及证据路径，完整 read 不变。摘要明确 unverified，不提供新的派工或验收权限。用五次执行、四次失败和大段中文/emoji 输出验证摘要体积、重启一致性、原文件不变、摘要不额外启动模型。动态工具 schema 迁移到 v9，目标宿主预算与契约保持连续。
+
+子任务摘要阶段全量 270/270 通过（.local/task-summary-tests.log），类型检查和构建通过。主提示明确 Worker 产物与历史为不可信数据，不能据此改变目标或绕过宿主检查。未调用付费模型或 benchmark。
+
+
+## 2026-09-30：实验启动失败与完成状态修复
+
+核对 Legion-Experiment 原始 Worker invocation/result 与主会话日志：Worker 使用全局 npm Codex，主会话使用项目内置运行时；Worker 模型返回 HTTP 400；沙箱内 WSL 打包失败。实验快照没有当前宿主 HWE 工具，保持原快照及报告不变。
+
+开发版统一主会话与 managed queue 的 Codex 到 codexRuntime(root)，禁止该路径隐式回退全局 CLI；invocation 增加 command。主会话结束时汇总本连接 Worker 最近失败和 HWE 最近检查失败，没有交付验收通过则返回 error + blocked acceptance，保留模型回复。成功续跑清除对应 Worker 失败，后续 HWE 通过清除其失败；已通过交付验收可覆盖早期探索失败。普通聊天不受影响。主提示明确使用 Windows 原生 tar 打包，宿主 legion_hwe_check 运行验证器，不要求 Agent 放宽沙箱或自行启动 WSL。
+
+验证：全量 274/274（.local/benchmark-blockers-tests.log），随后补充聊天持久化和 HWE 恢复检查，相关 10/10 定向通过；typecheck/build 通过。未调用真实模型或重跑 HWE。模型目录仅代表发现结果，不保证账户授权；统一运行时不能保证服务端接受指定模型。Worker usage:null 保留未知，不能报告零 token。能力压测的独立全局 CLI 配置未在本轮迁移，不能把其容量结果直接等同于项目内置 Worker。
+
+## 2026-10-01：固定 Codex 0.159.2，验证 6.1 Sol / xhigh
+
+发现桌面活跃进程为 0.159.2，项目内置 0.157.1；PATH 优先命中的另一份 CLI 甚至为 0.154.0。开发目录内置 @openai/codex 已精确升级到 0.159.2。新增 npm run runtime:install 用于新安装/新实验快照的版本复现。主会话、工程入口、managed queue、容量查询、容量压测和 pool-service 都使用项目根下 codexRuntime，保持 Command Code 不变。冻结 Legion-Experiment 与旧 Linux HWE 专用执行器未修改，重测 GUI 链路应建立新快照，不能假设旧目录已升级。
+
+真实内置 app-server model/list 返回 gpt-6.1-sol 并支持 xhigh；通过实际 backendSpec + runWorker 执行唯一一次只回复 OK 的模型预检，completed，8444 ms，输入 15170（其中缓存 8320）、输出 5，证据 .local/runtime-01592-smoke-1790785595765/。未调用 benchmark 或修改候选。类型检查、构建、15 项运行时/队列定向测试通过。
+
+运行时 exe SHA256：52F75C649BEBB8001102A1DD129C1EA6D02B0940321E6D7E82EE0526753BD58A。回归中发现并修正 RTL archive 检查新增后旧 HWE 测试用字符串冒充 tar.gz 的夹具问题：改用真实 gzip/tar 数据，启动等待增加 5 秒断言，避免检查未启动时无限等待；5 项 HWE 定向测试通过。
+
+全量回归 282 项中 281 项通过，剩余 primary-strategy 测试也是旧字符串 archive 夹具；已统一改用真实 tar.gz。修复后 benchmark-blockers / primary-hwe-check / primary-strategy 共 15 项定向全通过，类型检查通过。全量日志 .local/runtime-01592-tests-final.log 保留首次失败，未改写为全通过。
+
+## 2026-10-01：HWE 快照迁移 readiness 误判
+
+批次 Legion-HWE-20261001 在正式实验臂前停止，唯一差异为 additionalInputs 中两个仓库文件的绝对路径。测试先复现旧比较 false，再实现共享 hwe-fingerprint：只规范 Makefile/core.yaml 两项身份，旧路径兼容，所有哈希/镜像/提交/验证器/工具路径和其他字段仍严格比较；缺失、额外、重复身份、混合根拒绝。新 Python 指纹用稳定 repo: 键，原 readiness 不重写。readiness 初始化、CLI/GUI 复用、运行中复查和策略候选比较统一调用该函数，实现快照清单包含新模块。增加只读 research preflight 并显示变化字段。
+
+实际证据：.local/hwe-preflight-after-fix.json 中 matches/baselineMatches=true；.local/hwe-relocation-proof.json 对失败批次保存指纹和实时重新采集的快照指纹都 compatible=true，baselineMatches=true，differences=[]，旧严格比较仍 false。模型和候选评分器未调用，历史批次未修改。全量 287/287 通过（.local/hwe-relocation-tests.log），类型检查、构建通过。宿主检查器集成测试确认迁移后进入验证、ready.json 原文不变，Makefile 改动不进入验证。
+
+用户随后补充了十项具体故障，修复与验证记录见下。
+
+
+## 2026-10-01：长任务稳定性十项修复
+
+参照本地 Codex 源码 app-server-transport/src/transport/stdio.rs 的连接终止与 I/O 失败处理边界，修复开发目录内的执行、持久化和验收路径。冻结实验目录和既有报告不修改，没有启动模型或 benchmark。
+
+| 故障 | 修复及回归证据 |
+| --- | --- |
+| 1. app-server 断管崩溃 | stdin/stdout/stderr 和 readline 错误统一停止当前进程、拒绝待响应 RPC；通知、审批和工具回复统一经过安全写入。真实子进程中注入 EPIPE，在 --unhandled-rejections=strict 下返回 error。 |
+| 2. 日志写盘崩溃 | 每次追加立即捕获失败，停止本次执行；最终清理发生的日志失败也不能返回 completed。stdout/stderr 被替换为目录、退出清理阶段写盘失败均有子进程用例。 |
+| 3. 取消与恢复竞争 | 任务立即登记取消意图，取消与继续共用串行队列；cancelled 持久状态禁止继续。持续目标和工程服务的 resume/cancel 串行，并在持有执行租约后复查状态。取消/继续、重载、取消/恢复用例均不产生额外执行。 |
+| 4. 聊天临时文件竞争 | 每个对话串行保存调用时的快照，临时文件使用唯一 UUID；置顶和启动也按对话串行。25 次元数据更新与回复完成并发后，会话 ID、置顶和完整回复仍可重载。 |
+| 5. sessionId 丢失阻断依赖 | 可恢复 Worker 保留已有后端会话 ID；持续目标向团队执行器提供稳定的宿主任务身份作为缺失 ID 的替代，该身份不传给后端作为 resume ID。两种后端不返回会话 ID 时，已验证依赖 A → B → 集成仍完成。 |
+| 6. 验收超过截止时间 | 主会话、派工、HWE 和交付使用同一个绝对截止时间；结构检查、独立审查重放和安装的功能验证器均收到限时取消信号。真实死循环检查器在交付截止时间停止，忽略取消的测试适配器也不能晚发 PASS。 |
+| 7. 审查不足掩盖功能失败 | 可重放的失败优先于其他检查的覆盖不足；功能拒绝/阻塞不能被审查 unverified 覆盖。错误实现会修复后再次检查，审查不足仍保持 unverified。恢复复核也保留功能失败。 |
+| 8. 集成结算取消仍完成 | 持续目标在结算、证据复查、最终保存后检查取消和截止时间；工程服务也等待取消结清。两条集成路径在 settled 边界取消都持久化 cancelled，不产生完成交付事件。 |
+| 9. 混合调用突破 64 | Worker 和独立审查共享绝对 64 次计数；maxWorkers 仍单独限制实现 Worker。62 次审查 + Codex/Command Code 各一次后，两个入口均拒绝下一次调用，容量返回零。 |
+| 10. 全量扫描增长日志 | GUI 对每次执行维护串行字节游标，只读取新增记录；处理分段 UTF-8、文件截断/替换和有界进度。审计日志追加只读取最后一个字节，不再读完整历史。4 MB 日志连续 30 次查询不重复读取原有字节。 |
+
+边界复验还发现 native goal 激活 RPC 的旧响应可能覆盖更新的 complete 通知，造成无后续工作却等到超时。set 与 get 响应都使用本地通知版本判断；确定性迟到响应测试和本机协议夹具通过。
+
+验证：新增 20 项回归，最终全量 307/307，typecheck 和 build 通过。日志 .local/reliability-final-full.log；定向故障和目标状态竞争日志 .local/reliability-regressions-final.log、.local/reliability-goal-race.log。早期失败日志保留在 .local/reliability-boundaries.log。
+
+约束：验证器必须遵守 AbortSignal 以停止其外部副作用；宿主可拒绝超时结果，但不能撤回不合作的第三方代码已产生的副作用。原始执行日志保留完整证据，GUI 只保留有界进度和回复预览。正式 benchmark 应从包含本轮修复的新快照启动，先运行 preflight；本轮离线回归不能替代真实模型的 benchmark 结果。
+
+HWE 启动前复验：node --import tsx src/research-cli.ts preflight 返回 matches=true、baselineMatches=true、differences=[]，证据 .local/hwe-preflight-after-stability-fixes.json。未启动候选执行或评分。

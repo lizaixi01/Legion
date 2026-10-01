@@ -30,8 +30,9 @@ export async function snapshotOutputs(workspace:string,outputs:string[],target:s
 export async function hashOutputs(workspace:string,outputs:string[]){const files:Record<string,string>={};for(const file of outputs){if(!/^[a-zA-Z0-9_-][a-zA-Z0-9_./-]*$/.test(file)||file.split('/').some(s=>!s||s==='.'||s==='..'))throw Error('Unsafe output path');let path=workspace;for(const part of ['',...file.split('/')]){path=join(path,part);if((await lstat(path)).isSymbolicLink())throw Error('Output links are not allowed');}files[file]=digest(await readFile(path));}return digest(JSON.stringify(Object.entries(files).sort(([a],[b])=>a.localeCompare(b))));}
 
 /** Checks run under Node's permission model: snapshot reads only, no writes or subprocesses. This is not an OS security sandbox. */
-export async function verifySnapshot(contract:AcceptanceContract,challenge:Challenge,workspace:string,dir:string,version:number,signal?:AbortSignal):Promise<ValidationAttempt>{
+export async function verifySnapshot(contract:AcceptanceContract,challenge:Challenge,workspace:string,dir:string,version:number,signal?:AbortSignal,context:Record<string,string>={},node=process.env.PROACTIVE_NODE??process.execPath):Promise<ValidationAttempt>{
  await mkdir(dir,{recursive:true});const snapshot=join(dir,'candidate');const artifactHash=await snapshotOutputs(workspace,contract.outputs,snapshot);
+ for(const [file,text] of Object.entries(context)){if(contract.outputs.includes(file))continue;if(!/^[a-zA-Z0-9_-][a-zA-Z0-9_./-]*$/.test(file)||file.split('/').some(s=>!s||s==='.'||s==='..'))throw Error('Unsafe context path');await mkdir(dirname(join(snapshot,file)),{recursive:true});await writeFile(join(snapshot,file),text,{flag:'wx'});}
  const result:ValidationAttempt={version,status:'unverified',contractHash:digest(JSON.stringify(contract)),verifierHash:digest(JSON.stringify(challenge)),artifactHash,snapshot,checks:[]};
  const empty=join(dir,'empty');await mkdir(empty);
  for(const [i,check] of challenge.checks.entries()){
@@ -48,12 +49,12 @@ Object.defineProperty(process,'binding',{value:deny,writable:false,configurable:
 registerHooks({resolve(spec,ctx,next){const r=next(spec,ctx);if(r.url.startsWith('node:')){if(!allowed.has(r.url.slice(5)))deny();}else{if(!r.url.startsWith('file:'))deny();const path=fileURLToPath(r.url),rel=relative(process.cwd(),path);if(path!==process.argv[1]&&(rel.startsWith('..')||isAbsolute(rel)))deny();}return r;}});
 `);
   const syntaxDir=join(dir,`${i}-syntax`);await mkdir(syntaxDir);
-  const syntax=await execute({command:process.env.PROACTIVE_NODE??process.execPath,args:['--check',script],cwd:dir,logDir:syntaxDir,timeoutMs:15000,signal});
+  const syntax=await execute({command:node,args:['--check',script],cwd:dir,logDir:syntaxDir,timeoutMs:15000,signal,env:{PATH:process.env.PATH,SystemRoot:process.env.SystemRoot,TEMP:process.env.TEMP,ELECTRON_RUN_AS_NODE:'1'}});
   if(syntax.status!=='completed'){result.checks.push({criterion:check.criterion,status:'unverified',detail:'Invalid or interrupted independent check: '+(await readFile(join(syntaxDir,'stderr.log'),'utf8')).slice(-3000),logDir:syntaxDir});continue;}
   // A check that succeeds with no candidate is not evidence of implemented behavior.
   for(const control of [true,false]){
    const cwd=control?empty:snapshot,logDir=join(dir,`${i}-${control?'control':'candidate'}`);await mkdir(logDir);
-   const execution=await execute({command:process.env.PROACTIVE_NODE??process.execPath,args:['--permission',`--allow-fs-read=${script}`,`--allow-fs-read=${guard}`,`--allow-fs-read=${cwd}`,'--require',guard,script],cwd,logDir,timeoutMs:15000,signal,env:{PATH:process.env.PATH,SystemRoot:process.env.SystemRoot,TEMP:process.env.TEMP}});
+   const execution=await execute({command:node,args:['--permission',`--allow-fs-read=${script}`,`--allow-fs-read=${guard}`,`--allow-fs-read=${cwd}`,'--require',guard,script],cwd,logDir,timeoutMs:15000,signal,env:{PATH:process.env.PATH,SystemRoot:process.env.SystemRoot,TEMP:process.env.TEMP,ELECTRON_RUN_AS_NODE:'1'}});
    const detail=((await readFile(join(logDir,'stdout.jsonl'),'utf8'))+'\n'+(await readFile(join(logDir,'stderr.log'),'utf8'))).slice(-6000);
    if(execution.status==='timeout'||execution.status==='cancelled'||execution.exitCode===null){result.checks.push({criterion:check.criterion,status:'error',detail:execution.status+': '+detail,logDir});break;}
    if(control){if(execution.exitCode===0){result.checks.push({criterion:check.criterion,status:'unverified',detail:'Check also passed without a candidate; rejected as insufficient evidence',logDir});break;}}
@@ -61,6 +62,6 @@ registerHooks({resolve(spec,ctx,next){const r=next(spec,ctx);if(r.url.startsWith
   }
  }
  if(await hashOutputs(snapshot,contract.outputs)!==artifactHash)throw Error('Candidate snapshot changed during verification');
- result.status=result.checks.some(c=>c.status==='error')?'error':result.checks.some(c=>c.status==='unverified')?'unverified':result.checks.some(c=>c.status==='fail')?'needs_repair':result.checks.length===contract.acceptance.length&&result.checks.length>0&&challenge.limitations.length===0?'accepted':'unverified';
+ result.status=result.checks.some(c=>c.status==='error')?'error':result.checks.some(c=>c.status==='fail')?'needs_repair':result.checks.some(c=>c.status==='unverified')?'unverified':result.checks.length===contract.acceptance.length&&result.checks.length>0&&challenge.limitations.length===0?'accepted':'unverified';
  await writeFile(join(dir,'verification.json'),JSON.stringify(result,null,2));return result;
 }

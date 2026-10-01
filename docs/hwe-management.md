@@ -33,13 +33,14 @@
 在项目目录运行：
 
 ```powershell
-npx tsx src/research-cli.ts readiness
+npx tsx src/research-cli.ts preflight  # 只核对 readiness，不调用模型或评分器
+npx tsx src/research-cli.ts readiness  # 首次安装或真实环境变化时才运行
 npx tsx src/research-cli.ts run
 npx tsx src/research-cli.ts resume <运行目录>
 npm run desktop
 ```
 
-GUI 左下「微架构实验」进入任务页，选择 Manager/Worker、轮数和并行度；实际状态、比较表、决策与证据来自同一运行记录。不会用演示数据冒充完成的实验。
+GUI 不再提供独立的「微架构实验」任务页。HWE 通过普通主会话进行：用宿主 `tar` 把 RTL 打成扁平 `.tar.gz`，再调用 `legion_hwe_check` 跑冻结验证器，用 `legion_strategy` 记录假设、选择与淘汰。两者都登记 evidence id，选择只认未失效的 host 证据。不会用演示数据冒充完成的实验。
 
 本机路径配置目前集中在 `src/hwe.ts`；工具链安装属于这台 WSL 环境。readiness 要连续两次完整通过且周期数、fitness 相同，才写 ready.json。启动时检查源码/验证器指纹和 Docker 镜像 ID；环境变化需重新执行 readiness。
 
@@ -50,3 +51,9 @@ GUI 左下「微架构实验」进入任务页，选择 Manager/Worker、轮数�
 HWE 官方调度策略作为独立参考组；如果使用了不同调用预算或上下文，必须明确列出。开发过程中调试所花成本与正式对照分开报告，不能用开发试跑代替冻结策略后的对照。单个 CPU 任务只提供机制与个案证据，不能宣称总体成功率提升。
 
 对照协议见 [HWE 本机对照](hwe-comparison-protocol.md)。CLI `ordinary` 提供单会话 Codex 对照；`summary <运行目录>` 汇总模型用量与最终证据。缓存输入已经包含在总输入中，不能重复计费式相加。
+
+## 实验快照中的 readiness 复用
+
+先运行 `npx tsx src/research-cli.ts preflight`，输出 `matches: true`、`baselineMatches: true` 后再进行付费模型预检。新指纹使用 `repo:Makefile` 和 `repo:cores/baseline/core.yaml` 表示两个仓库输入，兼容旧 readiness 的绝对路径。只允许这两项随完整 checkout 迁移；内容 SHA-256、源码集合、提交、验证器、镜像与工具二进制必须保持一致，工具路径也仍严格比较。JSON 对象键顺序不影响结果。缺少输入、重复身份或混合仓库根均拒绝复用。
+
+无需改写旧 ready.json。旧实验快照仍保留失败结果；从修复后的开发版创建新批次，先只读预检再启动 A/B/C。指纹或基线包出现真实变化时，仍须重新建立 readiness。

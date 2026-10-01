@@ -24,3 +24,9 @@ test('model, effort, sandbox and delegation limits reach initial and resumed CLI
   assert.equal(disabled[disabled.indexOf('multi_agent')-1],'--disable');
   assert.ok(!disabled.some(a=>a.startsWith('agents.max_threads')));
 });
+
+test('worker selection is independently validated and preserved',async()=>{
+ await assert.rejects(validateChatOptions({worker:{model:'invented',effort:'high'}}),/Worker/);
+ const result=await validateChatOptions({model:'gpt-6-sol',effort:'high',worker:{model:'gpt-6-sol',effort:'low'}});
+ assert.equal(result.effort,'high');assert.equal(result.worker?.effort,'low');
+});

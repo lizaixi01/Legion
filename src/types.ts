@@ -4,6 +4,7 @@ export interface Artifact { path: string; sha256: string }
 export interface CheckReport { checks: Check[]; artifacts: Artifact[] }
 export type WorkerStatus = 'completed' | 'error' | 'timeout' | 'cancelled';
 export interface WorkerResult {
+  nativeGoal?: import("./native-goal.js").NativeGoal;
   acceptance?: import("./acceptance.js").Acceptance;
   status: WorkerStatus;
   sessionId?: string;
@@ -12,6 +13,7 @@ export interface WorkerResult {
   detail?: string;
 }
 export interface WorkerRequest {
+  continuousGoal?: {objective:string;deadline:number;budgetId?:string};
   prompt: string;
   workspace: string;
   attemptDir: string;
