@@ -1,5 +1,7 @@
 # 统一证据验收（2026-09-29）
 
+> 本页记录 2026-09-29 的 managed-chat 验收切片，含当时的预算、烟测及 GUI 状态。当前普通聊天走 app-server 主会话，预算和工具接线见[primary-agent](primary-agent.md)；工程恢复见[resumable-engineering](resumable-engineering.md)。普通主会话的默认功能 registry 仍限数值聚合，但项目另有联系人、批准的 Node 测试和 HWE 领域验收，不能将下面“唯一功能能力”理解为全项目现状。真实运行与对照汇总见[公开实验摘要](experiment-summary.md)。
+
 ## 本轮范围
 
 `WorkerResult.status` 仍表示执行器结果；新增 `acceptance` 表示交付验收。执行正常结束可以同时是未验证或存在反例。Manager 的 `finish` 只是申请交付。

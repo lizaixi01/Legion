@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "batch": "hwe-comparison-batch-3",
+  "status": "complete-valid",
+  "experimentDate": "2026-10-01",
+  "source": {
+    "localPath": ".local/hwe-comparison-batch-3/result.json",
+    "resultSha256": "96bc11c462150135493bbd50ecf662e5c625726b779ef2820bc515b02d3c07bf",
+    "availability": "Local archive; full raw evidence and candidate packages are not distributed with this summary",
+    "laterFormalDiagnosis": "../implementation-status.md#2026-10-01hwe-formal-分类与证据传递修复"
+  },
+  "managedConfig": {
+    "goal": "Improve the frozen RV32IM baseline CoreMark fitness while preserving all correctness gates. Independently choose microarchitectural changes; report LUT4 area and frequency tradeoffs.",
+    "maxRounds": 2,
+    "maxWorkers": 4,
+    "concurrency": 2,
+    "totalMs": 21600000,
+    "manager": {
+      "model": "gpt-6.1-sol",
+      "effort": "xhigh"
+    },
+    "worker": {
+      "model": "gpt-6.1-sol",
+      "effort": "xhigh"
+    }
+  },
+  "environment": {
+    "imageId": "sha256:2cd0841ed21c21d10ef82655f457e239a633c22989e02223686e04ac14d67d03",
+    "baselineSha256": "7447e15a991cb8b366f11aa956eee1d9afe8f2608d1fde7a44537ff1027ebf62",
+    "linuxCodexVersion": "codex-cli 0.157.1"
+  },
+  "baseline": {
+    "fitness": 30.79,
+    "fmax_mhz": 13.83,
+    "lut4": 13964,
+    "cycles": 4491485,
+    "seeds": [
+      13.83,
+      13.99,
+      13.57
+    ],
+    "ff": 1865
+  },
+  "arms": [
+    {
+      "kind": "ordinary-codex",
+      "status": "completed",
+      "publicChecks": "pass",
+      "candidateSha256": "3024ad19f24cceffc18fc0b8eebdb7a212c96c42fe1a1ea638d27804c1bd42ca",
+      "metrics": {
+        "fitness": 113.14,
+        "fmax_mhz": 61.46,
+        "lut4": 7795,
+        "cycles": 5432318,
+        "ff": 2183
+      },
+      "wallMs": 2059555,
+      "managerCalls": 0,
+      "workerCalls": 1,
+      "verificationRuns": 1,
+      "verificationDurationMs": 321741,
+      "tokens": {
+        "input": 3839419,
+        "cachedInput": 3678464,
+        "uncachedInput": 160955,
+        "output": 31688,
+        "total": 3871107,
+        "records": 1
+      }
+    },
+    {
+      "kind": "legion-managed",
+      "status": "budget",
+      "publicChecks": "pass",
+      "candidateSha256": "0acbf7d9287f0393ab0c5a754a76736b085ec1afced26ed00598ca5ebfbe0a89",
+      "metrics": {
+        "fitness": 144.34,
+        "fmax_mhz": 64.83,
+        "lut4": 7356,
+        "cycles": 4491485,
+        "ff": 1861
+      },
+      "wallMs": 3614354,
+      "managerCalls": 2,
+      "workerCalls": 4,
+      "verificationRuns": 4,
+      "verificationDurationMs": 1434924.0,
+      "tokens": {
+        "input": 3329397,
+        "cachedInput": 3052672,
+        "uncachedInput": 276725,
+        "output": 54921,
+        "total": 3384318,
+        "records": 6
+      }
+    }
+  ],
+  "observedDifference": {
+    "fitnessPct": 27.58,
+    "wallPct": 75.49,
+    "verificationTimeRatio": 4.459873
+  },
+  "recordedBatchTokens": 7271989,
+  "failedAttemptTokens": "unknown; excluded from recordedBatchTokens",
+  "humanInterventions": {
+    "solution": 0,
+    "infrastructureRecoveries": 3,
+    "totalHumanTime": "not measured"
+  },
+  "confirmation": {
+    "plain": "confirmation/ordinary/confirmation.json",
+    "plainReproduced": {
+      "fitness": 113.14,
+      "fmax_mhz": 61.46,
+      "lut4": 7795,
+      "cycles": 5432318,
+      "unchanged": true
+    },
+    "managed": "confirmation/borrow-driven-restoring-divmod/confirmation.json",
+    "managedReproduced": {
+      "fitness": 144.34,
+      "fmax_mhz": 64.83,
+      "lut4": 7356,
+      "cycles": 4491485,
+      "unchanged": true
+    }
+  },
+  "verification": {
+    "gates": [
+      "lint",
+      "compile/Verilator build",
+      "ISS/CRC cosim",
+      "bounded ALTOPS formal",
+      "synthesis",
+      "nextpnr 3-seed FPGA measurement"
+    ],
+    "limitations": [
+      "ALTOPS bounded formal 不是真实乘除法完整证明；PREUNSAT 不计为额外有效行为证明。",
+      "CoreMark CRC 与两个 cosim 程序不是穷尽工作负载。",
+      "Fmax 是 nextpnr 布局布线估计，不是实物板卡结果。",
+      "单题单次运行不能估计普遍成功率，也不能把硬件性能提升解释为人类效率提升。"
+    ]
+  },
+  "interpretation": "Single task, one valid paired run, unequal total resources; not a causal estimate of management or human-efficiency improvement"
+}
