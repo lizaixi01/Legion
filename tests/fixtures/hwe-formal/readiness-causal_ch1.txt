@@ -1,0 +1,45 @@
+SBY  7:50:28 [causal_ch1] Writing '/work/formal/riscv-formal/cores/baseline-201/checks/causal_ch1/src/defines.sv'.
+SBY  7:50:28 [causal_ch1] Writing '/work/formal/riscv-formal/cores/baseline-201/checks/causal_ch1/src/causal_ch1.sv'.
+SBY  7:50:28 [causal_ch1] Copy '/work/formal/riscv-formal/cores/baseline-201/../../checks/rvfi_macros.vh' to '/work/formal/riscv-formal/cores/baseline-201/checks/causal_ch1/src/rvfi_macros.vh'.
+SBY  7:50:28 [causal_ch1] Copy '/work/formal/riscv-formal/cores/baseline-201/../../checks/rvfi_channel.sv' to '/work/formal/riscv-formal/cores/baseline-201/checks/causal_ch1/src/rvfi_channel.sv'.
+SBY  7:50:28 [causal_ch1] Copy '/work/formal/riscv-formal/cores/baseline-201/../../checks/rvfi_testbench.sv' to '/work/formal/riscv-formal/cores/baseline-201/checks/causal_ch1/src/rvfi_testbench.sv'.
+SBY  7:50:28 [causal_ch1] Copy '/work/formal/riscv-formal/cores/baseline-201/../../checks/rvfi_causal_check.sv' to '/work/formal/riscv-formal/cores/baseline-201/checks/causal_ch1/src/rvfi_causal_check.sv'.
+SBY  7:50:28 [causal_ch1] engine_0: smtbmc bitwuzla
+SBY  7:50:28 [causal_ch1] base: starting process "cd causal_ch1/src; yosys -ql ../model/design.log ../model/design.ys"
+SBY  7:50:28 [causal_ch1] base: finished (returncode=0)
+SBY  7:50:28 [causal_ch1] prep: starting process "cd causal_ch1/model; yosys -ql design_prep.log design_prep.ys"
+SBY  7:50:29 [causal_ch1] prep: finished (returncode=0)
+SBY  7:50:29 [causal_ch1] smt2: starting process "cd causal_ch1/model; yosys -ql design_smt2.log design_smt2.ys"
+SBY  7:50:29 [causal_ch1] smt2: finished (returncode=0)
+SBY  7:50:29 [causal_ch1] engine_0: starting process "cd causal_ch1; yosys-smtbmc -s bitwuzla --presat --unroll --noprogress -t 20:21  --append 0 --dump-vcd engine_0/trace.vcd --dump-yw engine_0/trace.yw --dump-vlogtb engine_0/trace_tb.v --dump-smtc engine_0/trace.smtc model/design_smt2.smt2"
+SBY  7:50:29 [causal_ch1] engine_0: ##   0:00:00  Solver: bitwuzla
+SBY  7:50:29 [causal_ch1] engine_0: ##   0:00:00  Skipping step 0..
+SBY  7:50:29 [causal_ch1] engine_0: ##   0:00:00  Skipping step 1..
+SBY  7:50:29 [causal_ch1] engine_0: ##   0:00:00  Skipping step 2..
+SBY  7:50:29 [causal_ch1] engine_0: ##   0:00:00  Skipping step 3..
+SBY  7:50:29 [causal_ch1] engine_0: ##   0:00:00  Skipping step 4..
+SBY  7:50:29 [causal_ch1] engine_0: ##   0:00:00  Skipping step 5..
+SBY  7:50:29 [causal_ch1] engine_0: ##   0:00:00  Skipping step 6..
+SBY  7:50:29 [causal_ch1] engine_0: ##   0:00:00  Skipping step 7..
+SBY  7:50:29 [causal_ch1] engine_0: ##   0:00:00  Skipping step 8..
+SBY  7:50:29 [causal_ch1] engine_0: ##   0:00:00  Skipping step 9..
+SBY  7:50:29 [causal_ch1] engine_0: ##   0:00:00  Skipping step 10..
+SBY  7:50:29 [causal_ch1] engine_0: ##   0:00:00  Skipping step 11..
+SBY  7:50:29 [causal_ch1] engine_0: ##   0:00:00  Skipping step 12..
+SBY  7:50:29 [causal_ch1] engine_0: ##   0:00:00  Skipping step 13..
+SBY  7:50:29 [causal_ch1] engine_0: ##   0:00:00  Skipping step 14..
+SBY  7:50:29 [causal_ch1] engine_0: ##   0:00:00  Skipping step 15..
+SBY  7:50:29 [causal_ch1] engine_0: ##   0:00:00  Skipping step 16..
+SBY  7:50:29 [causal_ch1] engine_0: ##   0:00:00  Skipping step 17..
+SBY  7:50:29 [causal_ch1] engine_0: ##   0:00:00  Skipping step 18..
+SBY  7:50:29 [causal_ch1] engine_0: ##   0:00:00  Skipping step 19..
+SBY  7:50:29 [causal_ch1] engine_0: ##   0:00:00  Checking assumptions in step 20..
+SBY  7:50:30 [causal_ch1] engine_0: ##   0:00:00  Assumptions are unsatisfiable!
+SBY  7:50:30 [causal_ch1] engine_0: ##   0:00:00  Status: PREUNSAT
+SBY  7:50:30 [causal_ch1] engine_0: finished (returncode=1)
+SBY  7:50:30 [causal_ch1] engine_0: Status returned by engine: ERROR
+SBY  7:50:30 [causal_ch1] summary: Elapsed clock time [H:MM:SS (secs)]: 0:00:01 (1)
+SBY  7:50:30 [causal_ch1] summary: Elapsed process time [H:MM:SS (secs)]: 0:00:01 (1)
+SBY  7:50:30 [causal_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR
+SBY  7:50:30 [causal_ch1] summary: engine_0 did not produce any traces
+SBY  7:50:30 [causal_ch1] DONE (ERROR, rc=16)

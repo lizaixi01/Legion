@@ -10,8 +10,26 @@ import {digest} from '../src/challenge.js';
 import type {Evidence} from '../src/research-loop.js';
 import {randomUUID} from 'node:crypto';
 import {createGoalBudget,openGoalBudget,readGoalBudget} from '../src/primary-goal-budget.js';
+import {classifyHweEvidence} from '../src/hwe.js';
+import {archivedHwe,engineErrorHwe,passingHwe} from './fixtures/hwe-evidence.js';
+import {createPrimaryStrategy} from '../src/primary-strategy.js';
 const good:Evidence={status:'pass',checks:{},metrics:{fitness:1,fmax_mhz:2,lut4:3,cycles:4},limitations:['bounded checks only']};
 async function setup(){const root=await mkdtemp(join(tmpdir(),'primary-hwe-'));await mkdir(join(root,'.local/hwe-readiness'),{recursive:true});await writeFile(join(root,'.local/hwe-readiness/baseline.tar.gz'),'baseline');await writeFile(join(root,'.local/hwe-readiness/ready.json'),JSON.stringify({environment:{image:'fixed'},sha256:digest('baseline')}));await writeFile(join(root,'rtl.tar.gz'),candidate);return root;}
+
+test('host HWE reports undetermined engine faults distinctly from confirmed assertion failures',async()=>{
+ for(const [raw,status,description] of [[engineErrorHwe(),'error',/验证未完成|工具异常/],[archivedHwe(),'rejected',/Confirmed|property failure/],[passingHwe(),'verified',/./]] as const){
+  const root=await setup(),evidence=classifyHweEvidence(raw);let calls=0;
+  const check=createHweCheck(root,root,join(root,'checks'),Date.now()+60000,undefined,{fingerprint:async()=>({image:'fixed'}),verify:async()=>{calls++;return evidence;},stop:async()=>{}});
+  try {const r=await check({archive:'rtl.tar.gz'});assert.equal(r.status,status);assert.deepEqual((await check.inspect(r.id)).evidence,evidence);assert.equal(calls,1);
+   if(status!=='verified'){
+    assert.match(check.failures()[0]!,description);
+    const strategy=createPrimaryStrategy(join(root,'strategy'),check);
+    await assert.rejects(strategy.call({action:'select',reason:'Attempt selection',evidenceIds:[r.id],selectedId:r.id}),/verified/);
+    assert.equal((await strategy.finalize()).status,'none');
+   }else assert.deepEqual(check.failures(),[]);
+  }finally{await check.close();}
+ }
+});
 
 test('relocated snapshot reaches host verifier without rewriting legacy readiness',async()=>{
  const root=await setup(),readyPath=join(root,'.local/hwe-readiness/ready.json');

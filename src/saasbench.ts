@@ -12,7 +12,7 @@ import { execute, type ProcessRequest, type ProcessResult } from './process.js';
 import { hash } from './provenance.js';
 import { parseCodexLog } from './codex.js';
 import { runAdapter, type ExecutionAdapter } from './execution-adapter.js';
-import { linuxPath } from './programbench.js';
+import { linuxPath } from './wsl-path.js';
 import type { CheckReport, WorkerRequest, WorkerResult } from './types.js';
 
 /* ------------------------------------------------------------------ configuration */

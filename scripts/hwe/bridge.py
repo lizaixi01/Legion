@@ -1,6 +1,7 @@
 """WSL/Docker boundary. Workers export only RTL; evaluators rebuild in fresh containers."""
 import pathlib,subprocess,sys,json,hashlib,tarfile,io,os,signal,time,base64,datetime
-action,request=sys.argv[1:3];d=json.load(open(request));s=d['settings'];p=d.get('payload',{});root=pathlib.Path(s['root'])
+from manager_context import prepare_manager_context, read_rtl_archive, CONTAINER_CONTEXT
+action,request=sys.argv[1:3];d=json.loads(pathlib.Path(request).read_text(encoding='utf-8'));s=d['settings'];p=d.get('payload',{});root=pathlib.Path(s['root'])
 prefix='proactive-hwe-'+hashlib.sha256(str(root).encode()).hexdigest()[:12]
 def run(args,**kw):return subprocess.run(args,check=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,**kw)
 def docker(*args):return run(['docker',*args])
@@ -23,20 +24,19 @@ def archive_repo():
 def start(name,worker=False):
  args=['run','-d','--name',name,'--label','proactive.run='+prefix,'--label','proactive.owner='+s['owner'],'--network','none','--user','1000:1000','--cpus','2' if worker else '8','--memory','3g' if worker else '10g','--pids-limit','512','--cap-drop','ALL','--security-opt','no-new-privileges','-v',s['oss']+':/opt/oss:ro','-v',s['xpack']+':/opt/xpack:ro','-v',s['scripts']+':/harness:ro']
  if worker:args+=['-v',str(private)+':/transport:ro','-v',str(pathlib.Path(s['codex']).parent)+':/opt/codex-bin:ro']
+ if worker and manager_context is not None:args+=['--mount',f'type=bind,src={manager_context},dst={CONTAINER_CONTEXT},readonly']
  if action=='native':
   args[args.index('--cpus')+1]='8';args[args.index('--memory')+1]='10g'
  docker(*args,s['image'],'sleep','infinity');run(['docker','cp','-a','-',name+':/work'],input=archive_repo())
  # Bash substitution is used explicitly; no dependency on /bin/sh dialect.
  docker('exec',name,'bash','-ec','mkdir -p /work/.local-bin; for f in /opt/xpack/bin/riscv-none-elf-*; do n=${f##*/}; ln -sf "$f" "/work/.local-bin/${n/riscv-none-elf/riscv32-unknown-elf}"; done')
 def load_snapshot(name,path):
- with tarfile.open(path) as t:
-  for m in t:
-   parts=pathlib.PurePosixPath(m.name).parts
-   if not m.isfile() or len(parts)!=1 or not m.name.endswith('.sv') or m.size>2*1024*1024:raise ValueError('Invalid RTL archive')
+ files=read_rtl_archive(pathlib.Path(path).read_bytes())
  docker('exec',name,'bash','-ec','rm -f /work/cores/baseline/rtl/*.sv')
  buf=io.BytesIO()
- with tarfile.open(path) as src,tarfile.open(fileobj=buf,mode='w') as dst:
-  for m in src:m.uid=m.gid=1000;dst.addfile(m,src.extractfile(m))
+ with tarfile.open(fileobj=buf,mode='w') as dst:
+  for filename,body in files.items():
+   m=tarfile.TarInfo(filename);m.size=len(body);m.mode=0o644;m.uid=m.gid=1000;dst.addfile(m,io.BytesIO(body))
  run(['docker','cp','-a','-',name+':/work/cores/baseline/rtl'],input=buf.getvalue())
 def snapshot(name,dest):
  raw=docker('cp',name+':/work/cores/baseline/rtl/.','-').stdout
@@ -60,6 +60,7 @@ def proxy_start():
  (private/'auth.json').write_text(json.dumps({'auth_mode':'chatgpt','tokens':{'id_token':token,'access_token':token,'refresh_token':'unused','account_id':'local-proxy'},'last_refresh':datetime.datetime.now(datetime.timezone.utc).isoformat()}))
  return proc
 private=pathlib.Path.home()/'.cache'/prefix
+manager_context=None
 def stop_proxy():
  pidfile=private/'pid'
  if pidfile.exists():
@@ -105,6 +106,9 @@ elif action=='native':
   if trace.returncode==0:pathlib.Path(p['trace']).write_bytes(trace.stdout)
   docker('rm','-f',name);stop_proxy()
 elif action=='worker':
+ if p.get('managerContext'):
+  if not p.get('decisionSchema'):raise ValueError('Manager context requires a decision session')
+  manager_context=prepare_manager_context(p['managerContext'])
  proc=proxy_start();name=prefix+'-worker';start(name,True);load_snapshot(name,p['archive']);docker('exec',name,'bash','-ec','mkdir -p /tmp/agent-home; cp /transport/auth.json /tmp/agent-home/auth.json')
  docker('exec','-d',name,'/usr/bin/python3','/harness/relay.py')
  if p.get('decisionSchema'):

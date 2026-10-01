@@ -1,0 +1,27 @@
+# HWE formal portable evidence
+
+The repository attributes disable line-ending conversion for these JSON/text artifacts so a checkout preserves their exact recorded bytes and hashes on Windows and Linux.
+
+Source: HWE batch-3, run `run-925fc0a3-6d33-4806-b5cf-92bdc4625334`, 2026-10-01. `source-hashes.json` records the original evidence SHA-256; tests read only this tracked fixture directory and never require `.runs` or `.local`.
+
+- `batch-3.json`: byte-for-byte copy of `opcode-qualified-load-use/verification/result.json`. Its original status is **fail**, and the formal detail explicitly reports `reg_ch0` assertion failure, `FAIL`, and a counterexample trace at `rvfi_reg_check.sv:42.6-42.59`, step 20.
+- `pass.json`: byte-for-byte copy of `shared-magnitude-divmod/verification/result.json` from the same run, including all required gates and finite metrics.
+- `reg_ch0.txt`, `insn_xori_ch0.txt`, `insn_xori_ch1.txt`: ordered, unmodified lines selected from `opcode-qualified-load-use/verification/last_run-201.log`, retaining only exact `SBY <time> [<task>]` prefixes for these three tasks. The ch1 task has `PREUNSAT` and `DONE (ERROR, rc=16)`; the existing upstream `_ch1` waiver accepts it. The ch0 instruction task has normal PASS.
+
+The historical report's “engine ERROR, not an explicit counterexample” description is contradicted by its original result and full log. Do not rewrite this historical case as engine-only error. The original per-task `status` files were not archived; the fixtures attribute statuses to exact SBY records, not to invented status-file evidence. The archived VCD's hash is recorded, but the large waveform is unnecessary for classification tests; its filename alone is never used to infer a counterexample.
+
+`engineErrorHwe()` derives a **fault injection**, not a historical candidate: it removes only the `Status: PREUNSAT` and `Assumptions are unsatisfiable!` records from the real ch1 task, retains its invocation/solver/terminal ERROR records, and sets the reported failing task to that task. This exercises a genuine SBY ERROR shape without the existing waiver or a reported assertion FAIL.
+
+Python tests build temporary task manifests/status files at the formal runner boundary. Filler tasks repeat the archived PASS record with a documented task-name substitution to preserve the unchanged >=50 floor. Mixed faults, missing/invalid status files and interrupted jobs are explicitly injected. The entrypoint integration test redirects only `/work` to a temporary directory and stubs the external tools; it executes the current `evaluate.py` control flow. No model, Docker, hardware benchmark, workload, or formal property is run or changed.
+
+Run the regression with `node --import tsx --test tests/hwe-evidence.test.ts tests/research-loop.test.ts tests/primary-hwe-check.test.ts tests/hwe-arms.test.ts` and `python tests/hwe_formal_test.py`.
+
+## Pinned SBY multi-field status regression
+
+`readiness-105.json` comes from the single stopped baseline check in `.local/hwe-adapter-readiness-20261001-e5d6f63c/.local/hwe-readiness/check-de4811b8-36bd-4588-b812-dba741124b54/`, 2026-10-01. It preserves all 105 original status-file texts, including their newline, and ordered unmodified SBY terminal/PREUNSAT/assertion lines selected from each task's log. The original upstream aggregate is passed=true, checks_passed=105. Independently observed counts are 53 PASS, 52 ERROR with legal `_ch1` PREUNSAT and no reported property FAIL. The fixture's original aggregate does not include the broken adapter's classification; that original error remains preserved in the source snapshot.
+
+`readiness-source-hashes.json` records the original result and every status/log path and byte SHA-256, plus the portable fixture hash. `readiness-causal_ch0.txt` and `readiness-causal_ch1.txt` are byte-for-byte full representative logs. Tests use only these tracked fixtures; the original ignored snapshot is unnecessary for regression. Filler tasks now repeat a real multi-field PASS record, with only the corresponding log task name substituted. Temporary `.sby` manifests are synthetic filesystem scaffolding, not a change to upstream properties.
+
+The installed OSS CAD Suite 20260716 generator was inspected locally: `libexec/sby` lines 523-524 print `task.status task.retcode task.total_time`; `share/yosys/python3/sby_core.py` lines 1512-1513 assign integer process seconds, and lines 1538-1546 assign zero for an expected result or PASS=1, FAIL=2, UNKNOWN=4, TIMEOUT=8, ERROR=16, CANCELLED=32. Generator SHA-256: `a2d290ceec9f6c8ebbe77fd4f0b737270fd8394aada6dc082453a87e49351121`; core SHA-256: `1aefb691b848ae4856c1abb7917108ccc5c5f74b13cf8de6da5a5bd55d03a17b`. A FAIL may legitimately have rc=0; return code never replaces the property status. Unsupported states remain unparsed errors under the existing adapter types.
+
+Additional tests retain legacy single-token compatibility and inject corrupted suffixes, invalid numeric metadata, status/log conflicts, a return-code conflict, UNKNOWN and TIMEOUT. The unwaived ERROR injection removes only PREUNSAT from real records. Historical FAIL still uses the actual archived assertion log; its multi-field status metadata is explicitly synthesized because that older run did not archive status files. No injected case is represented as a new historical engine failure. This fixture replay verifies formal classification only and cannot certify full readiness or performance.

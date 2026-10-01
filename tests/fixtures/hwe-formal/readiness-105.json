@@ -1,0 +1,533 @@
+{
+  "raw": {
+    "passed": true,
+    "checks_passed": 105
+  },
+  "tasks": [
+    {
+      "name": "causal_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:50:31 [causal_ch0] engine_0: Status returned by engine: pass\nSBY  7:50:31 [causal_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:50:31 [causal_ch0] summary: engine_0 did not produce any traces\nSBY  7:50:31 [causal_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "causal_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:50:30 [causal_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:50:30 [causal_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:50:30 [causal_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:50:30 [causal_ch1] summary: engine_0 did not produce any traces\nSBY  7:50:30 [causal_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "cover",
+      "status_file": "PASS 0 52\n",
+      "log": "SBY  7:51:19 [cover] engine_0: Status returned by engine: pass\nSBY  7:51:19 [cover] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:19 [cover] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "ill_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:50:31 [ill_ch0] engine_0: Status returned by engine: pass\nSBY  7:50:31 [ill_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:50:31 [ill_ch0] summary: engine_0 did not produce any traces\nSBY  7:50:31 [ill_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "ill_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:50:31 [ill_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:50:31 [ill_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:50:31 [ill_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:50:31 [ill_ch1] summary: engine_0 did not produce any traces\nSBY  7:50:31 [ill_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_add_ch0",
+      "status_file": "PASS 0 3\n",
+      "log": "SBY  7:50:41 [insn_add_ch0] engine_0: Status returned by engine: pass\nSBY  7:50:41 [insn_add_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:50:41 [insn_add_ch0] summary: engine_0 did not produce any traces\nSBY  7:50:41 [insn_add_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_add_ch1",
+      "status_file": "ERROR 16 2\n",
+      "log": "SBY  7:50:41 [insn_add_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:50:41 [insn_add_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:50:41 [insn_add_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:50:41 [insn_add_ch1] summary: engine_0 did not produce any traces\nSBY  7:50:41 [insn_add_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_addi_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:50:43 [insn_addi_ch0] engine_0: Status returned by engine: pass\nSBY  7:50:43 [insn_addi_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:50:43 [insn_addi_ch0] summary: engine_0 did not produce any traces\nSBY  7:50:43 [insn_addi_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_addi_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:50:43 [insn_addi_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:50:43 [insn_addi_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:50:43 [insn_addi_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:50:43 [insn_addi_ch1] summary: engine_0 did not produce any traces\nSBY  7:50:43 [insn_addi_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_and_ch0",
+      "status_file": "PASS 0 3\n",
+      "log": "SBY  7:50:46 [insn_and_ch0] engine_0: Status returned by engine: pass\nSBY  7:50:46 [insn_and_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:50:46 [insn_and_ch0] summary: engine_0 did not produce any traces\nSBY  7:50:46 [insn_and_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_and_ch1",
+      "status_file": "ERROR 16 2\n",
+      "log": "SBY  7:50:45 [insn_and_ch1] engine_0: ##   0:00:01  Status: PREUNSAT\nSBY  7:50:45 [insn_and_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:50:45 [insn_and_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:50:45 [insn_and_ch1] summary: engine_0 did not produce any traces\nSBY  7:50:45 [insn_and_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_andi_ch0",
+      "status_file": "PASS 0 3\n",
+      "log": "SBY  7:50:48 [insn_andi_ch0] engine_0: Status returned by engine: pass\nSBY  7:50:48 [insn_andi_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:50:48 [insn_andi_ch0] summary: engine_0 did not produce any traces\nSBY  7:50:48 [insn_andi_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_andi_ch1",
+      "status_file": "ERROR 16 2\n",
+      "log": "SBY  7:50:48 [insn_andi_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:50:48 [insn_andi_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:50:48 [insn_andi_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:50:48 [insn_andi_ch1] summary: engine_0 did not produce any traces\nSBY  7:50:48 [insn_andi_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_auipc_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:50:50 [insn_auipc_ch0] engine_0: Status returned by engine: pass\nSBY  7:50:50 [insn_auipc_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:50:50 [insn_auipc_ch0] summary: engine_0 did not produce any traces\nSBY  7:50:50 [insn_auipc_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_auipc_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:50:49 [insn_auipc_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:50:49 [insn_auipc_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:50:49 [insn_auipc_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:50:49 [insn_auipc_ch1] summary: engine_0 did not produce any traces\nSBY  7:50:49 [insn_auipc_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_beq_ch0",
+      "status_file": "PASS 0 3\n",
+      "log": "SBY  7:50:55 [insn_beq_ch0] engine_0: Status returned by engine: pass\nSBY  7:50:55 [insn_beq_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:50:55 [insn_beq_ch0] summary: engine_0 did not produce any traces\nSBY  7:50:55 [insn_beq_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_beq_ch1",
+      "status_file": "ERROR 16 2\n",
+      "log": "SBY  7:50:54 [insn_beq_ch1] engine_0: ##   0:00:03  Status: PREUNSAT\nSBY  7:50:54 [insn_beq_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:50:54 [insn_beq_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:50:54 [insn_beq_ch1] summary: engine_0 did not produce any traces\nSBY  7:50:54 [insn_beq_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_bge_ch0",
+      "status_file": "PASS 0 3\n",
+      "log": "SBY  7:50:57 [insn_bge_ch0] engine_0: Status returned by engine: pass\nSBY  7:50:57 [insn_bge_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:50:57 [insn_bge_ch0] summary: engine_0 did not produce any traces\nSBY  7:50:57 [insn_bge_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_bge_ch1",
+      "status_file": "ERROR 16 2\n",
+      "log": "SBY  7:50:57 [insn_bge_ch1] engine_0: ##   0:00:01  Status: PREUNSAT\nSBY  7:50:57 [insn_bge_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:50:57 [insn_bge_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:50:57 [insn_bge_ch1] summary: engine_0 did not produce any traces\nSBY  7:50:57 [insn_bge_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_bgeu_ch0",
+      "status_file": "PASS 0 3\n",
+      "log": "SBY  7:51:00 [insn_bgeu_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:00 [insn_bgeu_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:00 [insn_bgeu_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:00 [insn_bgeu_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_bgeu_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:50:59 [insn_bgeu_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:50:59 [insn_bgeu_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:50:59 [insn_bgeu_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:50:59 [insn_bgeu_ch1] summary: engine_0 did not produce any traces\nSBY  7:50:59 [insn_bgeu_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_blt_ch0",
+      "status_file": "PASS 0 3\n",
+      "log": "SBY  7:51:02 [insn_blt_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:02 [insn_blt_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:02 [insn_blt_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:02 [insn_blt_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_blt_ch1",
+      "status_file": "ERROR 16 2\n",
+      "log": "SBY  7:51:01 [insn_blt_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:01 [insn_blt_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:01 [insn_blt_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:01 [insn_blt_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:01 [insn_blt_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_bltu_ch0",
+      "status_file": "PASS 0 3\n",
+      "log": "SBY  7:51:04 [insn_bltu_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:04 [insn_bltu_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:04 [insn_bltu_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:04 [insn_bltu_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_bltu_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:04 [insn_bltu_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:04 [insn_bltu_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:04 [insn_bltu_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:04 [insn_bltu_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:04 [insn_bltu_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_bne_ch0",
+      "status_file": "PASS 0 3\n",
+      "log": "SBY  7:51:06 [insn_bne_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:06 [insn_bne_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:06 [insn_bne_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:06 [insn_bne_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_bne_ch1",
+      "status_file": "ERROR 16 2\n",
+      "log": "SBY  7:51:06 [insn_bne_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:06 [insn_bne_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:06 [insn_bne_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:06 [insn_bne_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:06 [insn_bne_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_div_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:09 [insn_div_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:09 [insn_div_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:09 [insn_div_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:09 [insn_div_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_div_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:08 [insn_div_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:08 [insn_div_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:08 [insn_div_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:08 [insn_div_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:08 [insn_div_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_divu_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:10 [insn_divu_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:10 [insn_divu_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:10 [insn_divu_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:10 [insn_divu_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_divu_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:10 [insn_divu_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:10 [insn_divu_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:10 [insn_divu_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:10 [insn_divu_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:10 [insn_divu_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_jal_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:12 [insn_jal_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:12 [insn_jal_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:12 [insn_jal_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:12 [insn_jal_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_jal_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:11 [insn_jal_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:11 [insn_jal_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:11 [insn_jal_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:11 [insn_jal_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:11 [insn_jal_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_jalr_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:14 [insn_jalr_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:14 [insn_jalr_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:14 [insn_jalr_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:14 [insn_jalr_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_jalr_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:13 [insn_jalr_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:13 [insn_jalr_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:13 [insn_jalr_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:13 [insn_jalr_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:13 [insn_jalr_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_lb_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:16 [insn_lb_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:16 [insn_lb_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:16 [insn_lb_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:16 [insn_lb_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_lb_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:15 [insn_lb_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:15 [insn_lb_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:15 [insn_lb_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:15 [insn_lb_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:15 [insn_lb_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_lbu_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:17 [insn_lbu_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:17 [insn_lbu_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:17 [insn_lbu_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:17 [insn_lbu_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_lbu_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:17 [insn_lbu_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:17 [insn_lbu_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:17 [insn_lbu_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:17 [insn_lbu_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:17 [insn_lbu_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_lh_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:19 [insn_lh_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:19 [insn_lh_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:19 [insn_lh_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:19 [insn_lh_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_lh_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:18 [insn_lh_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:18 [insn_lh_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:18 [insn_lh_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:18 [insn_lh_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:18 [insn_lh_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_lhu_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:21 [insn_lhu_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:21 [insn_lhu_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:21 [insn_lhu_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:21 [insn_lhu_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_lhu_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:20 [insn_lhu_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:20 [insn_lhu_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:20 [insn_lhu_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:20 [insn_lhu_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:20 [insn_lhu_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_lui_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:21 [insn_lui_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:21 [insn_lui_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:21 [insn_lui_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:21 [insn_lui_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_lui_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:22 [insn_lui_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:22 [insn_lui_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:22 [insn_lui_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:22 [insn_lui_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:22 [insn_lui_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_lw_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:23 [insn_lw_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:23 [insn_lw_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:23 [insn_lw_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:23 [insn_lw_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_lw_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:22 [insn_lw_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:22 [insn_lw_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:22 [insn_lw_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:22 [insn_lw_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:22 [insn_lw_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_mul_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:24 [insn_mul_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:24 [insn_mul_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:24 [insn_mul_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:24 [insn_mul_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_mul_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:24 [insn_mul_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:24 [insn_mul_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:24 [insn_mul_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:24 [insn_mul_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:24 [insn_mul_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_mulh_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:25 [insn_mulh_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:25 [insn_mulh_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:25 [insn_mulh_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:25 [insn_mulh_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_mulh_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:25 [insn_mulh_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:25 [insn_mulh_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:25 [insn_mulh_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:25 [insn_mulh_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:25 [insn_mulh_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_mulhsu_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:29 [insn_mulhsu_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:29 [insn_mulhsu_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:29 [insn_mulhsu_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:29 [insn_mulhsu_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_mulhsu_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:29 [insn_mulhsu_ch1] engine_0: ##   0:00:03  Status: PREUNSAT\nSBY  7:51:29 [insn_mulhsu_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:29 [insn_mulhsu_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:29 [insn_mulhsu_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:29 [insn_mulhsu_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_mulhu_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:30 [insn_mulhu_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:30 [insn_mulhu_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:30 [insn_mulhu_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:30 [insn_mulhu_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_mulhu_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:30 [insn_mulhu_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:30 [insn_mulhu_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:30 [insn_mulhu_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:30 [insn_mulhu_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:30 [insn_mulhu_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_or_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:31 [insn_or_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:31 [insn_or_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:31 [insn_or_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:31 [insn_or_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_or_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:31 [insn_or_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:31 [insn_or_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:31 [insn_or_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:31 [insn_or_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:31 [insn_or_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_ori_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:32 [insn_ori_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:32 [insn_ori_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:32 [insn_ori_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:32 [insn_ori_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_ori_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:33 [insn_ori_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:33 [insn_ori_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:33 [insn_ori_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:33 [insn_ori_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:33 [insn_ori_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_rem_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:34 [insn_rem_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:34 [insn_rem_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:34 [insn_rem_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:34 [insn_rem_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_rem_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:34 [insn_rem_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:34 [insn_rem_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:34 [insn_rem_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:34 [insn_rem_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:34 [insn_rem_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_remu_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:35 [insn_remu_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:35 [insn_remu_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:35 [insn_remu_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:35 [insn_remu_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_remu_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:35 [insn_remu_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:35 [insn_remu_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:35 [insn_remu_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:35 [insn_remu_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:35 [insn_remu_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_sb_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:36 [insn_sb_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:36 [insn_sb_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:36 [insn_sb_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:36 [insn_sb_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_sb_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:36 [insn_sb_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:36 [insn_sb_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:36 [insn_sb_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:36 [insn_sb_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:36 [insn_sb_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_sh_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:37 [insn_sh_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:37 [insn_sh_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:37 [insn_sh_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:37 [insn_sh_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_sh_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:37 [insn_sh_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:37 [insn_sh_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:37 [insn_sh_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:37 [insn_sh_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:37 [insn_sh_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_sll_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:38 [insn_sll_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:38 [insn_sll_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:38 [insn_sll_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:38 [insn_sll_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_sll_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:37 [insn_sll_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:37 [insn_sll_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:37 [insn_sll_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:37 [insn_sll_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:37 [insn_sll_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_slli_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:39 [insn_slli_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:39 [insn_slli_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:39 [insn_slli_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:39 [insn_slli_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_slli_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:38 [insn_slli_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:38 [insn_slli_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:38 [insn_slli_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:38 [insn_slli_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:38 [insn_slli_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_slt_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:39 [insn_slt_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:39 [insn_slt_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:39 [insn_slt_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:39 [insn_slt_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_slt_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:39 [insn_slt_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:39 [insn_slt_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:39 [insn_slt_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:39 [insn_slt_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:39 [insn_slt_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_slti_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:40 [insn_slti_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:40 [insn_slti_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:40 [insn_slti_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:40 [insn_slti_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_slti_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:40 [insn_slti_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:40 [insn_slti_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:40 [insn_slti_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:40 [insn_slti_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:40 [insn_slti_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_sltiu_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:41 [insn_sltiu_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:41 [insn_sltiu_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:41 [insn_sltiu_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:41 [insn_sltiu_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_sltiu_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:41 [insn_sltiu_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:41 [insn_sltiu_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:41 [insn_sltiu_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:41 [insn_sltiu_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:41 [insn_sltiu_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_sltu_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:42 [insn_sltu_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:42 [insn_sltu_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:42 [insn_sltu_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:42 [insn_sltu_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_sltu_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:42 [insn_sltu_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:42 [insn_sltu_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:42 [insn_sltu_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:42 [insn_sltu_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:42 [insn_sltu_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_sra_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:43 [insn_sra_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:43 [insn_sra_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:43 [insn_sra_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:43 [insn_sra_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_sra_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:42 [insn_sra_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:42 [insn_sra_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:42 [insn_sra_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:42 [insn_sra_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:42 [insn_sra_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_srai_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:44 [insn_srai_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:44 [insn_srai_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:44 [insn_srai_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:44 [insn_srai_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_srai_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:43 [insn_srai_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:43 [insn_srai_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:43 [insn_srai_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:43 [insn_srai_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:43 [insn_srai_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_srl_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:44 [insn_srl_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:44 [insn_srl_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:44 [insn_srl_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:44 [insn_srl_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_srl_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:44 [insn_srl_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:44 [insn_srl_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:44 [insn_srl_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:44 [insn_srl_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:44 [insn_srl_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_srli_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:45 [insn_srli_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:45 [insn_srli_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:45 [insn_srli_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:45 [insn_srli_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_srli_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:45 [insn_srli_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:45 [insn_srli_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:45 [insn_srli_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:45 [insn_srli_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:45 [insn_srli_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_sub_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:46 [insn_sub_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:46 [insn_sub_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:46 [insn_sub_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:46 [insn_sub_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_sub_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:46 [insn_sub_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:46 [insn_sub_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:46 [insn_sub_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:46 [insn_sub_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:46 [insn_sub_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_sw_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:47 [insn_sw_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:47 [insn_sw_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:47 [insn_sw_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:47 [insn_sw_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_sw_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:47 [insn_sw_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:47 [insn_sw_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:47 [insn_sw_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:47 [insn_sw_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:47 [insn_sw_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_xor_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:48 [insn_xor_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:48 [insn_xor_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:48 [insn_xor_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:48 [insn_xor_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_xor_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:47 [insn_xor_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:47 [insn_xor_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:47 [insn_xor_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:47 [insn_xor_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:47 [insn_xor_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "insn_xori_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:51:48 [insn_xori_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:48 [insn_xori_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:48 [insn_xori_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:48 [insn_xori_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "insn_xori_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:51:48 [insn_xori_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:51:48 [insn_xori_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:51:48 [insn_xori_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:51:48 [insn_xori_ch1] summary: engine_0 did not produce any traces\nSBY  7:51:48 [insn_xori_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "liveness_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:50:33 [liveness_ch0] engine_0: Status returned by engine: pass\nSBY  7:50:33 [liveness_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:50:33 [liveness_ch0] summary: engine_0 did not produce any traces\nSBY  7:50:33 [liveness_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "liveness_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:50:32 [liveness_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:50:32 [liveness_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:50:32 [liveness_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:50:32 [liveness_ch1] summary: engine_0 did not produce any traces\nSBY  7:50:32 [liveness_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "pc_bwd_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:50:34 [pc_bwd_ch0] engine_0: Status returned by engine: pass\nSBY  7:50:34 [pc_bwd_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:50:34 [pc_bwd_ch0] summary: engine_0 did not produce any traces\nSBY  7:50:34 [pc_bwd_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "pc_bwd_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:50:34 [pc_bwd_ch1] engine_0: ##   0:00:00  Status: PREUNSAT\nSBY  7:50:34 [pc_bwd_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:50:34 [pc_bwd_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:50:34 [pc_bwd_ch1] summary: engine_0 did not produce any traces\nSBY  7:50:34 [pc_bwd_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "pc_fwd_ch0",
+      "status_file": "PASS 0 3\n",
+      "log": "SBY  7:50:36 [pc_fwd_ch0] engine_0: Status returned by engine: pass\nSBY  7:50:36 [pc_fwd_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:50:36 [pc_fwd_ch0] summary: engine_0 did not produce any traces\nSBY  7:50:36 [pc_fwd_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "pc_fwd_ch1",
+      "status_file": "ERROR 16 2\n",
+      "log": "SBY  7:50:36 [pc_fwd_ch1] engine_0: ##   0:00:01  Status: PREUNSAT\nSBY  7:50:36 [pc_fwd_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:50:36 [pc_fwd_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:50:36 [pc_fwd_ch1] summary: engine_0 did not produce any traces\nSBY  7:50:36 [pc_fwd_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "reg_ch0",
+      "status_file": "PASS 0 60\n",
+      "log": "SBY  7:51:35 [reg_ch0] engine_0: Status returned by engine: pass\nSBY  7:51:35 [reg_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:51:35 [reg_ch0] summary: engine_0 did not produce any traces\nSBY  7:51:35 [reg_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "reg_ch1",
+      "status_file": "ERROR 16 1\n",
+      "log": "SBY  7:50:37 [reg_ch1] engine_0: ##   0:00:01  Status: PREUNSAT\nSBY  7:50:37 [reg_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:50:37 [reg_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:50:37 [reg_ch1] summary: engine_0 did not produce any traces\nSBY  7:50:37 [reg_ch1] DONE (ERROR, rc=16)\n"
+    },
+    {
+      "name": "unique_ch0",
+      "status_file": "PASS 0 2\n",
+      "log": "SBY  7:50:38 [unique_ch0] engine_0: Status returned by engine: pass\nSBY  7:50:38 [unique_ch0] summary: engine_0 (smtbmc bitwuzla) returned pass\nSBY  7:50:38 [unique_ch0] summary: engine_0 did not produce any traces\nSBY  7:50:38 [unique_ch0] DONE (PASS, rc=0)\n"
+    },
+    {
+      "name": "unique_ch1",
+      "status_file": "ERROR 16 2\n",
+      "log": "SBY  7:50:39 [unique_ch1] engine_0: ##   0:00:01  Status: PREUNSAT\nSBY  7:50:39 [unique_ch1] engine_0: Status returned by engine: ERROR\nSBY  7:50:39 [unique_ch1] summary: engine_0 (smtbmc bitwuzla) returned ERROR\nSBY  7:50:39 [unique_ch1] summary: engine_0 did not produce any traces\nSBY  7:50:39 [unique_ch1] DONE (ERROR, rc=16)\n"
+    }
+  ]
+}

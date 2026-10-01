@@ -1,15 +1,15 @@
 import {mkdir,writeFile,readFile} from 'node:fs/promises';
 import {join,resolve} from 'node:path';
 import {createHweDeps,hweCall} from './hwe.js';
-import {linuxPath} from './programbench.js';
+import {linuxPath} from './wsl-path.js';
 import {execute} from './process.js';
 import {sumUsage} from './research-summary.js';
 import {hash} from './provenance.js';
-import {ResearchConfigSchema,type ResearchConfig,type Evidence} from './research-loop.js';
+import {ResearchConfigSchema,verificationHasInfrastructureError,type ResearchConfig,type Evidence} from './research-loop.js';
 
 /** A usage/quota or verifier interruption is an infrastructure failure, not a task outcome. */
 export function nativeArmStatus(error:string|undefined,evidence:Evidence|undefined):'completed'|'error'{
- return error||evidence?.status==='error'?'error':'completed';
+ return error||verificationHasInfrastructureError(evidence)?'error':'completed';
 }
 export async function runNativeHwe(root:string,config:ResearchConfig,signal:AbortSignal){
  config=ResearchConfigSchema.parse(config);

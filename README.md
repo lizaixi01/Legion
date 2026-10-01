@@ -52,6 +52,8 @@ npm run dist        # 构建 Windows 安装包到 dist-release/
 
 ### 可恢复工程任务
 
+管理核心、领域验收与 benchmark 的代码边界见 [架构说明](docs/architecture-boundaries.md)。HWE 作为宿主任务能力接入，候选循环和主会话核心可在没有 HWE 工具链的离线环境中验证。
+
 桌面新聊天中选择项目并开启“工程任务”，审核 Manager 提出的需求与测试后执行。安全暂停后可在原任务恢复；旧版本记录仅供查看历史。运行离线恢复演示：`npm run demo:resume`（不调用模型）。CLI、预算、验收与恢复限制见 [恢复设计说明](docs/resumable-engineering.md)。
 
 ### Codex runtime for local Legion

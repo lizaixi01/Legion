@@ -18,7 +18,8 @@ export const ProgramBenchConfig=z.object({
   attemptMs:z.number().int().min(1000).max(1200000).default(480000),
   totalMs:z.number().int().min(1000).max(7200000).default(1800000),
 }).strict();
-export function linuxPath(path:string){const match=/^([A-Za-z]):[\\/](.*)$/.exec(path);return match?'/mnt/'+match[1]!.toLowerCase()+'/'+match[2]!.replaceAll('\\','/'):path;}
+export {linuxPath} from './wsl-path.js';
+import {linuxPath} from './wsl-path.js';
 export async function runProgramBench(input:unknown,signal:AbortSignal){
  const config=ProgramBenchConfig.parse(input),root=resolve('.runs','programbench-'+randomUUID());
  const bridge=linuxPath(join(root,'adapter','bridge.py'));
@@ -33,7 +34,7 @@ export async function runProgramBench(input:unknown,signal:AbortSignal){
   return {logs,result};
  };
  const adapter:ExecutionAdapter={
-  prepare:async abort=>{await mkdir(join(root,'adapter'));for(const file of ['bridge.py','model_proxy.py','relay.py'])await copyFile(resolve('scripts/programbench',file),join(root,'adapter',file));const {logs}=await command('prepare',{},300000,abort);return JSON.parse(await readFile(join(logs,'stdout.jsonl'),'utf8'));},
+  prepare:async abort=>{await mkdir(join(root,'adapter'));for(const file of ['bridge.py','model_proxy.py','relay.py'])await copyFile(resolve(file==='model_proxy.py'?'scripts/runtime':'scripts/programbench',file),join(root,'adapter',file));const {logs}=await command('prepare',{},300000,abort);return JSON.parse(await readFile(join(logs,'stdout.jsonl'),'utf8'));},
   worker:async(request)=>{
    const start=Date.now();
    try{
