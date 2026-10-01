@@ -14,7 +14,7 @@
 
 ## 开发位置与允许的工作
 
-从同一提交建立单独开发 worktree，使用独立 `codex/` 分支。当前文档 worktree 为 `C:/Users/HUAWEI/.codex/worktrees/experiment-docs/Proactive Agent`，分支 `codex/update-experiment-docs`；这是本机位置，不是跨机器安装要求。原检出和实验副本保持原版本。
+从同一提交建立单独开发 worktree，使用独立 `codex/` 分支。文档 worktree 为 `C:/Users/HUAWEI/.codex/worktrees/experiment-docs/Proactive Agent`，文档提交位于 `codex/update-experiment-docs`；后续 benchmark 故障修复复用同一工作树，在 `codex/benchmark-reliability` 开发。这是本机位置，不是跨机器安装要求。原检出和实验副本保持原版本。
 
 文档、接口设计和源码编辑可以在开发 worktree 进行。需要测试或构建时，先为该 worktree 准备独立依赖、输出与临时数据，确认测试不调用真实模型、HWE 工具链或全局配置；使用小范围离线测试。当前文档更新只做内容、链接和归档数值核对，不安装依赖、不运行模型或硬件验证。
 

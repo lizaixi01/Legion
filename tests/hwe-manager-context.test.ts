@@ -34,7 +34,7 @@ async function fixture(){
 function manager(root:string,onReceived:(received:Received,ctxPrompt:ResearchContext)=>ResearchDecision|Promise<ResearchDecision>){
  let calls=0;const receipts:Received[]=[];
  const call:typeof hweCall=async(action,dir,_owner,payload,timeoutMs,signal)=>{
-  calls++;assert.equal(action,'worker');assert.equal(payload.seconds,300);assert.equal(timeoutMs,900000);assert.equal(payload.model,config.manager.model);assert.ok(!signal?.aborted);
+  calls++;assert.equal(action,'worker');assert.ok(Number(payload.seconds)>0&&Number(payload.seconds)<=60);assert.ok(timeoutMs>0&&timeoutMs<=60000);assert.equal(payload.model,config.manager.model);assert.ok(!signal?.aborted);
   const input=payload.managerContext as {input:string;output:string;sha256:string};
   assert.equal(input.input,linuxPath(join(dir,'manager-context-input')));assert.equal(input.output,linuxPath(join(dir,'manager-context')));
   // Translate only the known fixture paths. The production call continues to use WSL paths.

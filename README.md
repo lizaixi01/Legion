@@ -47,6 +47,8 @@ legion --help         全部用法
 
 下一批优先做代码工程任务，先开发试跑，再冻结 20–30 个未参与调优的任务。[三臂协议草案](docs/three-arm-engineering-protocol.md)和[试跑任务清单](docs/engineering-pilot-tasks.md)尚未成为已完成的实验。离线报告工具区分终局成绩、执行状态、基础设施失败、未知用量和重试成本；使用方式见协议。
 
+当前开发重点为 benchmark、结果归因与可用版迭代，平台发放在可用版之后。优先级、已有故障修复和可用性建议门槛见[迭代计划](docs/benchmark-development-plan.md)。
+
 普通聊天已有双后端委派；Command Code 的工具能力目前比 Codex 窄。工程 DAG、持续目标与 HWE 候选研究循环仍有不同入口和验收范围。桌面观察、主动建议、关闭应用后常驻执行和多日可靠性尚未实现或验证。源码已经使用 Git；Worker 候选仍主要使用复制目录和内容哈希，尚未统一为 Git worktree / commit 验收。
 
 ## 开发

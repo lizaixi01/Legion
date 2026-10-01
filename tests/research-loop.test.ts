@@ -98,3 +98,14 @@ test('formal timeout remains undetermined and stops without spending another all
  const s=await runResearch(f.root,config,f.deps,new AbortController().signal);
  assert.equal(s.status,'error');assert.equal(calls,1);assert.equal(s.candidates[0]!.status,'error');assert.equal(s.candidates[0]!.evidence!.status,'timeout');assert.equal(s.best,'baseline');
 });
+
+test('resume cannot silently change a frozen Manager decision limit',async()=>{
+ const f=await fixture(),frozen={...config,manager:{...config.manager,timeoutSeconds:600}};
+ f.deps.decide=async(_ctx,dir)=>{await writeFile(join(dir,'attempt-marker.txt'),'First failed decision');throw Error('Fixture interrupted before allocation');};
+ const state=await runResearch(f.root,frozen,f.deps,new AbortController().signal);assert.equal(state.status,'error');assert.equal(state.config.manager.timeoutSeconds,600);
+ let calls=0;f.deps.decide=async(ctx,dir)=>{calls++;assert.notEqual(dir,join(f.root,'round-1-0'));assert.ok(ctx.remainingMs<=config.totalMs-state.spentMs);assert.equal(ctx.remainingWorkers,config.maxWorkers);return {action:'finish',reason:'Fixture',hypotheses:[],discard:[]};};
+ await assert.rejects(runResearch(f.root,{...frozen,manager:{...frozen.manager,timeoutSeconds:900}},f.deps,new AbortController().signal,true),/Resume configuration changed/);assert.equal(calls,0);
+ const resumed=await runResearch(f.root,frozen,f.deps,new AbortController().signal,true);assert.equal(resumed.status,'completed',resumed.error??'');assert.equal(calls,1);assert.equal(resumed.config.manager.timeoutSeconds,600);
+ assert.equal(await readFile(join(f.root,'round-1-0','attempt-marker.txt'),'utf8'),'First failed decision');
+ const events=(await readFile(join(f.root,'events.jsonl'),'utf8')).trim().split('\n').map(line=>JSON.parse(line));const attempts=events.filter(event=>event.type==='decision_started');assert.equal(attempts.length,2);assert.notEqual(attempts[0].data.directory,attempts[1].data.directory);
+});
