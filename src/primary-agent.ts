@@ -42,8 +42,20 @@ export async function createPrimaryTasks(root:string,directory:string,project:st
  const maxCalls=Math.min(64,mode==='off'?0:options.delegation?.maxWorkers??64);
  const capacity=()=>({limit,active:active.size,maxCalls,totalCalls:calls,totalRemaining:64-calls,remainingCalls:Math.max(0,Math.min(64-calls,maxCalls-workerCalls,budget?.remaining('worker')??maxCalls)),available:closed||signal?.aborted||Date.now()>=deadline||calls>=64||workerCalls>=maxCalls||budget?.remaining('worker')===0?0:Math.max(0,limit-active.size),deadline});
  const path=(id:string)=>{z.string().uuid().parse(id);return join(directory,id);};
- const save=async(r:RecordEntry)=>{const p=join(path(r.id),'task.json');await writeFile(p+'.tmp',JSON.stringify(r,null,2));await rename(p+'.tmp',p);};
- const read=async(id:string)=>{const r=JSON.parse(await readFile(join(path(id),'task.json'),'utf8')) as RecordEntry;if(r.status==='running'&&!active.has(id))return {...r,status:'interrupted',history:r.history?.map(a=>a.status==='running'?{...a,status:'interrupted'}:a),detail:'Unknown prior execution; inspect logs before starting a new task.'};return r;};
+ const revisions=new Map<string,number>();
+ const save=async(r:RecordEntry)=>{const p=join(path(r.id),'task.json');await writeFile(p+'.tmp',JSON.stringify(r,null,2));await rename(p+'.tmp',p);revisions.set(r.id,(revisions.get(r.id)??0)+1);};
+ const read=async(id:string)=>{
+  for(;;){
+   const slot=active.get(id),revision=revisions.get(id);
+   const r=JSON.parse(await readFile(join(path(id),'task.json'),'utf8')) as RecordEntry;
+   // An in-flight read can return bytes from before the final atomic rename.
+   // Re-read if this task committed or changed executions during I/O, rather
+   // than classifying stale running bytes against an already released slot.
+   if(slot!==active.get(id)||revision!==revisions.get(id))continue;
+   if(r.status==='running'&&!slot)return {...r,status:'interrupted',history:r.history?.map(a=>a.status==='running'?{...a,status:'interrupted'}:a),detail:'Unknown prior execution; inspect logs before starting a new task.'};
+   return r;
+  }
+ };
  const launch=async(r:RecordEntry,prompt:string)=>{
   if(closed||signal?.aborted||Date.now()>=deadline)throw Error('Parent turn has stopped');
   if(!limit||active.size>=limit||calls>=64||workerCalls>=maxCalls||budget?.remaining('worker')===0)throw Error('Delegation disabled or turn capacity exhausted');

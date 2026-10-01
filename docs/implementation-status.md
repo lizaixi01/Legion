@@ -527,3 +527,13 @@ Worker 派发新增可选结构化契约、输入哈希和 30–1800 秒单次�
 约束：验证器必须遵守 AbortSignal 以停止其外部副作用；宿主可拒绝超时结果，但不能撤回不合作的第三方代码已产生的副作用。原始执行日志保留完整证据，GUI 只保留有界进度和回复预览。正式 benchmark 应从包含本轮修复的新快照启动，先运行 preflight；本轮离线回归不能替代真实模型的 benchmark 结果。
 
 HWE 启动前复验：node --import tsx src/research-cli.ts preflight 返回 matches=true、baselineMatches=true、differences=[]，证据 .local/hwe-preflight-after-stability-fixes.json。未启动候选执行或评分。
+
+## 2026-10-01：子任务完成与状态读取竞争
+
+Command Code 报告全套并发测试中 batch wait 偶发将 completed 显示为 interrupted。本轮修改前完整套件 307/307 通过（.local/wait-race-before.log），因此没有复现其原测试的失败；随后使用独立 Node 子进程控制真实文件读取的返回时序，稳定复现同类缺陷：旧 running 字节返回时，完成或取消已落盘、active 槽已释放，read 错误报告 interrupted。续跑还可能返回上一轮的 completed。
+
+读取现在同时捕获任务写盘版本和执行槽对象，I/O 后任一变化就重读；版本只在原子 rename 成功后递增，读者始终使用落盘记录，不把内存中的 Worker 回复当作完成证据。记录格式和公开接口不变。真实孤立 running、最终 rename 失败仍报告 interrupted；没有自动重跑或绕过验收。读取期间取消一个已完成任务也会看到新的 cancelled，避免 active 前后均为空时漏掉状态变化。
+
+新增 7 项离线回归，覆盖单任务读取、批量等待、在运行时取消、完成后取消、续跑、孤立记录和最终写盘失败。故障注入隔离在子进程，设有明确超时；没有依赖睡眠碰撞时序，也没有调用模型。
+
+两轮完整并发套件均为 314/314 通过（.local/wait-race-after-full-1.log、.local/wait-race-after-full-2.log），类型检查和构建通过。修复仅在开发目录，冻结实验目录和 benchmark 规则未改动。

@@ -1,5 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
+import {execFile} from 'node:child_process';
+import {promisify} from 'node:util';
 import {mkdtemp} from 'node:fs/promises';
 import {join} from 'node:path';
 import {tmpdir} from 'node:os';
@@ -20,4 +22,14 @@ test('batch wait wakes on the first finished worker and capacity reflects remain
   await assert.rejects(tasks.call('legion_tasks',{action:'cancel',ids:[a.id]}),/only valid/);
   release.get(a.id)!();await tasks.call('legion_tasks',{action:'wait',id:a.id});
  }finally{for(const done of release.values())done();await tasks.close();}
+});
+
+for(const mode of ['read','batch','cancel','completed-cancel','continue','orphan','save-failure'])test(`task ${mode} status stays consistent across an in-flight disk read`,{timeout:20000},async()=>{
+ const root=await mkdtemp(join(tmpdir(),'primary-wait-race-'));
+ const {stdout}=await promisify(execFile)(process.execPath,['--unhandled-rejections=strict','--import','tsx','tests/fixtures/task-read-race.ts',root,mode],{timeout:15000,windowsHide:true});
+ const result=JSON.parse(stdout.trim()) as {statuses:string[];diskStatus:string;injected:boolean};
+ const expected=mode==='cancel'||mode==='completed-cancel'?['cancelled']:mode==='continue'?['running']:mode==='orphan'||mode==='save-failure'?['interrupted']:mode==='batch'?['completed','completed']:['completed'];
+ assert.deepEqual(result.statuses,expected);
+ assert.equal(result.diskStatus,expected[0]==='interrupted'?'running':expected[0]);
+ assert.equal(result.injected,mode!=='orphan');
 });
