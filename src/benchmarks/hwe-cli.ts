@@ -11,9 +11,10 @@ import {researchSummary} from '../research-summary.js';
 import {runOrdinaryHwe} from '../hwe-ordinary.js';
 import {runNativeHwe} from '../hwe-native.js';
 import {applyRunDeadline} from '../run-deadline.js';
+import {createFixedHweDeps,compareFixedHweRuns} from './hwe-queue-replay.js';
 const [action,arg]=process.argv.slice(2);const controller=new AbortController();process.on('SIGINT',()=>controller.abort());process.on('SIGTERM',()=>controller.abort());
 applyRunDeadline(controller,process.env.PROACTIVE_RUN_DEADLINE);
-export const defaultResearchConfig:ResearchConfig={goal:'Improve the frozen RV32IM baseline CoreMark fitness while preserving all correctness gates. Explore distinct focused microarchitectural hypotheses; report LUT4 area and frequency tradeoffs.',maxRounds:3,maxWorkers:6,concurrency:2,totalMs:21600000,manager:{model:'gpt-6-sol',effort:'high'},worker:{model:'gpt-6-sol',effort:'medium'}};
+export const defaultResearchConfig:ResearchConfig={goal:'Improve the frozen RV32IM baseline CoreMark fitness while preserving all correctness gates. Explore distinct focused microarchitectural hypotheses; report LUT4 area and frequency tradeoffs.',maxRounds:3,maxWorkers:6,concurrency:2,verificationConcurrency:2,totalMs:21600000,manager:{model:'gpt-6-sol',effort:'high'},worker:{model:'gpt-6-sol',effort:'medium'}};
 /** Maintenance/test seam: when set, arms resolve dependencies from the given ESM module. */
 async function injectedDeps(root:string,config:ResearchConfig):Promise<ResearchDeps|undefined>{
  const module=process.env.PROACTIVE_ARM_DEPS;if(!module)return undefined;
@@ -45,10 +46,17 @@ if(action==='preflight'){
  const root=resolve('.runs',action+'-'+randomUUID());const config=arg?JSON.parse(await readFile(resolve(arg),'utf8')):defaultResearchConfig;
  await mkdir(resolve('.local/hwe-execution'),{recursive:true});const release=await lockWorkspace(resolve('.local/hwe-execution'),root);
  try{console.log(root);const result=action==='ordinary'?await runOrdinaryHwe(root,config,1800,controller.signal,await injectedDeps(root,config)):await runNativeHwe(root,config,controller.signal);console.log(JSON.stringify({status:result.status,error:result.error,wallMs:result.wallMs,tokens:result.tokens}));if(result.status==='error')process.exitCode=1;}finally{await release();}
+}else if(action==='compare-queue'){
+ const parallel=process.argv[4];if(!arg||!parallel)throw Error('Usage: research compare-queue <serial-run> <parallel-run>');const comparison=await compareFixedHweRuns(resolve(arg),resolve(parallel));console.log(JSON.stringify(comparison,null,2));if(!comparison.complete||!comparison.consistent)process.exitCode=1;
+}else if(action==='verify-queue'){
+ const concurrency=Number(process.argv[4]);if(!arg||concurrency!==1&&concurrency!==2)throw Error('Usage: research verify-queue <historical-batch> <1|2>');
+ const root=resolve('.runs','verification-queue-'+randomUUID()),config:ResearchConfig={...defaultResearchConfig,goal:'Replay five fixed HWE snapshots through the product verification queue; no model calls',maxRounds:2,maxWorkers:5,concurrency:4,verificationConcurrency:concurrency};
+ await mkdir(resolve('.local/hwe-execution'),{recursive:true});const release=await lockWorkspace(resolve('.local/hwe-execution'),root);
+ try{const deps=await createFixedHweDeps(root,config,resolve(arg));console.log(root);const state=await runResearch(root,config,deps,controller.signal);await researchSummary(root,state);const complete=state.status==='budget'&&state.candidates.length===5&&state.candidates.every(c=>['verified','rejected'].includes(c.status));console.log(JSON.stringify({status:state.status,complete,best:state.best,cleanup:state.cleanup,error:state.error}));if(!complete)process.exitCode=1;}finally{await release();}
 }else if(action==='run'||action==='resume'){
  const root=action==='resume'?resolve(arg!):resolve('.runs','research-'+randomUUID());const config=action==='resume'?JSON.parse(await readFile(join(root,'state.json'),'utf8')).config:arg?JSON.parse(await readFile(resolve(arg),'utf8')):defaultResearchConfig;
  await mkdir(resolve('.local/hwe-execution'),{recursive:true});const release=await lockWorkspace(resolve('.local/hwe-execution'),root);
- try{console.log(root);const state=await runResearch(root,config,createHweDeps(root,config),controller.signal,action==='resume');console.log(JSON.stringify({status:state.status,best:state.best,error:state.error}));await researchSummary(root);if(state.status==='error')process.exitCode=1;}finally{await release();}
+ try{console.log(root);const state=await runResearch(root,config,createHweDeps(root,config),controller.signal,action==='resume');console.log(JSON.stringify({status:state.status,best:state.best,error:state.error}));await researchSummary(root,state);if(state.status==='error')process.exitCode=1;}finally{await release();}
 }else if(action==='comparison'){
  // Runs the ordinary arm then the management arm in order; any infrastructure failure stops the queue.
  const config=arg?JSON.parse(await readFile(resolve(arg),'utf8')):defaultResearchConfig;
@@ -62,7 +70,7 @@ if(action==='preflight'){
    try{
     const deps=await injectedDeps(root,config);
     if(step==='ordinary'){const result=await runOrdinaryHwe(root,config,1800,controller.signal,deps);status=result.status;exitCode=status==='error'?1:0;}
-    else{const state=await runResearch(root,config,deps??createHweDeps(root,config),controller.signal,false);await researchSummary(root);status=state.status;exitCode=status==='error'?1:0;}
+    else{const state=await runResearch(root,config,deps??createHweDeps(root,config),controller.signal,false);await researchSummary(root,state);status=state.status;exitCode=status==='error'?1:0;}
    }finally{await release();}
    runs.push({action:step,exitCode,status,directory:root});
    if(exitCode!==0||status==='error')throw Error(step+' infrastructure error; queue stopped');
@@ -70,4 +78,4 @@ if(action==='preflight'){
  }catch(e){phase=e instanceof Error&&e.message==='remaining-time-insufficient'?'remaining-time-insufficient':'needs-investigation';}
  console.log(JSON.stringify({phase,order,runs},null,2));
  if(phase!=='completed')process.exitCode=1;
-}else throw Error('Usage: research-cli.ts readiness | run [config.json] | ordinary [config.json] | native [config.json] | comparison [config.json] | resume <run-directory> | summary <run-directory>');
+}else throw Error('Usage: research-cli.ts preflight | readiness | run [config.json] | ordinary [config.json] | native [config.json] | comparison [config.json] | verify-queue <historical-batch> <1|2> | compare-queue <serial-run> <parallel-run> | resume <run-directory> | summary <run-directory>');

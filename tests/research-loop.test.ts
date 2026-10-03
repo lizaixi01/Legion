@@ -44,7 +44,7 @@ test('a verifier cannot change the accepted snapshot',async()=>{
  const f=await fixture();f.deps.decide=async()=>({action:'experiment',reason:'Try',hypotheses:[h('changed')],discard:[]});
  f.deps.verify=async snapshot=>{await writeFile(snapshot.path,'other design');return evidence(1000);};
  const s=await runResearch(f.root,config,f.deps,new AbortController().signal);
- assert.equal(s.status,'error');assert.equal(s.best,'baseline');assert.match(s.candidates[0]!.evidence!.detail!,/snapshot changed/);
+ assert.equal(s.status,'error');assert.equal(s.best,'baseline');assert.match(s.candidates[0]!.verification!.error!,/snapshot changed/);assert.deepEqual(s.candidates[0]!.evidence,evidence(1000));
 });
 test('resuming an unclean running checkpoint does not replenish elapsed budget',async()=>{
  const f=await fixture();await runResearch(f.root,config,f.deps,new AbortController().signal);

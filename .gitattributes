@@ -1,3 +1,4 @@
 # Preserve the exact bytes of hash-bound archived evidence on every platform.
 /tests/fixtures/hwe-formal/*.json -text whitespace=cr-at-eol
 /tests/fixtures/hwe-formal/*.txt -text whitespace=cr-at-eol
+/scripts/hwe/*.py text eol=lf
