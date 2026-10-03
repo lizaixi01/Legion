@@ -43,6 +43,8 @@ legion --help         全部用法
 
 ## 实验结果与当前边界
 
+[HWE 实验总结与图表（2026-10-03）](docs/hwe-experiment-summary-20261003.md)：深度搜索最终达到 baseline 的 2.99×，历史配对的并行验证加速 1.59×；管理策略 A 的中断恢复结果仅用于探索，A/B 尚不能公平判胜。报告附关键数据和比较限制。
+
 截至 2026-10-01，HWE batch-3 已完成普通 Codex 与管理组的单任务配对运行：管理组最佳候选的公开 CoreMark fitness 高约 27.6%，墙钟时间增加约 75.5%；管理组在配额耗尽时结束，并未收到 Manager 的 finish 决策。gron 的修正后比较则未获得管理收益。方法、失败、成本口径和覆盖限制见[公开实验摘要](docs/experiment-summary.md)及[HWE batch-3](docs/hwe-batch-3-comparison.md)。这些结果不证明普遍成功率或十倍人效。
 
 下一批优先做代码工程任务，先开发试跑，再冻结 20–30 个未参与调优的任务。[三臂协议草案](docs/three-arm-engineering-protocol.md)和[试跑任务清单](docs/engineering-pilot-tasks.md)尚未成为已完成的实验。离线报告工具区分终局成绩、执行状态、基础设施失败、未知用量和重试成本；使用方式见协议。
