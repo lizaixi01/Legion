@@ -14,6 +14,8 @@
 
 开发版普通聊天使用可执行的 Codex app-server 主会话，支持文件上下文、双后端动态委派与历史会话恢复；既有工程 DAG、持续目标与 HWE 专用流程继续兼容。通用入口尚未统一所有强制验收、常驻恢复与桌面观察能力。以下按阶段保留实现记录，每阶段的“下一步”以最新条目为准。
 
+已结束实验的当前结论集中于[公开实验摘要](experiment-summary.md)，包括完成的 [HWE batch-3 配对](hwe-batch-3-comparison.md)、gron 修正结果和 formal 诊断更正。历史条目保留当时记录，不将其中的未完成状态、旧 GUI 入口或旧预算当作全项目当前状态。
+
 ## 初始切片（历史）
 
 实现固定策略而非 LLM manager：启动 Codex → 公开检查 → 明确失败时恢复同会话一次 → 证据包。这个阶段先验证调度、证据与失败语义，不声明已经实现长期多代理管理。
@@ -537,3 +539,272 @@ Command Code 报告全套并发测试中 batch wait 偶发将 completed 显示�
 新增 7 项离线回归，覆盖单任务读取、批量等待、在运行时取消、完成后取消、续跑、孤立记录和最终写盘失败。故障注入隔离在子进程，设有明确超时；没有依赖睡眠碰撞时序，也没有调用模型。
 
 两轮完整并发套件均为 314/314 通过（.local/wait-race-after-full-1.log、.local/wait-race-after-full-2.log），类型检查和构建通过。修复仅在开发目录，冻结实验目录和 benchmark 规则未改动。
+
+## 2026-10-01：HWE batch-3 完成真实配对对照
+
+本机证据位于 `.local/hwe-comparison-batch-3/`（被忽略的实验目录，不随源码发布）。普通组与管理组使用同一冻结 baseline、工具链和公开检查；实现模型均为 gpt-6.1-sol/xhigh，管理模型亦为 gpt-6.1-sol/xhigh。实际 HWE Linux Codex 为 0.157.1，与 Windows 私有运行时 0.159.2 分开记录。旧 batch-2 的未完成状态及旧模型成绩保留，不能与本批次混成配对结果。
+
+- A 普通组：公开检查通过，fitness 113.14 iter/s、Fmax 61.46 MHz、LUT4 7795、周期 5432318；约 34.3 分钟，1 次 Worker，观测总 token 3871107。
+- B 管理组：2 轮/4 Worker 配额用尽（budget），存在通过公开检查的最佳候选 borrow-driven-restoring-divmod；fitness 144.34 iter/s、Fmax 64.83 MHz、LUT4 7356、周期 4491485；约 60.2 分钟，2 次 Manager/4 次 Worker，观测总 token 3384318。
+- B 相对 A 的 fitness +27.6%，墙钟 +75.5%，验证耗时约 4.46 倍。单任务单次、不同总资源，不能识别管理策略的因果贡献或证明人类效率提升。
+- 两组最终候选均由操作方在新容器使用冻结验证器复核，报告记录指标完全复现。后续只读核对源码快照 SHA256 与 result.json 一致：A 3024ad19f24cceffc18fc0b8eebdb7a212c96c42fe1a1ea638d27804c1bd42ca，B 0acbf7d9287f0393ab0c5a754a76736b085ec1afced26ed00598ca5ebfbe0a89；该核对未重跑模型或验证器。
+
+成本解释：A 未缓存输入 160955、输出 31688；B 未缓存输入 276725、输出 54921。总 token 较少不等于费用较低，缺少可靠计费依据时不推算费用。A 的一次导出失败尝试用量 unknown；批次观测总量 7271989 不含未知用量。正式结果之外有基础设施恢复，不能将人工解题介入 0 解释为全程无人维护。
+
+真实运行暴露的边界：opcode-qualified-load-use 的 formal 引擎 ERROR 被冻结分类器记为 fail，不是明确反例，管理决策据此淘汰路线；历史结果不改写，后续需区分反例、引擎错误、超时和覆盖不足。ALTOPS 不覆盖真实乘除法完整正确性；独立复核相同验证器只证明该覆盖范围内的可复现性。候选主要优化乘除法，应另行补独立真实算术与集成检查并报告扩展覆盖结果。
+
+基础设施修复由 Command Code 完成：src/hwe.ts 宿主等待余量从 120 秒增加到 600 秒，容器内实际 Worker/Manager 时限不变；A/B 最终有效运行均采用修复后代码。批次保存探针、故障和修复后 314/314 回归日志。未在本次核对中重复运行代码检查或提交该改动。
+
+## 2026-10-01：HWE formal 分类与证据传递修复
+
+更正上一条对 opcode-qualified-load-use “非明确反例”的描述：逐项核对原始 result.json、classified-result.json、完整 last_run-201.log、trace 与 Manager memory/response 后，105 项中有 52 项正常 PASS、52 项 `_ch1` PREUNSAT（工具返回 ERROR，但既有规则计为空前提通过）及 1 项 `reg_ch0` 明确 FAIL。reg_ch0 原文报告 `Assert failed`，位置 `rvfi_reg_check.sv:42.6-42.59`、step 20，随后报告 `Status returned by engine: FAIL`、counterexample trace 和 `DONE (FAIL, rc=0)`。不是根据 passed=false、退出码或文件名推断反例。该实际候选修复前后都应为 fail/rejected，历史 Manager 的 discard 有独立 FAIL 支持。冻结历史报告仍保留原文；新的归档诊断在 `.local/hwe-classification-diagnostic/diagnosis.json`，原始证据 SHA-256 校验全部一致。
+
+确认的通用缺陷仍存在于原分类链：上游 `formal/run_all.sh` 将非 PASS、非允许的 ch1 PREUNSAT 结果都计入 failed；实际 `tools/eval/formal.py::run_formal` 只返回 passed、计数、首个 failed_check 和 4000 字符尾部，丢失 per-task ERROR/FAIL 区别；本地 evaluate.py 把非 setup/生成错误/timeout 的 passed=false 全部归为 fail；TypeScript 分类器原先只复核 cosim/FPGA；research-loop 将 fail 映射为 rejected，researchContext 将它及原检查传入 Manager，下一轮据此 discard。完整归档说明本例的 ch1 ERROR 被截尾展示时省略了 PREUNSAT 行，历史报告也误读了同时保留的 reg_ch0 FAIL。
+
+修复文件与行为：
+
+- `scripts/hwe/formal_result.py`、`evaluate.py`：在不修改上游 runner、属性、工作负载或门槛的情况下，按本次新建 workdir 的 `.sby` 清单读取每个 SBY status 文件，精确解析对应任务的终态/断言/PREUNSAT，保留原 API 字段与新增 classification；归档每项 status、logfile.txt 和已有 engine 日志。缺失、无效或不一致的关键结果阻止 PASS；显式属性 FAIL 保留，ERROR/UNKNOWN 为 error，未完成期限为 timeout。合法 `_ch1` PREUNSAT 豁免及 >=50 floor 保持不变，并继续记录空前提覆盖限制。
+- `src/hwe-evidence.ts`、`src/hwe.ts`：原 classifyHweEvidence 接口与 Evidence/Candidate 状态类型不变。优先读取结构化逐项工具状态；兼容旧结果时只解析指定失败任务的准确 SBY 记录，不对整个日志做 ERROR 字符串匹配。保留原始字段、日志、诊断和同时存在的反例/异常。PASS 要求所有必需 gates 及有效指标；纯 ERROR/timeout 不获得候选排名或认证。新增模块纳入实现快照，原 600 秒导出余量及 Manager 宿主余量保留。
+- `src/research-loop.ts`、`hwe-ordinary.ts`、`hwe-native.ts`、`primary-hwe-check.ts`：纯异常候选为 error，真实属性失败为 rejected；若 FAIL 与异常或超时并存，FAIL 不被降级，但异常仍触发现有基础设施停止语义。合法 sibling/best、失败证据和已消耗预算保留；只在显式 resume 时传递已有 error/timeout 与诊断，不自动重试、扩展预算或重复派工。宿主失败上下文明确“验证未完成／工具异常”或超时，并保留工具诊断；策略选择继续只接受 verified 证据。
+- `scripts/hwe/fingerprint.py`：verifierSha256 同时覆盖 evaluate.py 和新 Python 分类 helper，避免 helper 修改漏出指纹；现有指纹字段不变。与旧 readiness 的 verifierSha256 已确认不匹配。下一轮须在新实验快照中重新建立 readiness（既有两次完整 baseline 检查），不能仅改写旧 ready.json 的哈希。本轮未运行 readiness、模型实验、硬件验证或完整 benchmark。
+
+回归夹具在 `tests/fixtures/hwe-formal/`，来源、抽取方式和 SHA-256 在 README/source-hashes.json；真实 FAIL/PASS 结果、三个对应任务的完整 SBY 行均可移植，不依赖被忽略的 .runs。纯引擎 ERROR 用真实 ch1 日志移除 PREUNSAT 豁免的故障注入来测试，明确不是另一个历史候选。Python 测试临时生成 status/manifest 并在外部工具边界注入结果，保持既有 >=50 门槛；入口集成测试执行当前 evaluate.py 控制流，验证异常时不继续综合/测量。
+
+测试先行证据：`.local/hwe-classification-red.log` 稳定复现纯 ERROR 被旧代码判 fail、缺失 formal 仍被保留 pass；真实 batch-3 FAIL 测试当时已经通过。随后覆盖正常 PASS、真实断言 FAIL、timeout、结果缺失/不可解析、PASS+ERROR、FAIL+ERROR/timeout、损坏 metadata 不抹去反例、重复分类稳定、候选排名/Manager 恢复上下文与宿主策略拒绝认证。最终全量 327/327 通过（`.local/hwe-classification-final-full.log`），Python 15/15（`.local/hwe-classification-final-python.log`），typecheck/build 与 Python py_compile 通过，git diff --check 通过；源日志、历史报告、原始判定未改写，未提交或发布代码。
+
+限制：本轮是离线分类与传递回归，没有重放 formal 求解器、counterexample 或硬件。日志已证明历史 reg_ch0 是工具明确报告的属性失败，但尚未定位其 RTL 原因；也没有复现或查明独立、无 PREUNSAT 豁免的引擎异常根因。ALTOPS、公开 cosim 和 FPGA 估计原覆盖限制不变，未补真实乘除法验证，未改变评分或管理策略。
+
+## 2026-10-01：修复后 adapter 的真实 readiness 尝试被状态文件格式阻塞
+
+在独立快照 `.local/hwe-adapter-readiness-20261001-e5d6f63c/` 复制当前工作树（包含 formal_result.py、hwe-evidence.ts 和 fingerprint.py）及原 HWE 输入，复用既有依赖、Ubuntu-24.04、工具链与镜像；未安装或升级环境。执行代码 88 个文件的哈希运行前后及源项目均一致，215 个快照源码文件、1110 个 HWE 输入文件核对无变化。环境与旧 readiness 唯一差异为 verifierSha256：`6907877abb87978b450630d57d6cf07cd1bed6b2df23da35a37f2ffcd5a0846e`；运行前后环境 differences=[]。原冻结 baseline 的 13 个 RTL 文件字节完全一致，解压后的整个 tar 也一致；新包 SHA `1768a813daaec114d9cef4f050c9bc51a018a8dfb09dc99f2241d9d15ae52d9d` 与旧包 `7447e15a991cb8b366f11aa956eee1d9afe8f2608d1fde7a44537ff1027ebf62` 的差异仅为 gzip header 的时间戳，移除此字段后压缩字节也相同。没有使用优化候选。
+
+只调用了一次真实 `node --import tsx src/research-cli.ts readiness`，设置全新的 9600 秒截止时间与 600 秒清理余量；首次独立容器完成 lint、bench、build、2 个 ELF 的 cosim。formal 上游返回 passed=true、checks_passed=105；完整逐项日志为 53 PASS、52 个 `_ch1` PREUNSAT/ERROR，均符合既有空前提豁免，没有工具报告的属性 FAIL。adapter 原始 result.json 及 classified-result.json 均返回 error，readiness 退出码为 1，约 147 秒结束；未到综合、FPGA、CoreMark 性能阶段，没有新指标或 seed，无法完成与旧指标的比较。未启动第二次容器验证或 preflight，未生成新 ready.json，也未重跑。
+
+已确认责任层为 `scripts/hwe/formal_result.py`：固定版本 SBY 的 status 文件实际是多字段记录，例如 `PASS 0 2`、`ERROR 16 1`、`PASS 0 52`。helper 将完整文本与单独的 PASS/ERROR 状态字比较，导致 105 个有效 status 文件全部被标为未解析；同时 `status_text == 'ERROR'` 的 PREUNSAT 豁免条件不成立，Python 将 52 项判为 error。TypeScript 按工具终态及 PREUNSAT 恢复逐项 pass，但保留 Python 的解析诊断和总体 error，因此没有伪造完整通过或认证。先前离线 Python 测试临时生成单字段 status，未覆盖此真实工具格式；测试通过不能替代真实 readiness。本次遵守停止边界，不修改 adapter、测试、门槛、评分或 formal 属性来通过验证；后续需另行修复此格式兼容问题并更新验证器指纹，再从新的独立快照建立两次完整 readiness。
+
+本次证据在快照 `.local/readiness-record/`：`readiness.log`、`run.json`、`diagnosis.json`、`audit.log`、`environment-before.json`、`environment-after.json`、源码/输入/执行哈希清单及新旧归档对比；原始逐项 status/logfile/engine 日志位于快照 `.local/hwe-readiness/check-de4811b8-36bd-4588-b812-dba741124b54/`。启动前的记录脚本曾因 Windows GBK 解码 Docker 输出失败，未调用 readiness 或创建容器；单独保存在 `prelaunch-encoding-error/`，仅记录脚本改为 UTF-8 后启动上述唯一一次真实验证。
+
+清理及保全审计通过：本次 baseline、verify 和 stop 进程均 completed/exitCode=0，readiness 主进程及对应 WSL 子进程均已退出，没有本次遗留容器；原有 15 个无关容器名称与状态不变。源项目旧 readiness/batch-3 共 288 个文件、既有诊断记录中的 8 个 batch-3 原始证据哈希全部不变。旧 readiness 未被覆盖，但不兼容当前验证器；本轮没有达成新的 readiness 或 preflight matches=true。未调用 HWE Manager/Worker 或模型 API，未启动 A/B benchmark，未提交或发布代码。
+
+## 2026-10-01：SBY 多字段状态兼容修复与真实证据回归
+
+按本机固定 OSS CAD Suite 20260716 的实际生成逻辑修复 `scripts/hwe/formal_result.py`：SBY status 为 `state retcode integer_process_seconds`，retcode 为期望结果的 0 或对应状态的位码，不能用 rc=0 推断属性 PASS。helper 完整校验单字段或三字段格式、数值及状态/返回码对应关系，拒绝任意后缀、缺失字段、非法数值和多个记录；保留未经 strip 的原始 status 文本及归档文件，新增规范化状态、返回码、秒数和原日志终态记录。分类使用状态，不使用返回码代替属性结果；status/log 的状态或返回码冲突保留诊断并阻止 PASS。真实 FAIL 优先保留，纯 ERROR/UNKNOWN 为 error、TIMEOUT 为 timeout；仅在完整有效的 ERROR 状态、对应 `_ch1` PREUNSAT 且无冲突工具状态时应用既有豁免。没有修改调用接口、RTL、上游属性、门槛、评分或策略，原超时余量保留。
+
+先补充真实状态夹具并运行旧 helper，22 项 Python 测试中稳定复现 8 项失败（`.local/hwe-status-format-20261001-a9c1/red-python.log`）。可移植 `tests/fixtures/hwe-formal/readiness-105.json` 保存上次失败快照的全部 105 个原始 status 文本及精确终态/PREUNSAT/断言日志行，两个代表性完整日志也按字节保存；来源、每项原文件与夹具 SHA-256 见 readiness-source-hashes.json。新测试覆盖多字段 PASS、合法 PREUNSAT、无豁免 ERROR、历史断言 FAIL、UNKNOWN、timeout、单字段兼容及缺失/损坏/冲突证据；默认 filler 与入口集成改用真实多字段 PASS，避免旧单字段假设。修复后 Python 22/22、全量 TypeScript 327/327、typecheck、build、Python py_compile 与 git diff --check 通过，日志均在上述新记录目录。
+
+对上次快照全部 105 项原始 status、完整 logfile 和 engine 日志另做只读离线 formal 重放，新旧结果分目录保存：旧 helper 仍为 error；修复后为 53 正常 PASS、52 合法 `_ch1` PREUNSAT、零属性 FAIL、零诊断、infrastructure_error=false。见 `.local/hwe-status-format-20261001-a9c1/replay-before/` 与 `replay-after/`；原证据未改写。离线重放仅验证 formal 分类，没有运行求解器或性能测试，不能视为完整 readiness。自然计算的新 verifierSha256 为 `dac5ae3a1093bb54bc7b84565260fb686647f0823aee5de3d5d5fe5f5706b0e3`，旧认证未手工改写。完整 readiness 的新独立快照结果见下一节。
+
+## 2026-10-01：修复后的 HWE adapter readiness 已建立
+
+回归全部通过后创建新的独立快照 `.local/hwe-adapter-readiness-20261001-c74b9a20/`，包含当前全部 219 个源码/夹具文件和 88 个执行文件的字节哈希，独立复制原 HWE 输入及 Git 元数据，复用原 node_modules、Ubuntu-24.04、OSS 20260716、xpack 和镜像。相对上次失败快照，只有 formal_result.py 的执行代码变化，其他 87 个执行文件及超时余量全部保留。与旧 readiness 相比，环境唯一差异为 verifierSha256；执行前后环境及指纹 differences=[]，未安装、升级或更换环境。
+
+在新快照只运行一次现有 CLI readiness，再运行一次 preflight：readiness 使用新 9600 秒期限和 600 秒清理余量，两次独立容器均完成 lint、bench、build、2 个 ELF cosim、formal、综合、三个 seed 的 FPGA 测量与 CoreMark 校验，原始及 TypeScript 分类均为 pass。第一次目录 `check-c0a731dc-f051-451d-b9de-42330e3d09c1`、容器 `63304eea7cae`；第二次目录 `check-6fc354a0-4f55-483f-9029-dfc011f17b61`、容器 `56cf0ecdd909`。每次 formal 均为 53 正常 PASS、52 合法 `_ch1` PREUNSAT/ERROR，零属性 FAIL、零诊断、infrastructure_error=false；52 项空前提仍不提供额外有效行为证明。ALTOPS、公开 cosim/CRC、布局布线估计及真实乘除法未覆盖的限制保持不变。
+
+两次质量指标及 seeds 完全一致，且与旧 baseline 全部相同：fitness/CoreMark 30.79、Fmax 13.83 MHz、LUT4 13964、FF 1865、cycles 4491485；seed MHz 为 [13.83,13.99,13.57]。没有无法解释的指标变化。原冻结 baseline 13 个 RTL 的字节哈希一致，解压后的 tar 字节也一致；新 baseline.tar.gz SHA `731e4130fb8566f4e2cb68a06796a388ad6ec5cd79faec6a162d9b3de3435296` 与旧 SHA 的差异仅在 gzip 时间戳，屏蔽该字段后压缩字节完全相同。
+
+新认证为快照 `.local/hwe-readiness/ready.json`，自然绑定当前 verifierSha256 `dac5ae3a1093bb54bc7b84565260fb686647f0823aee5de3d5d5fe5f5706b0e3` 并包含两次真实报告；快照内 preflight 返回 matches=true、baselineMatches=true、differences=[]，两条 CLI 退出码均为 0。本次总用时约 42.9 分钟；没有自动重跑，也没有把离线 formal 重放当成完整认证。源项目的旧 ready.json 保留原状，不能用于当前 helper，后续实验应引用此新快照的认证及 baseline 包。
+
+新快照 `.local/readiness-record/` 保存 readiness.log、preflight.log/preflight.json、run.json、audit.json/audit.log、环境前后记录、源码/执行/输入清单、容器身份和旧认证副本。两次检查目录完整保存 raw result.json、classified-result.json、各命令日志、105 项原始 status/logfile/engine 日志、formal 总日志、已有 trace 与三个 nextpnr seed 日志。独立审计确认旧 readiness、batch-3 和上次失败快照 2050 个文件以及另行记录的 8 个历史原始证据哈希全部不变；新快照 219 个源码、88 个执行文件及 1110 个 HWE 输入无变化。baseline、两次 verify、cleanup 进程均正常结束；本次 Node/WSL 进程和容器无遗留，原有 15 个无关容器名称/状态不变。没有真实 Manager/Worker 或模型 API 调用，没有候选优化、A/B、策略或 batch-3 重跑；未提交或发布代码。当前 readiness 无阻塞。
+
+## 2026-10-01：HWE Manager 当前最佳候选与父子改动上下文（离线）
+
+Manager 决策前从现有研究状态确定 best，沿用 eligible 门槛，只核对本轮原始 baseline、best 及直接父版本的身份、实际路径、快照 SHA-256 和安全归档。`src/hwe-manager-context.ts` 将这三个版本复制到本轮独立输入目录；`scripts/hwe/manager_context.py` 与 bridge.load_snapshot 共用扁平普通 RTL 文件检查，准备按角色分开的源码、version.json、既有独立验证结果与指标副本、标为未认证陈述的 Worker 报告，以及直接父子 unified diff。容器仅只读挂载成 `/manager-context`；`/work/cores/baseline/rtl` 仍加载原始 baseline，不把候选冒充 baseline。best 为 baseline 时明确标明尚无候选改动。完整源码和 diff 按需读取，未添加到提示词；未挂载运行根、其他试跑、历史对照组或真实凭据。
+
+源码、diff、Worker 报告和资料清单只用于理解实现，不能签发验收；external-verification.json 仅复制状态中既有独立验证结果，原证据不变。未通过检查的直接父版本明确标记 rejected/error 等原状态和 verified=false，不提升为已验证候选，也不禁止既有失败路线修复。身份冲突、缺失或篡改快照、非法归档等异常在决策派发或模型代理启动前停止，保存 manager-context-error.json，并由原 runResearch 机制记录运行级 error。每轮 manifest.json 保存实际资料列表、版本和文件 SHA-256，manager-context-receipt.json 另外记录清单本身的哈希。新运行依赖 hwe-manager-context、hwe-archive 和 manager_context.py 已加入既有 implementation 快照列表。
+
+离线回归使用可移植 RTL 与验证夹具，通过实际 HWE decide 入口和 bridge 的容器启动/快照加载代码，检查真正传给容器的目录、源码字节、哈希、身份、验证副本和 diff，覆盖 baseline 首轮、后续最佳候选、拒绝父路线修复后的新 best、缺失/篡改/身份冲突/越界链接/非法归档阻断，以及 Worker 伪造通过和指标不能认证候选。补充新增/删除文件和缺少末尾换行的 diff 回归。原始 baseline 实际使用 Python PAX 时间戳头，因此共享宿主归档检查接受不改变文件布局的 PAX 元数据，继续拒绝路径/大小/链接覆盖；便携夹具覆盖这一格式，旧原包无需重打包。只读检查原 baseline 包为 13 个 RTL，SHA-256 仍为 `7447e15a991cb8b366f11aa956eee1d9afe8f2608d1fde7a44537ff1027ebf62`。
+
+最终全量 TypeScript 335/335、HWE 定向 51/51、Python 26/26、typecheck、build、桌面 JS 语法、Python py_compile 与 git diff --check 均通过。另在现有 proactive-hwe:local 镜像内用纯离线文件夹具检查真实挂载：13 个资料文件哈希匹配，best=repair、parent=broken/rejected，workspace 保持原 baseline，Docker Mounts.RW=false，写入得到 EROFS（errno=30）；未启动模型代理或模型，未挂载真实工具链或凭据，测试容器已清理。完整日志、资料/清单、容器结果和审计在 `.local/hwe-manager-context-20261001/`；审计确认 11 个无关既有跟踪文件的未提交差异原样保留，原 best/Worker/verify/cleanup 超时余量保留。
+
+本轮没有修改真实 RTL、优化历史候选、启动 readiness、求解器、模型或 benchmark，也没有改写旧报告、认证或原始验证证据；没有提交或发布代码。调度器、Manager 选优规则、Worker 配额、模型设置、预算及验证标准保持既有行为。提供当前实现上下文是一项优化假设；本轮仅验证上下文传递、隔离与证据边界，尚未验证优化收益。
+
+## 2026-10-01：管理架构与 benchmark 边界梳理（文档）
+
+用户提出先梳理架构并与 benchmark 基础设施解耦。核对主会话、WorkerPool、HWE 研究循环、验收、策略与 CLI 调用后，确认已有 ResearchDeps 和执行/检查注入边界；当前仍有两条管理执行路径，尚未统一。具体耦合为 research-loop 的四项 HWE 指标与 fitness 排序、primary-agent 的 HWE 工具和专用提示、primary-strategy 的 HWE 证据类型及指纹比较、research-cli 的环境认证与对照编排混合，以及 HWE 从 ProgramBench 导入路径工具。
+
+新增 `docs/architecture-boundaries.md` 记录现状、目标职责和递进迁移建议：管理核心、执行适配器、任务环境适配器、benchmark harness。HWE 验收及 readiness 是可复用领域能力；实验组配置、跨组统计和独立最终评测归 harness。建议先抽出证据/候选契约及领域质量策略，并保持当前 HWE 数据和行为兼容，再处理能力注册与入口编排；此为设计建议，尚未实施源码解耦。更新 CONTEXT 中 Run 的定义，使其同时覆盖产品运行和基准实验，补充管理任务、基准实验运行、任务环境及领域验收术语。
+
+本次仅修改文档，保留已有未提交源码和实验证据；文档链接核对与 git diff --check 通过，未重复运行代码测试。未启动模型、验证器、readiness 或 benchmark，也未提交或发布。源码行为、验收规则和认证指纹不变。
+
+## 2026-10-01：管理核心与 HWE / benchmark 第一轮源码解耦
+
+用户明确要求先实现解耦，再 commit/push 到 GitHub。提取 `src/management/candidate-types.ts` 与 `candidate-loop.ts`，通过宿主 `QualityPolicy<M>` 注入指标门槛、比较方向及领域异常补充判定；HWE 四项正数与最大化 fitness 留在 `hwe-quality.ts`。`research-loop.ts` 保留既有 HWE 导出及 version 1 状态格式。新增 `quality-policy.json` 绑定新运行的比较策略身份，恢复前拒绝策略变化；旧 HWE 无此文件时仍按兼容入口恢复，不补充 Worker 配额或改写历史记录。矛盾 PASS 加基础设施异常不能进入排名，诊断原样保留；属性 FAIL 与异常并存仍保留拒绝和停止两种含义。
+
+主会话通用任务、交付与预算移入 `primary-runtime.ts`；`primary-capability.ts` 定义宿主能力接口。HWE 工具、提示与生命周期由 `hwe-primary-capability.ts` 提供，在原 `primary-agent.ts` 产品入口装配；没有领域能力时同一主会话核心仍可完成离线协议交互。`primary-strategy.ts` 不再导入 HWE 类型或指纹函数，证据兼容性和覆盖说明由 issuer 提供；HWE 保留原指纹比较。未完成任务/计划、失效候选与未结算持续目标仍阻止交付；关闭时先停止新派工，再清理任务和领域资源。
+
+HWE 宿主调用、机器设置与验证移入 `hwe-runtime.ts`，原 `hwe.ts` 保留 Manager/Worker 适配和兼容导出。通用 WSL 路径转换移入 `wsl-path.ts`，HWE 和 SaasBench 不再从 ProgramBench 导入工具；模型代理移到 `scripts/runtime/model_proxy.py`，ProgramBench 现有路径保留转发脚本，独立运行准备步骤复制实际共享代理。研究 CLI 编排移入 `src/benchmarks/hwe-cli.ts`，原入口保留兼容；实现快照列表包含新增核心、领域、CLI 与共享代理依赖。冻结旧实验和 readiness 不迁移。
+
+新增 11 项边界回归：同一候选循环使用 HWE 指标或最小化 defects（零值合法）、混合失败/异常与矛盾 PASS、恢复策略变化阻断、旧 HWE 记录兼容、无 HWE 资产的真实离线主会话协议、自定义宿主工具调用及清理、未完成/失效能力阻止完成、工具名称冲突拒绝，以及传递依赖检查。导入图确认候选核心、主会话核心和通用决策不导入 HWE、ProgramBench、SaasBench 或实验编排；HWE 宿主执行也不再依赖 ProgramBench。架构现状及限制见 `docs/architecture-boundaries.md`，持久决策在 ADR 0004。
+
+验证：最终全量 TypeScript 346/346，Python 26/26，typecheck、build、Python py_compile 与差异检查通过。完整离线回归日志为 `.local/decoupling-final-tests.log`。首轮 345 项中 10 项被本机 modelCatalog 校验拒绝；随后只读查询支持所需模型/推理强度，未留失败瞬间目录快照，不能确定其具体变化原因。使用空临时模型目录的排查轮次 345/346，通过默认回退的单模型目录无法满足一项双模型测试。最终将本机当前公开模型列表和推理级别规范化到临时目录，只对子测试进程设置 CODEX_HOME，346/346 全部通过；未修改实际用户模型目录、产品默认模型或校验规则。两个失败轮次分别保留 `.local/decoupling-full-tests.log`、`.local/decoupling-isolated-tests.log`。
+
+本次 verifierSha256 仍为 `dac5ae3a1093bb54bc7b84565260fb686647f0823aee5de3d5d5fe5f5706b0e3`；没有运行 readiness、formal 求解器、真实模型或 benchmark，没有修改实际 RTL、历史报告或认证。此前已完成但未提交的 formal 分类修复、SBY 状态格式兼容、超时余量和只读 Manager 上下文一并保留于本次提交范围。原 batch-3 拒绝候选仍是实际属性 FAIL，不能据通用 ERROR 分类缺陷改判历史结果。
+
+限制：两条管理执行路径未合并，HWE 机器配置仍需本机工具链；本轮证明代码边界与兼容行为，没有测量管理策略收益。提交目标为 `codex/decouple-benchmark-infrastructure` 分支，不改写冻结实验，也不宣称主分支已合并。
+
+提交审计为 hash-bound JSON/text 夹具增加 `.gitattributes`，关闭换行转换并识别原 CRLF，避免 Git checkout 在不同平台改变归档字节。暂存区逐个比对确认这些夹具与已通过回归的原文件字节一致；原始夹具与记录哈希均未修改。
+
+## 2026-10-01：公开实验摘要与并行开发边界
+
+从实验冻结提交 de0490586847dd951fd00fe4e460123e741396bd 创建独立开发 worktree，分支 codex/update-experiment-docs；原检出仍为 codex/decouple-benchmark-infrastructure。README 接入公开实验摘要；新增 HWE batch-3 报告与从原 result.json 提取的机器可读摘要，区分配额退出、公开检查、性能、成本和人工维护。补充后续 formal 诊断，确认被拒绝的 reg_ch0 有真实断言 FAIL，不沿用早期“纯 ERROR”误读。
+
+早期 HWE 协议/未完成对照、开发试跑、managed-chat 验收、旧持续目标和容量测试均增加历史/当前边界说明。修正“项目不是 Git 仓库”“尚未有 Challenger”“GUI 副本未合并”等过时的当前时态；未将开发 worktree 说成自动 Worker worktree 功能。
+
+只读核对当前 HWE 深度实验准备目录：src/scripts 为物理冻结副本，node_modules 与 .local/hwe-bench 为指向原项目的 junction，WSL、镜像、工具链和账号资源仍共享。后续开发使用独立分支/目录、依赖和输出；冻结输入、认证、实验脚本与共享环境保持原状。具体约束保存在[并行开发说明](benchmark-safe-development.md)。此为开发隔离约束，不修改实验协议、管理策略或验证器。
+
+本轮仅编辑开发 worktree 的文档及公开结果摘要，未启动模型、readiness 或硬件检查，未安装依赖、更新共享运行时或重启应用/WSL/Docker。原始归档不改写；未将当前准备/运行中的深度批次加入已完成结果，也未承诺完整证据已公开下载或第三方一键复现。
+
+内容核对：公开数值和候选 SHA-256 与 batch-3 原件匹配，文档相对链接和差异检查通过；S/D 冻结源码、脚本、package 与 tsconfig 共 218 次哈希核对一致，原检出分支/提交未改变。23:37（Asia/Shanghai）只读观测到当前深度批次 S 因 Manager 缺少完整决策结束、D 未启动，保留为未完成尝试；没有触发恢复或重试。此次为文档修改，未重复运行源码行为测试。
+
+## 2026-10-02：开源授权与代码工程三臂实验准备
+
+用户选定 Apache-2.0，以及优先进行代码工程小批试跑、再冻结 20–30 题。加入 Apache 官方标准 LICENSE，package 与 lock 根元数据声明同一许可证，桌面打包列表包含 LICENSE；README 说明原创材料与第三方依赖/CLI/任务数据的授权边界。没有改动依赖版本或取消 CLI 固定版本。
+
+新增三臂协议草案与三项真实工程缺口的开发试跑提案：宿主领域 registry 贯通、Git Worker 候选、按运行选择 runtime。原始 baseline 为 de04905，当前题目没有可执行终局评测器，不能开跑或声称任务集已经冻结。用户的正式任务数量目标不是已运行的样本数。三项开发题与设计者知识重叠，不纳入未调优正式效果估计。
+
+实现独立离线报告入口 `experiment:report`：按预注册 task-arm 汇总最终成绩、termination、失败归因、配对分布、用量/墙钟/人工及恢复成本；预算退出可与最终候选 pass 并存。拒绝重复 primary、非计划任务、缺失评分证据与不可能的缓存输入。未知数据保持 null，缓存不重复加计，基础设施/评估故障单列，成功重跑不能覆盖第一次运行。报告器不认证原始证据，不取代 TrustedVerifier，也未实现三臂执行器、预算硬门、候选复验或统计推断。
+
+验证：报告行为测试 9/9、仅新增源文件/测试的严格 TypeScript 检查、实际 CLI 空计划输出、许可证及打包元数据、56 条相对文件链接与 diff whitespace 均通过。空计划三臂各 3 个 pending，最终 pass@1 为 null；夹具只用于离线回归，没有模型实验成绩。检查只读使用原项目固定版本的测试/类型工具，没有安装或升级共享依赖，没有模型、Docker、WSL 或硬件执行。
+
+后续只读观察到运行方已对 S/D 冻结副本作相同 Manager 超时修复并重新记录哈希，S 于 23:48 重新启动；并行开发说明保留旧尝试、补丁与新运行的区别。本开发分支不修复、重启或注入该批次。改动位于 codex/update-experiment-docs 工作树；本节记录提交前验证，用户随后授权提交并推送，公开版本以该分支 Git 记录为准。
+
+## 2026-10-02：Benchmark 优先与 Manager 故障恢复
+
+用户将优先级调整为 benchmark → 按证据优化 → 正式可用版本 → 各平台发放。迭代计划与建议可用性门槛保存于[benchmark-development-plan](benchmark-development-plan.md)，继续使用独立开发 worktree，分支 codex/benchmark-reliability；当前冻结批次保持原实现及运行方补丁。
+
+基于真实的首次 Manager 300 秒截断，HWE 开发适配器默认决策窗口设为 900 秒，允许显式 manager.timeoutSeconds（30–1800 整数），实际宿主调用仍限制在扣除上下文准备后的剩余总时间以内。配置不自动注入默认字段，旧状态格式保持 version 1，显式限值变更会被恢复配置校验拒绝。每次记录 decision-invocation.json；完整形状 JSON、超时桥接或提供商失败不认证决策。可解析日志中的 snapshot usage 在缺少终态 usage 时保存，不重复累加已记录用量。
+
+补充恢复测试发现真实缺陷：决策失败后 round/history 未推进，恢复重复 mkdir 同名决策目录，导致 EEXIST 再次失败。核心保留原失败目录，创建独立 retry 目录，写入 decision_started 事件后才执行决策。累计时间、Worker 预约和冻结配置不重置，没有增加自动恢复。汇总纳入失败/重试的有效用量，并显示有/无用量的尝试目录数量；目录也包括准备阶段，不能等同实际提供商调用次数，未知成本不当作免费。
+
+验证：Manager 上下文、超时与失败、候选循环及恢复、跨领域管理边界与成本汇总共 41/41 离线测试通过，完整 TypeScript 类型检查与差异检查通过。测试只用假模型、临时档案、Python 离线桥接 fixture 和只读固定工具；少量依赖复制到开发目录，原共享依赖未改动。没有模型、Docker/WSL、readiness 或硬件验证；41 个回归不是 41 次真实任务运行，也不证明策略收益。验收规则、质量指标、模型/effort 和实际 RTL 未改变。
+
+只读观测到当前 S 为第二轮：第一轮一条候选通过检查但性能低于 baseline，另一条被正确性检查拒绝，第二轮候选尚在执行。未据此报告深度扩展的最终结果，未注入本开发版本或改写本批次记录。新修复的模型端到端与性能验证留给后续冻结批次。
+
+## 2026-10-02：HWE 搜索深度扩展结果核对
+
+用户交回 Command Code 完成的独立批次；本次只核对已有文件，没有启动模型、benchmark、验证器或修改产品源码。协议及证据位于 [hwe-depth-batch-20261001-230336](../.local/hwe-depth-batch-20261001-230336/report.md)，原始数据为同目录 `result.json`、`candidates.csv`、`best-over-time.csv`，完整复验与补充算术结果在 `final/`。
+
+两组同原始 baseline、模型 gpt-6.1-sol/xhigh、并发 2、总时限 6h 和冻结实现 `de04905`；S 为 2 轮/4 Worker，D 为 6 轮/12 Worker，均因轮次/调用上限结束。S 用时 87.48 min、4,441,276 token，最佳仍为 baseline 30.79；D 用时 296.32 min、19,633,035 token，最佳 92.11（2.99× baseline）。D/S token 4.42×、墙钟 3.39×，不能解释为人类工作效率倍数。两组最佳的新容器完整复验四项指标均复现，正式运行前冻结的 70 组×8 条 M 指令补充检查均 pass、0/560 不一致；有限检查仍不构成穷尽正确性或其他工作负载性能证明。
+
+D 的获胜链为 baseline → radix-four-divmod（26.87，第3轮）→ split-divider-execution（50.18，第4轮）→ three-phase-divider（67.88，第5轮）→ four-phase-divider（92.11，第6轮）。首次超过 baseline 在 208.37 min；突破父版本正确性已通过但质量低于当时最佳。因此候选验收通过与是否值得继续分配预算应分别判断；当前允许延伸非最佳候选的行为不能因这次结果收紧为只保留最佳。前三轮宽探索产生了获胜链的根，不能将其没有即时收益等同于没有搜索价值。S 也延伸过较差的已验证分支但未获益，故该个案尚不证明强制保护所有已验证分支、固定一半预算配额或继续放大深度普遍有效；这些仍需同条件重复对照，尚未接受为产品规则。
+
+D 串行外部验证 10,165.9 s，占墙钟 57.2%；Manager 决策 1,900 s，占 10.7%。耗时份额说明验证对延迟影响大，但不单独决定最值得修改的管理策略。现有配置约束的是轮次、Worker 调用和时间，不是硬 token 预算；后续对照不能将相同调用上限称作相同 token 消耗，应报告实际质量/时间与质量/token 曲线。
+
+基础设施修正：初次 S 尝试在派发 Worker 前被固定 300s Manager 会话窗口截断，消耗 256,612 token。两组冻结副本均把 `src/hwe.ts` 的 Manager 窗口改为 900s、宿主等待改为 1,500,000ms；源码哈希为 `e174282cd6dd40006a0ca7db9eaa082718299f2ba69b73ae368f714a9e8b7162`。原始失败、补丁和协议修正案保留；源仓库该修正随后于 2026-10-02 落地（见下一节），后续批次须对两组一致处理。含中止尝试的观测总量 24,330,923 token。
+
+统计勘误：正式 Manager 调用 S=2、D=6，共 8 次，另有一次被截断的尝试；Worker 共 16 次，用量均有记录。`result.json` 的 `tokens.note` 写为“18 manager decisions”与其 coverage/原始状态不符。D 第1–3轮共 6 个候选，其中 5 个通过、1 个被拒；首次突破之前的第6个通过候选是第4轮的 parallel-digit-selection。历史报告与原始数据不改写，后续引用采用本段核对口径。
+
+## 2026-10-02：Manager 超时修复落地与后续实验方向
+
+用户要求给主管 AI 足够的决策时间。将已在 S/D 两个实验副本验证的最小修复落到 `src/hwe.ts`：单次 Manager 会话 300s → 900s，宿主等待 900,000ms → 1,500,000ms；整体运行剩余时间和取消信号仍优先。源码 SHA-256 与实验副本的 `e174282c…b7162` 完全一致。调整现有 Manager 上下文测试的调用契约断言，并在 `docs/hwe-management.md` 记录窗口及余量；没有改变 Manager/Worker 提示、模型、Worker 配额、候选选择、验收或验证调度。相关 Manager 上下文、research-loop 与 HWE arms 离线测试 24/24、typecheck、build、差异检查均通过。
+
+用户接受下一轮策略对照的方向：两组均为 6轮/12次 Worker/并发2，A 保持 Manager 自由分配；B 在存在已通过检查且有具体改进办法的旧版本时，每轮至少给一个 Worker 延伸机会，另一名额自由安排。这是待验证实验条件，不是已经证明有效的产品规则；本次没有实施 B 提示或运行对照。用户明确此次决策不以 token 消耗为优化目标，重点比较首次有效提升与固定时间内的交付质量。
+
+用户提出验证专用 subagent 与并行验证作为加速方向。只读代码核对发现：当前候选循环等待整批 Worker 完成后才开始串行验证；任务工具内部的小程序 cosim、formal 子检查、三个 nextpnr seeds 已各自并行。验证角色应调度独立工具任务并保留结果绑定，不能用模型意见替代必需检查，也不能重复把已有内部并行当作新增加速。容器 10GiB 是内存上限，是否能并行还需测实际峰值和总资源占用；优先检验 Worker 提交后立即验证，以及正确性/性能检查在隔离工作目录中的并行。建议用既有冻结候选先独立测吞吐与结果一致性，再在 A/B 中使用相同的经验证流程，避免同时改变搜索策略和验证调度而无法归因。该方案尚未实施或测量。
+
+本次只执行源码修复和离线验证，没有启动真实模型、benchmark、readiness 或 CAD 求解器，没有修改实际 RTL、历史报告、认证或冻结副本；未创建 Git commit。
+
+## 2026-10-02：候选级并行验证吞吐结果核对
+
+用户交回 Command Code 完成的 [hwe-validation-throughput-20261002-115619](../.local/hwe-validation-throughput-20261002-115619/report.md) 批次。本次核对 `result.json`、`tasks.csv`、`consistency.json`、协议和清理审计，没有重新运行验证或修改调度源码。
+
+固定五个既有快照：baseline、radix-four-divmod、four-phase-divider、source-aware-load-interlock、decoded-source-tags。S1→P1→P2→S2 四阶段使用同一验证器、资源限制及环境，分别逐个验证或最多同时验证两个。第一轮 3506.4s→2240.5s（1.57×、减少36.1%）；第二轮 3344.7s→2068.0s（1.62×、减少38.2%）；合计 6851.1s→4308.5s（1.59×、减少37.1%）。这是整批验证吞吐提升，不能直接外推整个 Agent 任务加速；长候选的单次延迟反而增加约11–23%。
+
+20次验证与历史预期及四阶段之间的状态、检查项、fitness/Fmax/LUT4/cycles、三seed均无差异；12次pass、8次正常拒绝。两个拒绝候选分别保持 formal reg_ch0 属性FAIL与 cosim selftest.elf 发散。归档前后哈希和环境指纹均一致，未调用模型、未生成新RTL，20个owner清理成功且独立审计无残留容器。
+
+观测到两容器合计内存峰值约2.5GiB，WSL可用内存未低于13.2GiB、swap=0；容器CPU合计峰值约11–12/22核，宿主CPU峰值约91%。没有验证OOM、超时或基础设施故障。容器10GiB是限额，不能据限额相加断言两路并行不可行。资源数据为采样观测值：首段采样缺陷导致117条错误行、S1-baseline容器级覆盖约75%；04:16:42Z修复后其余19项全覆盖，另有13–18s采样间隙。该缺陷不影响编排墙钟或验收；首次启动另有派发前映射错误，零验证数据，原始失败均保留。
+
+数据支持在本机HWE条件下接入候选验证并发2；并发大于2、Worker与验证重叠、单候选内部检查阶段重排均未测。第一版接入建议保持既有轮次屏障与搜索规则，只让当前轮的完整验证最多两路执行；保留确定的候选比较及同分选择、版本哈希校验、失败/异常区别、预算与取消、恢复和owner清理。后续A/B使用相同验证调度，再比较父候选分配策略。该集成截至本条记录尚未实施，也未接受为所有任务环境的默认并发。
+
+本次仅补充项目记录，差异检查通过，没有启动模型、benchmark或CAD工具，也未提交代码；历史报告、认证与冻结副本原样保留。
+
+## 2026-10-02：research/HWE 候选级并行验证队列（开发验证）
+
+在既有工作区上接入 `management/candidate-loop` 当前轮验证队列，保留 Manager 900s / 宿主 1,500,000ms 修复和先前实验记录。Worker 并发仍为 `concurrency`，新增独立 `verificationConcurrency` 只支持 1、2；通用调用、旧配置与旧状态缺省为 1，新 HWE CLI 默认配置显式为 2。恢复比较规范化后的有效配置，缺省与显式 1 等价，保存的 2 不能因省略字段而降为 1；保留 version 1、原配置形态和已消耗额度，不重复分配或重跑旧验证。
+
+本轮所有 Worker 收尾后才入验证队列，空位依原候选顺序补派，全部验证收尾后才向下一轮 Manager 提供记录。每项保持独立目录、不可变快照身份和前后哈希检查，验收仍由 HWE 分类器及既有质量策略决定。选优每次按 baseline、分配顺序作严格比较，同分结果不受完成顺序影响。Worker 陈述、未完成检查、非有限指标和基础设施错误均不进入交付；快照异常等宿主错误记入 `verification.error`，保留原始 evidence。
+
+普通拒绝继续排队；基础设施错误、验证超时或持久化失败停止未启动项，让已开始的兄弟验证收尾，保留其中有效结果。用户取消和总时限向运行中验证传播取消。所有 Promise 收尾后才清理本运行 owner 和写 ended；FAIL 与基础设施 ERROR、清理失败与原运行错误可以同时保留。事件与状态在入写队列时固定内容并顺序落盘，单次写入失败不会永久阻断最终保存；持续不可写则返回 `status=error` 和 `persistenceErrors`，不声称已成功保存最终状态。HWE 宿主调用补充结构化 timeout 分类，保留原调用超时数值；`bridge.py`、验证器、资源限额和模型选择未修改。
+
+新增 `verification` 候选时序及 `verificationBatches`：入队/开始/结束、排队/执行毫秒、每轮墙钟、最大活动位置数。执行时间包含位置内的哈希和开始事件落盘，`executionMsSum` 包含并发重叠，摘要另列 `batchWallMsSum`，不相加冒充墙钟；旧记录未测时序为 null。摘要同时保留清理和持久化诊断。
+
+准备 `verify-queue <历史批次> <1|2>` 与只读 `compare-queue <串行运行> <并行运行>`，复用原五个快照、readiness、verifyHwe、research 循环与摘要。替换的仅是该维护入口中的 Manager/Worker 模型调用，确定地返回分配并复制原快照；正常搜索入口未改变预算、提示或策略。为保留每轮最多 4 个候选，五项按 4＋1 处理，baseline 另以同字节 replay-baseline 实测；与历史单批五项的墙钟定义有区别。比较完整 checks（含 formal 子项和三 seed）、指标和哈希，忽略的仅是 checks.seconds；原始日志差异保留。步骤、结果解释和独立 owner 容器审计命令见 [HWE 管理说明](hwe-management.md#固定候选的真实集成验收)。新模块已加入实现归档清单。
+
+验证结果：全量 TypeScript **369/369**、最终定向 **59/59**（含 23 项新增队列/复验测试）、HWE Python **26/26**、`npm run typecheck`、`npm run build` 均通过。控制 Promise、文件写入闸门和模拟定时器覆盖串行/并行上限、空位补派、阶段屏障、同分反序、拒绝/混合故障、哈希/不完整/无效指标、取消/总时限、状态写入/清理失败、旧状态恢复及配置变更拒绝。日志为 `.local/verification-queue-full-tests.log`、`verification-queue-final-targeted.log`、`verification-queue-python-tests.log`。早期回归中一项旧测试仍从 evidence.detail 读取快照异常，已改为核对新的宿主诊断字段并断言原始 evidence 保留；不是放宽验收。
+
+只读复核历史 report/result/consistency、协议、任务记录、采样元数据及清理审计；五个历史快照当前哈希与冻结值一致，20 次原始前后哈希无差异。历史 6851.1s/4308.5s、1.59× 仅说明原固定候选验证吞吐，首段资源采样缺失和长间隔限制峰值推断，不能计作本队列成绩。本轮 **没有运行真实 HWE 容器、Manager/Worker 模型、搜索 benchmark、readiness 或小时级吞吐验收**。新实现的真实吞吐、一致性及取消后的容器清理仍待 Command Code 执行上述入口验证。
+
+范围：research/HWE 候选循环已接入；桌面 primary-agent / primary-hwe-check 调度未接入，只有共用宿主层超时分类修正。普通组、原生参考组、领域质量策略及“较差已验证旧版本延伸配额”策略均保持既有行为。架构约束与兼容规则写入 `docs/architecture-boundaries.md`、`docs/hwe-management.md`；未创建 Git commit，历史证据保持只读。
+
+## 2026-10-02：并行验证队列真实验收证据核对
+
+用户交回 Command Code 完成的 [hwe-queue-acceptance-20261002-180648](../.local/hwe-queue-acceptance-20261002-180648/report.md) 精简验收。本次只核对已有报告、结构化结果、比较脚本、产品状态、取消记录及独立 owner 审计，没有重新启动验证、模型或 A/B。产品运行原位保留于 `.runs/verification-queue-bb8ceedb-3aee-4fcc-b3fe-1ca0024ec2c7`；取消运行保留于该验收批次的 `cancel/run`。
+
+当前实现经产品入口以验证并发 2、4＋1 两轮重放五个冻结候选：三个 verified/pass、两个 rejected/fail，全部快照哈希与冻结身份一致。与历史 S1 的完整证据比较，状态、指标、三 seed、formal 子项及拒绝原因语义一致；不能描述为所有原始字段逐字节相同。字面 `checks.*.seconds` 排除 18 处；另有 206 处 `status_file`、206 处 `status_file_seconds` 和 1 处 `formal.detail` 差异，均保留前后值。比较器只从 status_file 去除末尾耗时，保留状态与返回码；日志的状态摘要、失败项、断言信息及规范化文本均相同，未解释差异为 0。formal 仍沿用既有 ALTOPS 和未启用 ch1 的 PREUNSAT 处理，105 子项不等于 105 项非空正确性证明。
+
+整次墙钟 1,891,881ms（31.53min），两轮验证墙钟分别 1,837,749ms、38,640ms；任务执行时间之和 3,519,577ms 包含重叠，不作为墙钟。事件 maxActive=2，三个重叠区间约 1001s/478s/164s；独立容器采样 317 次中 267 次为两个、44 次为一个、6 次为零，没有观测到超限，轮次屏障成立。无基础设施或持久化错误。没有新的串行配对，不计算新实现加速倍数，也不将历史 1.59× 算作此次成绩。
+
+取消检查确认两个真实容器运行后触发 AbortController.abort：两个执行中的候选以 interrupted/timeout 收尾，两个已排队候选未启动，best 保持已验证 baseline，最终状态 cancelled，事件、状态及 cleanup 落盘；abort 到最终落盘约 6.3s。两个 owner 的独立 Docker 审计均为零残留。此证据支持本机 research/HWE 候选队列的真实接入、一致性和受控取消，可在相同调度下进入既有管理策略 A/B；未扩展为桌面路径、并发大于 2 或所有取消方式均已验收。
+
+运行前唯一指纹偏离来自 core.autocrlf=true 将 `scripts/hwe/evaluate.py`、`formal_result.py` 检出为 CRLF。原始漂移字节已留存；恢复后的 LF 字节经本次独立读取与 HEAD blob 比较完全相等，认证 verifierSha256 恢复为 `dac5ae3a1093bb54bc7b84565260fb686647f0823aee5de3d5d5fe5f5706b0e3`，环境差异为空。没有绕过门槛或重建 readiness。两个文件当前仍被 git status 标为 modified，不能为消除状态而恢复 CRLF；`.gitattributes` 固定 HWE Python 的 LF 是报告提出的长期修复建议，尚未实施。后续快照须保留认证字节并重新做只读指纹核对。
+
+主运行原始 stdout/stderr 因后台捕获及 npx/cmd 控制转移问题未留存；CLI 汇总明确标为 reconstructed，运行状态、事件、逐候选证据和取消脚本的文件记录可独立核对。本次接受验收结论，不将重建文本当作原始日志。后续长测启动前须先用短命令确认输出及退出码真实落盘，直接 Node 入口或自行记录文件可避免依赖该批处理捕获路径。本次只更新项目记录，未修改产品代码、换行策略、历史证据或创建 Git commit。
+
+## 2026-10-02：模型加速能力与 HWE 配置边界核对
+
+用户明确有充足 token，可用外层 Codex 的 Astra / Max / Ultrafast，并允许实验模型采用 Fast 加速。只读检查本机 `models_cache.json`（fetched_at 为 2026-10-02T11:30:13Z）：gpt-6-astra 列出 max 推理强度与 priority/Fast、ultrafast 服务档；gpt-6.1-sol 列出 xhigh 等推理强度与 priority/Fast。实验实际 Linux CLI 为 0.157.1，离线配置解析接受 service_tier=fast 和 service_tier=ultrafast，fast_mode 功能可用。这些检查不是账户请求成功或实际服务档确认，没有调用模型。
+
+该次只读核对时，HWE `bridge.py` 显式指定 Manager/Worker 模型与 effort，并使用 --ignore-user-config、隔离 CODEX_HOME；尚未显式传入 service_tier。因此外层会话开启 Fast/Ultrafast 不代表容器内实验调用继承该设置。共享 model_proxy 透传请求体，没有过滤 service_tier，但需要上游 CLI 真正发送它。两组实验的速度档应作为共同、冻结的执行条件，记录实际请求及可见响应档位；不能只凭 UI 标签或完成较快认定已经生效。尚未开发配置透传或执行短模型预检。
+
+当前[官方速度说明](https://learn.chatgpt.com/docs/agent-configuration/speed)区分模型、推理强度和速度档；[Ultrafast 文档](https://developers.openai.com/api/docs/guides/ultrafast-mode)说明 HTTP 也可使用，非必须先改 WebSocket。模型速度档不直接加速本机编译、formal、仿真或布局布线；本机验证并发仍使用已经验收的 2。本次仅保存核对事实，未更改产品配置或启动 benchmark。
+
+## 2026-10-03：首对管理策略 A/B 的故障与授权恢复
+
+[完整中文报告](../.local/hwe-strategy-ab-20261002-195054/report.md)与[结构化结果](../.local/hwe-strategy-ab-20261002-195054/result.json)保存于 hwe-strategy-ab-20261002-195054。冻结包含现有未提交实现，随机顺序 B→A；内部两组 gpt-6.1-sol/xhigh，显式请求 priority（Fast）。官方模型目录原字节补齐 CLI 元数据后，实际请求正确携带速度档；预检响应 default，正式响应档位与未知量逐请求记录。不能将请求 Fast 或较快完成解释为实际 Fast 已获交付，更不能解释为整个 benchmark 的提速。登录与传输架构不变。
+
+.gitattributes 已追加 /scripts/hwe/*.py text eol=lf。evaluate.py、formal_result.py 仍为认证 LF 字节并等于 HEAD blob；自然 verifierSha256 仍为 dac5ae3a1093bb54bc7b84565260fb686647f0823aee5de3d5d5fe5f5706b0e3。完整认证 readiness 与 baseline 原字节从 hwe-adapter-readiness-20261001-c74b9a20 复制到两组冻结环境，baseline SHA-256 为 731e4130fb8566f4e2cb68a06796a388ad6ec5cd79faec6a162d9b3de3435296。没有改验证逻辑、重建 readiness 或恢复 CRLF。直接 Node 子进程已证明 stdout/stderr 与原退出码捕获。Manager 900 秒、宿主 1500000 毫秒及验证并发 2 保留；没有重跑五候选吞吐验收，也没有新的串行配对加速成绩。
+
+B 正常完成 6 轮/12 Worker，最终 fitness 68.55、Fmax 30.79 MHz、LUT4 7657、cycles 4491485。第 2–6 轮条件规则均实际执行；第 6 轮从非最佳、已验证的 shared-shifter 66.39 延伸得到 68.55，最终继承深度 4。第 3 轮另一非最佳延伸回退，因此并非每次保护分支都有收益。
+
+A 在第 2 轮两次 Worker 发生本机模型代理 URLError/502 后按协议停止，原始 error、failure.json、输出与检查点保留，具体历史网络根因未确定。用户明确授权后，实际容器 READY 预检成功才用既有 resume=true 继续：不重派原失败 Worker，原 4 个分配及两轮保留消费，仅余 8 个分配、4 轮、19016020ms；离线间隙约 22.26 分钟。恢复交付 fitness 152.69、Fmax 68.58 MHz、LUT4 7364、cycles 4491485，累计活动墙钟 144.15 分钟、日历墙钟 166.40 分钟。不同最终快照均独立完整复验，指标及结构化检查语义一致；原实现、策略、认证输入、父子快照哈希与实际 prompt 核对通过，各实际 owner 清理审计无本批残留。
+
+B 首次完整验证提升 24.23 分钟，A 29.98 分钟；二者都发生在第一轮豁免阶段，不能归因于延伸规则。A 中断使本批无法形成完整公平对照；恢复探索不补成无中断配对样本，不能据低分/时间损失判策略胜负。此结果支持在基础设施稳定后另行重复完整配对，不证明 B 普遍优势或规则无效。B 仅属于本批 Manager 评测层注入，未设置为产品默认；没有自动追加重复或 Git commit。token 完整可见记录与缺失用量均保留，不以少用 token 判胜。
+
+交回后只读核对补充：A、B 各安排 10 次旧候选延伸，非最佳已验证父候选延伸分别为 0、2 次。B 指令允许延伸当前最佳即满足条件，所以该对照未形成明显的“延伸与开新路线”分配差异；两次非最佳延伸的结果也不能直接归因于配额。正式模型传输中 632 个可见完整响应均为 service_tier=default，另 80 个请求响应档位未确认；请求 priority 不构成实际 Fast 交付证据，降级原因尚未确定。
+
+result.json.arms 的 Worker 状态为 A timeout 10 / error 2、B timeout 12：除两次传输故障外，22 次 Worker 均达到分配时限，由 bridge 保存快照后进入独立验证。该结束方式不等于外部验收失败，也不足以证明预算被浪费。Manager、Worker 轮内墙钟、验证队列墙钟分别为 A 21.37 / 63.44 / 59.18 分钟，B 22.05 / 68.25 / 96.74 分钟；后两阶段占主要时间，不能把慢归因于外层模型推理强度。本次未调查或改变 Worker 提前完成行为，未修改产品源码或实验原始证据。
+
+
+## 2026-10-03：HWE 运行链路诊断修复与短真实验收
+
+[中文报告](../.local/hwe-runtime-diagnostics-20261003-102325/report.md)、[结构化结果](../.local/hwe-runtime-diagnostics-20261003-102325/result.json)和协议/原始日志保存于独立 diagnostics 批次。保留既有未提交修改及历史证据，没有 Git commit、完整搜索、追加 A/B、五候选吞吐、readiness 重建或 Manager 搜索策略变更。
+
+核对隔离 CODEX_HOME、ignore-user-config、Manager 复用 action=worker、CLI 和代理实际发送。正式历史 priority→632/default、80/未确认事实不变，降级原因尚未确定；早期缺目录漏传与正式降级是两件事。产品现为显式 Fast 校验并冻结官方目录，保留 model/effort/tier 声明、实际发送和响应字段/用量、目录哈希和 CLI 版本。缺省配置兼容，不换模型、强度、认证或计费。真实 Manager 和 Worker 短任务发送 gpt-6.1-sol/xhigh/priority；本批 6 个模型请求中 5 个完整可见响应全为 default，即 Standard。首个 READY 的新观察器未识别缺少 Content-Type 的 SSE，修正后验收成功；原未确认记录保留，临时 identity 编码请求撤回。Linux CLI 仍 0.157.1；历史目录 client_version=0.159.2，本次宿主 cache 为 0.160.0，来源字节分别记录。
+
+共享 model_proxy（含 ProgramBench 兼容转发入口）补齐脱敏的关联 ID、阶段、errno/reasonType、耗时、响应头/部分字节与完整状态，区分本地错误、上游 HTTP、流中断和客户端关闭；发送头后不再追加 502。连接 30 秒/后续读取空闲 300 秒，代理每请求一次出站尝试，HWE CLI HTTP/流重试为 0，避免原可见 /5 重连与隐藏重放。真实 CLI 受控无监听端口产生一次 upstream_connect URLError/ConnectionRefusedError、errno=111、本地 502、exit=1，无 Reconnecting，导出及清理完成。历史两次 URLError 的具体原因仍未确定，当前成功不反证历史无故障。SaaSBench 独立代理未修改。
+
+24 份原会话分为：2 次传输错误；3 次 CLI 已 turn.completed 但宿主仍 timeout（A shift-reversed-input-sharing；B divrem-borrow-stage-share、hazard-operand-use-filter）；19 次在截止时仍实施/运行或等待检查/保存报告，不能自动判低效或断言长测均必要。新 session_runner 分离交卷与进程退出，完成后 5 秒余量即冻结/导出/清理，记录真实 exitCode 与 processExitForced；提示预算为上限，必要工作完成后自然交卷。work 改用已注入的调用边界。截止、宿主取消和传输失败各自分类，取消先保存成果，30 秒不收尾才强制兜底；部分会话末行保留而不破坏用量提取。
+
+回归：TypeScript **377/377**、Python **50/50**、typecheck、build 均通过；旧队列、架构、ProgramBench 转发及原 HWE 回归包含其中。真实 Manager finish/READY、小 Worker 注释/一次 lint/REPORT 已完成；小 Worker 约 34.7 秒交卷，90 秒预算未耗尽，宿主调用约 51.1 秒。导出只在 alu.sv 追加 27 字节注释，原字节与其他 RTL 不变，不签发独立硬件 PASS、不进排名。正常退出、完成后阻塞、2 秒到时、取消通过真实容器注入；完整宿主 AbortController 取消另行验证含部分末行的会话/报告/源码导出。gzip/deflate、上游 HTTP、流中断/部分头、完成后关闭分类、大 stdin 阻塞等最新边界仅由离线测试覆盖；未人为制造真实上游故障。全部本批 owner 独立审计为零容器/进程/socket。
+
+Manager 900 秒/宿主 1,500,000 毫秒、Worker 与验证独立并发、验证 2、原轮次屏障、哈希、质量门槛、稳定选优与恢复额度保留。自然 verifierSha256 仍 dac5ae3a1093bb54bc7b84565260fb686647f0823aee5de3d5d5fe5f5706b0e3，认证基线仍 731e4130fb8566f4e2cb68a06796a388ad6ec5cd79faec6a162d9b3de3435296，两个冻结 Python 验证器为 LF 且与 HEAD 字节一致；34 项重点历史/会话保留核对通过。根目录旧 readiness 仅 verifierSha256 不匹配，未改写；既有认证源与当前环境一致。以实际 Standard、共同冻结模型目录和匹配认证输入为条件，运行链路具备准备下一轮策略 benchmark 的短验收基础；实际 Fast 或根目录默认直接启动仍缺条件，且短验收不证明小时级网络稳定。没有自动启动下一轮。
+
+## 2026-10-03：外部多 Agent 管理实验参考
+
+按用户请求核对原始论文、作者工程报告和官方代码。[Towards a Science of Scaling Agent Systems](https://arxiv.org/html/2512.08296v1) 比较 180 种配置、五类协调架构；可并行的金融任务与强顺序规划任务出现相反结果。论文控制总体计算预算，其数值和小规模 Agent 条件不能推广为 Legion 在充足 token 条件下的并发上限。[Anthropic Research 工程报告](https://www.anthropic.com/engineering/multi-agent-research-system) 在内部研究评测报告主管/工人系统相对单 Agent 提升 90.2%，同时明确 token 投入是重要解释变量；该数字不是相同投入下管理策略的独立收益。
+
+[AlphaEvolve](https://arxiv.org/html/2506.13131v1) 采用程序档案、多样性保留、自动评分和异步生成/评测流水线，优化整体提案与评测吞吐。[ShinkaEvolve 作者报告](https://sakana.ai/shinka-evolve/) 包括用 75 代搜索优化 AIME 解题 Agent 流程，并在不同年份与不同基础模型上检验；其[官方代码](https://github.com/SakanaAI/ShinkaEvolve) 分别设置提案和评测并发。[AB-MCTS](https://sakana.ai/ab-mcts/) 用反馈自适应选择开新路线、延伸已有答案和模型，公开区分 Pass@k 搜索能力与最终 Pass@2 选择。[MAST](https://arxiv.org/html/2503.13657v3) 分析 1642 份多 Agent 轨迹，归纳 14 类系统设计、协作与验证故障。
+
+上述是外部评测与实现证据，不属于 Legion 本机验收或收益成绩；研究中的自动评分、数学题、网页研究与 HWE 门槛不等价。当前 Legion 管理策略是否超过独立多次尝试、档案选择或自适应分配是否改善同时间交付，仍需自己的对照验证。本次仅记录研究，未安装框架、修改产品调度或启动模型/benchmark。
+
+## 2026-10-03：开发分支与本地实现收拢
+
+用户要求将分散的开发与实验结果收拢。固定输入为管理边界重构 `de04905`、公开报告 `84f8118`、超时与恢复修复 `2922f07`、最新实验总结 `d6229a7`，以及开始整理时本地未提交实现的保存提交 `76cc835`。这些提交均保留为集成版本的祖先，前三条开发分支相互包含，不重复丢弃或改写历史。README 同时保留历史比较、当前边界和最新图表入口；实验总结仍明确 A 恢复结果不能公平判胜，以及历史验证吞吐 1.59× 的适用范围。
+
+代码冲突保留两边行为：验证并发与旧状态规范化、排队/执行/清理诊断、可配置且受剩余总预算约束的 Manager 窗口、失败决策的独立重试目录，以及含未知用量的尝试覆盖。新增交互回归确认并发 2 与 Manager 600 秒配置恢复时均保留，改变窗口会在清理和写入前拒绝；使用内存最终状态生成摘要时仍同时保留重试用量与持久化/队列信息。
+
+独立审查复现 session_runner 完成事件与进程退出之间的竞态：首次队列读取为空后，reader 可能立即排入完成事件并结束，旧逻辑会误报 error。现在线程结束后再次读取待处理事件，再分类进程退出；确定性回归不依赖 sleep。另为主任务检查点的 Windows 短暂文件占用增加有限重试，与候选循环使用相同的文件系统错误类别和等待上限；非暂态或持续保存失败仍向调用者报告，不能把未落盘状态伪造为完成。
+
+最终在固定的独立集成工作区验证：TypeScript **398/398**、WSL Python **51/51**、定向交互回归 **32/32**、类型检查、构建和差异检查通过。新检出的桌面测试须先构建 renderer 资源，README 已注明。认证 evaluate.py/formal_result.py 的 LF 字节与开始整理时相同，10 个绑定哈希的 formal JSON/text 夹具与重构提交逐字节一致，五个来源提交均被保留；没有改写 readiness、原始实验或重新运行模型/硬件 benchmark。
+
+开始时的 27 个改动文件、字节哈希和差异另保留在本地 `.local/consolidation-20261003/`。整理期间另一个聊天开始开发 Worker 与验证并发的新行为，其后来新增的未完成改动留在原工作区，不混入本次已固定并验证的集成版本。并发聊天写入同一目录时，收拢和最终检查应在独立工作区完成，避免把活跃编辑误当作已验收快照。

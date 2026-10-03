@@ -1,7 +1,7 @@
 import {mkdir,writeFile,readFile} from 'node:fs/promises';
 import {join} from 'node:path';
 import {createHweDeps} from './hwe.js';
-import {eligible,ResearchConfigSchema,type ResearchConfig,type Candidate,type ResearchDeps} from './research-loop.js';
+import {eligible,verificationHasInfrastructureError,ResearchConfigSchema,type ResearchConfig,type Candidate,type ResearchDeps} from './research-loop.js';
 import {sumUsage} from './research-summary.js';
 import {hash} from './provenance.js';
 
@@ -23,7 +23,7 @@ export async function runOrdinaryHwe(root:string,config:ResearchConfig,seconds:n
   }else candidate.status='error';
  }catch(e){error=String(e);}
  finally{await deps.stop();}
- const infrastructureFailure=Boolean(error)||!candidate||candidate.status==='error'||candidate.status==='working';
+ const infrastructureFailure=Boolean(error)||!candidate||candidate.status==='error'||candidate.status==='working'||verificationHasInfrastructureError(candidate.evidence);
  const report={kind:'ordinary-codex',status:infrastructureFailure?'error':'completed',config,seconds,baseline,candidate,eligible:candidate?eligible(candidate):false,error,wallMs:Date.now()-started,tokens:sumUsage(Array.isArray(candidate?.worker?.usage)?candidate.worker.usage:[]),interventions:[]};
  await writeFile(join(root,'summary.json'),JSON.stringify(report,null,2));return report;
 }

@@ -48,3 +48,11 @@ OSS CAD Suite 20260928 在这个任务的 baseline 上留下 `$buf` 单元，nex
 ## 形式化计数说明
 
 两次 baseline 和第一轮两个候选的原始日志均为 53 项 DONE (PASS)、52 项 PREUNSAT。上游将两者合计为 checks_passed=105。第二 RVFI 退休通道固定不发出有效退休事件，因此相关前提不可满足；这 52 项不提供额外的有效行为证明。不能将 105 描述为 105 项非空证明。计数证据保存在 `.local/hwe-formal-coverage.json`，完整日志随各次验证留档。
+
+## 2026-10-01：当前 adapter 的新 readiness
+
+修复 SBY 单字段/三字段状态兼容后，在独立快照 `.local/hwe-adapter-readiness-20261001-c74b9a20/` 完成两次完整 baseline 验证及 preflight。两次均为 pass，所有上表质量指标和三个 seed 均与 2026-09-29 记录完全一致；每次仍为 53 个非空 PASS、52 个合法 `_ch1` PREUNSAT，没有放宽规则。旧 readiness、batch-3 和失败快照 `.local/hwe-adapter-readiness-20261001-e5d6f63c/` 全部保留。
+
+当前认证在新快照的 `.local/hwe-readiness/ready.json`，verifierSha256 为 `dac5ae3a1093bb54bc7b84565260fb686647f0823aee5de3d5d5fe5f5706b0e3`；快照内 preflight 为 matches=true、baselineMatches=true、differences=[]。原始检查目录为 `check-c0a731dc-f051-451d-b9de-42330e3d09c1` 和 `check-6fc354a0-4f55-483f-9029-dfc011f17b61`，汇总、日志、哈希与清理审计在快照 `.local/readiness-record/`。基线源码和整个解压 tar 字节不变，新包哈希仅因 gzip 时间戳改变。环境未升级，本次进程/容器已清理，其他任务不受影响。
+
+源项目旧 `.local/hwe-readiness/ready.json` 没有覆盖，且不匹配当前 helper 指纹；后续实验使用上述新快照的认证与对应 baseline 包。离线重放及回归记录在 `.local/hwe-status-format-20261001-a9c1/`，不能替代这两次完整验证。覆盖限制仍按前文保留；本次未启动任何模型实验。

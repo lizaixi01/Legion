@@ -1,0 +1,1060 @@
+{
+  "result": {
+    "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\result.json",
+    "sha256": "3d5081348dc75ce55ea33fece6308fcd0e22a89cad53c2f8690bc4a68fa5793d"
+  },
+  "tasks": {
+    "causal_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\causal_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\causal_ch0\\logfile.txt",
+        "sha256": "6ccbd62becc59f635f670129b9b906c74a8745eb6d09037c906e178bf3ec2a03"
+      }
+    },
+    "causal_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\causal_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\causal_ch1\\logfile.txt",
+        "sha256": "868611bb7e732ec057832914069e86f7f5308130d27e07aec3d9fcdb72cb108f"
+      }
+    },
+    "cover": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\cover\\status",
+        "sha256": "36532f1f2b8dfe7d56c1b0a591c55211fe69050549e3d35b02910ade3a721ab7"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\cover\\logfile.txt",
+        "sha256": "75e702fed1f3fd2d402824ee67fc73cdc76f83b344eb45f8ec1e12fb1bd94659"
+      }
+    },
+    "ill_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\ill_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\ill_ch0\\logfile.txt",
+        "sha256": "15f3b3b214d2e86e6d4623ca33f6b513dbd9e1242bf8bee84c9de464aa2a9139"
+      }
+    },
+    "ill_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\ill_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\ill_ch1\\logfile.txt",
+        "sha256": "f0f7ac13a374c15068131dfa33c00d6d0106b6ca717f8ae74c9a52880154a4c5"
+      }
+    },
+    "insn_add_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_add_ch0\\status",
+        "sha256": "c64cd1e86b7f62337279d990860d37ca6636f5812efd86b6d24dfd010434d5f0"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_add_ch0\\logfile.txt",
+        "sha256": "0144546895fd7a97ebd4f2d4210aa0d4df800ca9b405af5659dc4a3674ca9eba"
+      }
+    },
+    "insn_add_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_add_ch1\\status",
+        "sha256": "396836822cb2aa170a545f5569fa186ff21eddd9135e8b511fec687b8353f3ea"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_add_ch1\\logfile.txt",
+        "sha256": "c18643915f33c65d0e84b00c13dfdeefac8cb7544b54edda6825a289f26d6e83"
+      }
+    },
+    "insn_addi_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_addi_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_addi_ch0\\logfile.txt",
+        "sha256": "b123edb670ad54a105dadd7c73ddfb30529db33e82c028c44990458a3f83bfb5"
+      }
+    },
+    "insn_addi_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_addi_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_addi_ch1\\logfile.txt",
+        "sha256": "13b676d712babfe29d03be0343c5fea738971165154983ad7302e1ae1a4d8b2b"
+      }
+    },
+    "insn_and_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_and_ch0\\status",
+        "sha256": "c64cd1e86b7f62337279d990860d37ca6636f5812efd86b6d24dfd010434d5f0"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_and_ch0\\logfile.txt",
+        "sha256": "dd1bd2c9b978a6fa5e846121d7eef5d35703a4f1381f6de362f8c3c321b32367"
+      }
+    },
+    "insn_and_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_and_ch1\\status",
+        "sha256": "396836822cb2aa170a545f5569fa186ff21eddd9135e8b511fec687b8353f3ea"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_and_ch1\\logfile.txt",
+        "sha256": "f7b5776a72f6c3961c464daef20df4ef9e26cd4257a16125b06de37451c345ef"
+      }
+    },
+    "insn_andi_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_andi_ch0\\status",
+        "sha256": "c64cd1e86b7f62337279d990860d37ca6636f5812efd86b6d24dfd010434d5f0"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_andi_ch0\\logfile.txt",
+        "sha256": "f7f38ed1b557fc8b9bcf938bcd8002338be324cdfbcfa84cdfde22bb0f48c84e"
+      }
+    },
+    "insn_andi_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_andi_ch1\\status",
+        "sha256": "396836822cb2aa170a545f5569fa186ff21eddd9135e8b511fec687b8353f3ea"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_andi_ch1\\logfile.txt",
+        "sha256": "3c9449d79e88f6bff48a4c8bbae7113d425e80c347bbb04cbcea79a9195c27c6"
+      }
+    },
+    "insn_auipc_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_auipc_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_auipc_ch0\\logfile.txt",
+        "sha256": "f445aa4a42e4543f30b240270349ec53e728ce5e87cd7bed4e3b9fac2418b965"
+      }
+    },
+    "insn_auipc_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_auipc_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_auipc_ch1\\logfile.txt",
+        "sha256": "27d0b55ed1a47215f0b166e313f7d2db56b244a805673af2ac9065b1c7610253"
+      }
+    },
+    "insn_beq_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_beq_ch0\\status",
+        "sha256": "c64cd1e86b7f62337279d990860d37ca6636f5812efd86b6d24dfd010434d5f0"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_beq_ch0\\logfile.txt",
+        "sha256": "0b470a01bffe4b4de595574ac94dc3b7d45d14b26234960b261b13c817578668"
+      }
+    },
+    "insn_beq_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_beq_ch1\\status",
+        "sha256": "396836822cb2aa170a545f5569fa186ff21eddd9135e8b511fec687b8353f3ea"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_beq_ch1\\logfile.txt",
+        "sha256": "663ad76954b4a9cc8372c72d9ef21568acac372816c56c90575ee202edb6e545"
+      }
+    },
+    "insn_bge_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_bge_ch0\\status",
+        "sha256": "c64cd1e86b7f62337279d990860d37ca6636f5812efd86b6d24dfd010434d5f0"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_bge_ch0\\logfile.txt",
+        "sha256": "dc480156838270c22f0cb5607660f1b5a199022f5fe9b0c589287eb5ffc33bd7"
+      }
+    },
+    "insn_bge_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_bge_ch1\\status",
+        "sha256": "396836822cb2aa170a545f5569fa186ff21eddd9135e8b511fec687b8353f3ea"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_bge_ch1\\logfile.txt",
+        "sha256": "b2d655d42c21e6e6add629fb8b3c6c7628c81945e41897b4eab8268f4dd87f4a"
+      }
+    },
+    "insn_bgeu_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_bgeu_ch0\\status",
+        "sha256": "c64cd1e86b7f62337279d990860d37ca6636f5812efd86b6d24dfd010434d5f0"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_bgeu_ch0\\logfile.txt",
+        "sha256": "5151762dad7fffecfdb930ecf400a4e866fbf49bbd4ef767ee2581d53b00ae1e"
+      }
+    },
+    "insn_bgeu_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_bgeu_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_bgeu_ch1\\logfile.txt",
+        "sha256": "66d9ae6dcfeaeefd416e0e4f6621aad1422c97e4901c18f24553a1b60ae378b9"
+      }
+    },
+    "insn_blt_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_blt_ch0\\status",
+        "sha256": "c64cd1e86b7f62337279d990860d37ca6636f5812efd86b6d24dfd010434d5f0"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_blt_ch0\\logfile.txt",
+        "sha256": "be6db34a83fd7aed7ae9cc0968437f46b09f4615d5362da59b81c17d9e932ff8"
+      }
+    },
+    "insn_blt_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_blt_ch1\\status",
+        "sha256": "396836822cb2aa170a545f5569fa186ff21eddd9135e8b511fec687b8353f3ea"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_blt_ch1\\logfile.txt",
+        "sha256": "ddb32f59e332946b7375f15e0254be482dd4967cf39c9c86e5b86b2edf98757b"
+      }
+    },
+    "insn_bltu_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_bltu_ch0\\status",
+        "sha256": "c64cd1e86b7f62337279d990860d37ca6636f5812efd86b6d24dfd010434d5f0"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_bltu_ch0\\logfile.txt",
+        "sha256": "e0c5b426387f922aba749018fca6c349d1f592d265b672f4e80c9b66a1310638"
+      }
+    },
+    "insn_bltu_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_bltu_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_bltu_ch1\\logfile.txt",
+        "sha256": "c1e9410574fa43a9dad4257052de0a168f5582e591e7f47c0559dbd8a773973d"
+      }
+    },
+    "insn_bne_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_bne_ch0\\status",
+        "sha256": "c64cd1e86b7f62337279d990860d37ca6636f5812efd86b6d24dfd010434d5f0"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_bne_ch0\\logfile.txt",
+        "sha256": "afd5a49ed5d70a96c14b2e30c902cf3a227bbe2762b942a27337411a8bb465c7"
+      }
+    },
+    "insn_bne_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_bne_ch1\\status",
+        "sha256": "396836822cb2aa170a545f5569fa186ff21eddd9135e8b511fec687b8353f3ea"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_bne_ch1\\logfile.txt",
+        "sha256": "3a943c28ec3ca5a51abd784ed804537d24d3516b5be63358fde88d9c1814d20e"
+      }
+    },
+    "insn_div_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_div_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_div_ch0\\logfile.txt",
+        "sha256": "6489d5423434c6fe830feab87572ee3893798d06b65f50d7ac0e91cf82bcc9df"
+      }
+    },
+    "insn_div_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_div_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_div_ch1\\logfile.txt",
+        "sha256": "201422835eb66eb987b5545c0c609bff629f81590ccf66a2e125490aefb2350e"
+      }
+    },
+    "insn_divu_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_divu_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_divu_ch0\\logfile.txt",
+        "sha256": "7ef4e57eeca98692de76b72ab8bf534fd12705070089f3823ef2e2651bd58be6"
+      }
+    },
+    "insn_divu_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_divu_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_divu_ch1\\logfile.txt",
+        "sha256": "323583220329c15fef9fe6e9f997f5ed1b88879b8dea875da70dfb2469ad8181"
+      }
+    },
+    "insn_jal_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_jal_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_jal_ch0\\logfile.txt",
+        "sha256": "e420a96efd5a0f08a0bdf9d287d3d8161209b4e630c7ceb80e18abe62f5e6253"
+      }
+    },
+    "insn_jal_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_jal_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_jal_ch1\\logfile.txt",
+        "sha256": "98e4ae04f9a7a0d50b2a57692d69a761f28bf1011b89cc200856356440710966"
+      }
+    },
+    "insn_jalr_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_jalr_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_jalr_ch0\\logfile.txt",
+        "sha256": "680654741ca72b98d3b6f88ac7471f67385fbaf583fd5766e9b7b172916711ca"
+      }
+    },
+    "insn_jalr_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_jalr_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_jalr_ch1\\logfile.txt",
+        "sha256": "f831ccdcd2c8872a74f74d2e0a3e3cad04743f27303ee1235d5a1f7b0a53ea58"
+      }
+    },
+    "insn_lb_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_lb_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_lb_ch0\\logfile.txt",
+        "sha256": "8b605c109250d018759c7adeec7c5917f2e9bd065d5c069098f8f6850684ae50"
+      }
+    },
+    "insn_lb_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_lb_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_lb_ch1\\logfile.txt",
+        "sha256": "e85888d57c82b52c1c67c4fb54096f5aabd780757a5db9bd06df19879cdcf3ba"
+      }
+    },
+    "insn_lbu_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_lbu_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_lbu_ch0\\logfile.txt",
+        "sha256": "976190f35bceab0dad32c2bc4da2e39114763cf8a7d5f82569730f593d322737"
+      }
+    },
+    "insn_lbu_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_lbu_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_lbu_ch1\\logfile.txt",
+        "sha256": "fc40f321d1f5ce092897d100ede7434f79e713234fd899949b7adddd142da85d"
+      }
+    },
+    "insn_lh_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_lh_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_lh_ch0\\logfile.txt",
+        "sha256": "5083778e0055f6f8af3513d4aaab9ed11551d4f7df0489b57836e27f5f433aea"
+      }
+    },
+    "insn_lh_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_lh_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_lh_ch1\\logfile.txt",
+        "sha256": "09f8fc365f218496f5bc47a4d631accc6e311e1ee5da61cd3004961e10f40273"
+      }
+    },
+    "insn_lhu_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_lhu_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_lhu_ch0\\logfile.txt",
+        "sha256": "f953137a149bc57b5d11a4661560e88710b58ca4e18c7df2c9778e0acee6de9c"
+      }
+    },
+    "insn_lhu_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_lhu_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_lhu_ch1\\logfile.txt",
+        "sha256": "bb0a3a303df56453d58888b5191485d6d692cd0224a1d2a1305f1a211724f70b"
+      }
+    },
+    "insn_lui_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_lui_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_lui_ch0\\logfile.txt",
+        "sha256": "0b9b8629a84c40017fd58e6c09acdfda4ae7ab923f50eba1450b4afb69121982"
+      }
+    },
+    "insn_lui_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_lui_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_lui_ch1\\logfile.txt",
+        "sha256": "1a53c058f98bba855efbd1f1940d110e6955ccda7f88778824fb587c61138dff"
+      }
+    },
+    "insn_lw_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_lw_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_lw_ch0\\logfile.txt",
+        "sha256": "de583ec5e7ec8cfd75c3966956bd2f11a9421eabbc9fe164e08590d7a236a390"
+      }
+    },
+    "insn_lw_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_lw_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_lw_ch1\\logfile.txt",
+        "sha256": "35131e6164ed4aaf603fb3b4b9d03889234ed015c2538a76f86ee2d8d90f0a08"
+      }
+    },
+    "insn_mul_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_mul_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_mul_ch0\\logfile.txt",
+        "sha256": "29aad661d4f8ef2f25ed87a9a79527171851d9d00ae6c44999a721d4aa276fe6"
+      }
+    },
+    "insn_mul_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_mul_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_mul_ch1\\logfile.txt",
+        "sha256": "cf590b2a3643fc56c0ccd134f0a700ef343a47d930e2a387917b377d25f13a1d"
+      }
+    },
+    "insn_mulh_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_mulh_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_mulh_ch0\\logfile.txt",
+        "sha256": "5715aa3042219fdecf0ba2ee5754148d4eb4bab9ec81d75042a2b356c5ac4072"
+      }
+    },
+    "insn_mulh_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_mulh_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_mulh_ch1\\logfile.txt",
+        "sha256": "df18ed684472e9d14d6d0af993140f711fb3715ab70ab2e8cdc37e02f26682e0"
+      }
+    },
+    "insn_mulhsu_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_mulhsu_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_mulhsu_ch0\\logfile.txt",
+        "sha256": "c5bb81b6f9818e27b5cf96c95d2acf006a184c2a9ca4caad2c27451f93d3dd8e"
+      }
+    },
+    "insn_mulhsu_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_mulhsu_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_mulhsu_ch1\\logfile.txt",
+        "sha256": "c0a066a482eb1d4fad66155a280a2d439ca33aed321a689d6204701cdf60e5f4"
+      }
+    },
+    "insn_mulhu_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_mulhu_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_mulhu_ch0\\logfile.txt",
+        "sha256": "21b15114856cf55ef6e2134ac0c6475cb6e3c2eb41031750c83aef6d7eb1c17f"
+      }
+    },
+    "insn_mulhu_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_mulhu_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_mulhu_ch1\\logfile.txt",
+        "sha256": "094c1c9f0270f550887bd9d82c8697657147a9a7ea52ec41ccc4ec563fff7dfb"
+      }
+    },
+    "insn_or_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_or_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_or_ch0\\logfile.txt",
+        "sha256": "3e4e87f49fe640dac9793aa2b1c82a69f94ed3556a9ea5c5dfac09674ed6f768"
+      }
+    },
+    "insn_or_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_or_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_or_ch1\\logfile.txt",
+        "sha256": "be10ab92dc09917404a3dad145ff5ed2682c1778a2c07ac103c100b01c3c3ea7"
+      }
+    },
+    "insn_ori_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_ori_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_ori_ch0\\logfile.txt",
+        "sha256": "de641e21f563eff5fe88565058f929dcb578aafb4b5d63e1961f5e15f457a206"
+      }
+    },
+    "insn_ori_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_ori_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_ori_ch1\\logfile.txt",
+        "sha256": "231f674795809588f103e1401f96c5aed4b08568a85438463e13361a2dacf17f"
+      }
+    },
+    "insn_rem_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_rem_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_rem_ch0\\logfile.txt",
+        "sha256": "65e328c86132d9a61a6502d1988f163b0434f2a38ae407fa4ee871e282d00c6d"
+      }
+    },
+    "insn_rem_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_rem_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_rem_ch1\\logfile.txt",
+        "sha256": "7b7d6466093158251f1044dde9cdc20ca8afed2c80ce72b8d81563e3a3dc3436"
+      }
+    },
+    "insn_remu_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_remu_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_remu_ch0\\logfile.txt",
+        "sha256": "2132a8a5918a2d906c5d6813d13ded130cfab23789336c8c0da08a91ea66ca5f"
+      }
+    },
+    "insn_remu_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_remu_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_remu_ch1\\logfile.txt",
+        "sha256": "f6e6bbae8cd4a9b41948a324fb30de2fa4f146d086b126e482799351d1f13471"
+      }
+    },
+    "insn_sb_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sb_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sb_ch0\\logfile.txt",
+        "sha256": "5c06441b7001d552bd36fb7091b783b134ff0b260a558aa72d4278f7286e3706"
+      }
+    },
+    "insn_sb_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sb_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sb_ch1\\logfile.txt",
+        "sha256": "6f2b7e1c1c7c454f79d5d824f8f9c129517337cd191762ce52700a184e45d4a8"
+      }
+    },
+    "insn_sh_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sh_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sh_ch0\\logfile.txt",
+        "sha256": "24d51c3b6fe13f49cfb7d25c4282d0e392fd20047b57796650352d911ad757cd"
+      }
+    },
+    "insn_sh_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sh_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sh_ch1\\logfile.txt",
+        "sha256": "6591d9b6110926da25347018940f1abdac78180c70cb63d3fd8b1a05a08602e5"
+      }
+    },
+    "insn_sll_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sll_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sll_ch0\\logfile.txt",
+        "sha256": "0a0027f9ea4d390bb42e4eebcbd3d06ab320a036ab596438566182d6fa708aa2"
+      }
+    },
+    "insn_sll_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sll_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sll_ch1\\logfile.txt",
+        "sha256": "0beb897f56f238e48187678b3e727684b78537c8460de6b013c26c55e8f08994"
+      }
+    },
+    "insn_slli_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_slli_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_slli_ch0\\logfile.txt",
+        "sha256": "c019cff0122a05645436e10e7fbed1a699a2817f3aaf447363959ad8214c6039"
+      }
+    },
+    "insn_slli_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_slli_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_slli_ch1\\logfile.txt",
+        "sha256": "ec2b7397ec9841aba33c0d5305d96ea2b5f362432ee35b6761ad40a61926d712"
+      }
+    },
+    "insn_slt_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_slt_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_slt_ch0\\logfile.txt",
+        "sha256": "90855772fa6e563c9fdfddebf6d3db41eec1944b3d575ebea28948012686d925"
+      }
+    },
+    "insn_slt_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_slt_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_slt_ch1\\logfile.txt",
+        "sha256": "9fa5208eb3cab0d948959ec6671fe2776c63e6b923c402051f65e8bf11cf4182"
+      }
+    },
+    "insn_slti_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_slti_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_slti_ch0\\logfile.txt",
+        "sha256": "92266055df7b4474e58fd3672f3ebe7c39e1f14eb018620cd30be567403862df"
+      }
+    },
+    "insn_slti_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_slti_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_slti_ch1\\logfile.txt",
+        "sha256": "a24e3eb81d46f9be9ea19af16497765477cf8661aaac7067311646038d27af31"
+      }
+    },
+    "insn_sltiu_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sltiu_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sltiu_ch0\\logfile.txt",
+        "sha256": "4f02cf68bf678f20ed8ab9b8bcca4137efde9fbfacbcee3b38757c4de5c3d1a5"
+      }
+    },
+    "insn_sltiu_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sltiu_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sltiu_ch1\\logfile.txt",
+        "sha256": "080eb99e29d5ac6c7ed6daa2acd4a5eb09036367b361300dcb4b1bb7a210437c"
+      }
+    },
+    "insn_sltu_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sltu_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sltu_ch0\\logfile.txt",
+        "sha256": "dbc136c3599c8b39e28c8e4a7f2214b1e9cc56392f4054be678f1fc60e1a1a8a"
+      }
+    },
+    "insn_sltu_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sltu_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sltu_ch1\\logfile.txt",
+        "sha256": "b72314707a65a25f89da66b62bfeb79ba384595f69770e48fa962de92252a8cc"
+      }
+    },
+    "insn_sra_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sra_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sra_ch0\\logfile.txt",
+        "sha256": "c5eadff6a058b1cc892dba6201a21a357993bf8a02bb24bcf83704feb3704bda"
+      }
+    },
+    "insn_sra_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sra_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sra_ch1\\logfile.txt",
+        "sha256": "0545a624b2332272ffa877aca114de3f07fbe7b4cbef75aee1d7eccb574dbe6e"
+      }
+    },
+    "insn_srai_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_srai_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_srai_ch0\\logfile.txt",
+        "sha256": "d33f4efe6a15ad91d318b48ef2c45b179aae80435e67a986ab1c8fcf0103f44e"
+      }
+    },
+    "insn_srai_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_srai_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_srai_ch1\\logfile.txt",
+        "sha256": "26a5f2570676fcfe3355b76bfb225521f50ae1736e149292deb791b388f73a9e"
+      }
+    },
+    "insn_srl_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_srl_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_srl_ch0\\logfile.txt",
+        "sha256": "4cdc878a8afce40a92100f4beaffd8c3dbebae8028665b692ad8612206ad6870"
+      }
+    },
+    "insn_srl_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_srl_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_srl_ch1\\logfile.txt",
+        "sha256": "3e1d7e46f7927613afc303ac24165ff704fb1a141839365294c07ab12d11fbe2"
+      }
+    },
+    "insn_srli_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_srli_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_srli_ch0\\logfile.txt",
+        "sha256": "e85b6b86caa028fa49c1901cfe7219fd060b92df5a79d1796579786d5a8b0864"
+      }
+    },
+    "insn_srli_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_srli_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_srli_ch1\\logfile.txt",
+        "sha256": "7f27b7c6d726d51980ba3f075177c443aafcba3d59a1e31e6a342a23f8990f2f"
+      }
+    },
+    "insn_sub_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sub_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sub_ch0\\logfile.txt",
+        "sha256": "2949a127b4f864e1368ca54641d06d66f0e2f8d8cc88894772681fa21e5aeafe"
+      }
+    },
+    "insn_sub_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sub_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sub_ch1\\logfile.txt",
+        "sha256": "ed903ad076cc267abdd3f9a0a53570a369d6fa8e9343b4b75fec8e885c83d09e"
+      }
+    },
+    "insn_sw_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sw_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sw_ch0\\logfile.txt",
+        "sha256": "12d976618337068eae910bce87a19715edb8d4b1f09356bac9e4b06efdab3bc5"
+      }
+    },
+    "insn_sw_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sw_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_sw_ch1\\logfile.txt",
+        "sha256": "6e1da238926ca1bb0909b3b28b68a2c916ed858c24f3564ee68a310f6600c598"
+      }
+    },
+    "insn_xor_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_xor_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_xor_ch0\\logfile.txt",
+        "sha256": "28e6820cc20446f211289d33412e9d1a35419b63daef0861cdec8c2e6c903b3e"
+      }
+    },
+    "insn_xor_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_xor_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_xor_ch1\\logfile.txt",
+        "sha256": "3f4d9f51217bfbf3e995ef2e9550b9da653702c8139ec02a8477bd67f47122f6"
+      }
+    },
+    "insn_xori_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_xori_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_xori_ch0\\logfile.txt",
+        "sha256": "30c8e228fea31d325757a42480e994aa54f3f2ddb333d0d507f5d1a81f6802dd"
+      }
+    },
+    "insn_xori_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_xori_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\insn_xori_ch1\\logfile.txt",
+        "sha256": "a4caf2327405cbb70fd84280f207468ad2161a117168983caa4d52fdd32becc5"
+      }
+    },
+    "liveness_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\liveness_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\liveness_ch0\\logfile.txt",
+        "sha256": "d6c9d13683aedab7a1916772a43923a3286bfc59a1ace6210a5d84af8d3be998"
+      }
+    },
+    "liveness_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\liveness_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\liveness_ch1\\logfile.txt",
+        "sha256": "7fa926a0429086ce4396551eedf5e76f8218de22e3c81d00e631eac86f34b5bc"
+      }
+    },
+    "pc_bwd_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\pc_bwd_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\pc_bwd_ch0\\logfile.txt",
+        "sha256": "eb38472fb1752e9c02eacd0a73d7db8a04799426ea2888ee64713e384c415bd2"
+      }
+    },
+    "pc_bwd_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\pc_bwd_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\pc_bwd_ch1\\logfile.txt",
+        "sha256": "acf94c6136b7a96c6084ef86ec8d145ad11e09084d458da6839c7a0c809563d6"
+      }
+    },
+    "pc_fwd_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\pc_fwd_ch0\\status",
+        "sha256": "c64cd1e86b7f62337279d990860d37ca6636f5812efd86b6d24dfd010434d5f0"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\pc_fwd_ch0\\logfile.txt",
+        "sha256": "efe349f91fa19e8ae57fd3830b564ceec5491c9eb54ef55320c368bed4ea9cd5"
+      }
+    },
+    "pc_fwd_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\pc_fwd_ch1\\status",
+        "sha256": "396836822cb2aa170a545f5569fa186ff21eddd9135e8b511fec687b8353f3ea"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\pc_fwd_ch1\\logfile.txt",
+        "sha256": "1997300f762f0410dd5ac7b14a4fea89e18a25cb855f0c5337cfda282b1becff"
+      }
+    },
+    "reg_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\reg_ch0\\status",
+        "sha256": "89a53e765a1afa05ebb6253c4b1d4fc0183c4cfdd85b373a8b7fc89164830ac2"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\reg_ch0\\logfile.txt",
+        "sha256": "98cf8bd3e1e529fdcc8560028955154c276cd1976abce6aa010d4db84cb0e5a2"
+      }
+    },
+    "reg_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\reg_ch1\\status",
+        "sha256": "7319d55a2d77cdcbd623f81ef3c8973ca0412a727ec3f85ac8dcfd9341b0286b"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\reg_ch1\\logfile.txt",
+        "sha256": "bb4f251350640c33eea24280a2f87872e41b10a0681a6afbe9d9a79ab1f022c1"
+      }
+    },
+    "unique_ch0": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\unique_ch0\\status",
+        "sha256": "b298a94f014b41c5fa58c0b45d4f815ade79215f4fcec0dffaa5b9cc1acfa2c1"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\unique_ch0\\logfile.txt",
+        "sha256": "8f399f0c77c84df628ef6a680270bdc50eef7cd1960852846fa62f8d2f76a625"
+      }
+    },
+    "unique_ch1": {
+      "status": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\unique_ch1\\status",
+        "sha256": "396836822cb2aa170a545f5569fa186ff21eddd9135e8b511fec687b8353f3ea"
+      },
+      "logfile.txt": {
+        "path": ".local\\hwe-adapter-readiness-20261001-e5d6f63c\\.local\\hwe-readiness\\check-de4811b8-36bd-4588-b812-dba741124b54\\formal\\unique_ch1\\logfile.txt",
+        "sha256": "09a5065f5f5881b8bd7a2348a1b48ad071341770534b5fbae8d6a1a6949acf2f"
+      }
+    }
+  },
+  "fixture_sha256": "dd8b333b8f9918aae47c59f2951f91a374876cb3db2c2bff35f77b9e3cc4455a",
+  "extraction": "All 105 status files byte-for-byte as UTF-8 strings; ordered unmodified terminal, PREUNSAT and assertion records from each original job log. Only .sby manifests are synthesized in temporary replay directories."
+}

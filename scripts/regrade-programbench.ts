@@ -12,7 +12,7 @@ for(const original of process.argv.slice(2)){
  const entries=(await readdir(join(source,'host'))).filter(n=>n.endsWith('-grade')||n.endsWith('-grade-recovery')).sort((a,b)=>parseInt(a)-parseInt(b));
  const prior=JSON.parse(await readFile(join(source,'host',entries.at(-1)!,'request.json'),'utf8'));
  const root=resolve('.runs','programbench-regrade-'+randomUUID());await mkdir(join(root,'adapter'),{recursive:true});
- for(const file of ['bridge.py','model_proxy.py','relay.py'])await copyFile(resolve('scripts/programbench',file),join(root,'adapter',file));
+ for(const file of ['bridge.py','model_proxy.py','relay.py'])await copyFile(resolve(file==='model_proxy.py'?'scripts/runtime':'scripts/programbench',file),join(root,'adapter',file));
  const artifact=join(root,'scoring',prior.settings.instance,'submission.tar.gz');await mkdir(join(root,'scoring',prior.settings.instance),{recursive:true});await writeFile(artifact,bytes,{flag:'wx'});
  const provenance={originalRun:source,sha256:selected.sha256,method:'pip-only proxy; identical frozen submission; no Worker calls',startedAt:new Date().toISOString()};
  await writeFile(join(root,'provenance.json'),JSON.stringify(provenance,null,2));

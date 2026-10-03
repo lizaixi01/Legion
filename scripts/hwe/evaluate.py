@@ -1,7 +1,8 @@
 """Run pinned public HWE gates outside the worker. No model can edit this copy."""
 import json,os,pathlib,subprocess,time,sys,shutil
 sys.path.insert(0,'/work')
-from tools.eval.formal import run_formal
+from tools.eval.formal import run_formal, EXPECTED_MIN_CHECKS
+from formal_result import run_formal_checked
 from tools.eval.cosim import run_cosim
 from tools.eval.fpga import run_fpga_eval, _build_synth_env
 root=pathlib.Path('/work');out=root/'evidence';out.mkdir(exist_ok=True)
@@ -25,9 +26,9 @@ try:
   result['checks']['cosim']=run_cosim(str(root),'baseline');save()
   if not result['checks']['cosim']['passed']:result['status']='fail'
   else:
-   result['checks']['formal']=run_formal(str(root),'baseline');save()
-   if not result['checks']['formal']['passed']:
-    why=result['checks']['formal'].get('failed_check');result['status']='error' if why in ['setup','no_checks_generated','too_few_checks_generated'] else 'timeout' if why=='timeout' else 'fail'
+   result['checks']['formal']=run_formal_checked(root,'baseline',out,run_formal,EXPECTED_MIN_CHECKS);save()
+   if result['checks']['formal']['classification']['status']!='pass':
+    result['status']=result['checks']['formal']['classification']['status']
    elif not command('synthesis',['yosys','-c','fpga/scripts/synth.tcl'],env=_build_synth_env(root,'baseline')):result['status']='fail'
    else:
     q=run_fpga_eval(str(root),'baseline');result['checks']['fpga']=q

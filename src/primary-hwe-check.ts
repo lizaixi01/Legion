@@ -4,9 +4,9 @@ import {join,resolve,relative,isAbsolute} from 'node:path';
 import {randomUUID} from 'node:crypto';
 import {z} from 'zod';
 import {digest} from './challenge.js';
-import {hweFingerprint,verifyHwe,hweCall,fingerprintMatches,fingerprintDifferences} from './hwe.js';
+import {hweFingerprint,verifyHwe,hweCall,fingerprintMatches,fingerprintDifferences} from './hwe-runtime.js';
 import {inspectRtlArchive} from './hwe-archive.js';
-import type {Evidence} from './research-loop.js';
+import type {HweEvidence as Evidence} from './hwe-quality.js';
 const Input=z.object({archive:z.string().min(1).max(2000)}).strict();
 export const hweCheckTool={type:'function',name:'legion_hwe_check',description:'Run the installed, frozen local HWE verifier on a project-relative RTL .tar.gz submission. Requires existing readiness and matching toolchain fingerprint; does not launch a model or change tests. Returns version-bound public-check evidence and quality metrics, not universal correctness or whole-task acceptance. Up to 3 checks per turn, one at a time. May take about 70 minutes; use only for an HWE task authorized by the user. The archive must contain the *.sv files at its top level: run tar from inside the RTL directory (tar -czf out.tar.gz *.sv), never archive the directory itself.',inputSchema:z.toJSONSchema(Input)};
 interface Dependencies {fingerprint:()=>Promise<unknown>;verify:(archive:string,dir:string,owner:string,signal:AbortSignal)=>Promise<Evidence>;stop:(dir:string,owner:string)=>Promise<unknown>}
@@ -58,9 +58,10 @@ export function createHweCheck(root:string,workspace:string,directory:string,dea
    result.durationMs=Date.now()-started;
    try{await mkdir(dir,{recursive:true});await writeFile(join(dir,'result.json'),JSON.stringify(result,null,2),{flag:'wx'});}finally{busy=false;}
   }
-  lastFailure=result.status==='verified'?undefined:`HWE ${result.status}: ${result.detail??'候选未通过外部检查'} (${join(dir,'result.json')})`;
+  const description=result.status==='error'?(result.evidence?.status==='timeout'?'验证未完成／超时':'验证未完成／工具异常'):'候选未通过外部检查';
+  lastFailure=result.status==='verified'?undefined:`HWE ${result.status}: ${description}; ${result.detail??result.evidence?.detail??''} (${join(dir,'result.json')})`;
   issued.set(id,{value:structuredClone(result),reportHash:digest(await readFile(join(dir,'result.json')))});
   return {...result,report:join(dir,'result.json'),scope:'Frozen local HWE public checks only. Independent measurements, not general task acceptance.'};
  };
- return Object.assign((args:unknown)=>{const task=run(args);inflight.add(task);void task.finally(()=>inflight.delete(task)).catch(()=>{});return task;},{inspect,failures:()=>lastFailure?[lastFailure]:[],ids:()=>[...issued.keys()],pending:()=>busy,close:async()=>{controller.abort();await Promise.allSettled([...inflight]);}});
+ return Object.assign((args:unknown)=>{const task=run(args);inflight.add(task);void task.finally(()=>inflight.delete(task)).catch(()=>{});return task;},{inspect,compatible:(a:{environment?:unknown},b:{environment?:unknown})=>fingerprintMatches(a.environment,b.environment),scope:'HWE public checks only; decision is not whole-task acceptance.',failures:()=>lastFailure?[lastFailure]:[],ids:()=>[...issued.keys()],pending:()=>busy,close:async()=>{controller.abort();await Promise.allSettled([...inflight]);}});
 }

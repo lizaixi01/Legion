@@ -41,17 +41,18 @@ try{
   await fs.writeFile(target,JSON.stringify(record));
   const state=await tasks.call('legion_tasks',{action:'read',id:a.id}) as {status:string;history:{status:string}[]};
   statuses=[state.status];if(state.history[0]?.status!=='interrupted')throw Error('Orphan history must remain unknown');
- }else if(mode==='save-failure'){
+ }else if(mode==='save-failure'||mode==='transient-save-failure'){
   // A failed final rename leaves durable state running; a finished model is not
   // sufficient to fabricate a successful task record.
   fs.rename=(async(...args:Parameters<typeof nativeRename>)=>{
-   if(String(args[1])===target){injected=true;throw Error('fixture final rename failure');}
+   if(String(args[1])===target&&(!injected||mode==='save-failure')){injected=true;throw Object.assign(Error('fixture final rename failure'),mode==='transient-save-failure'?{code:'EPERM'}:{});}
    return nativeRename(...args);
   }) as typeof nativeRename;
   syncBuiltinESMExports();
   const waiting=tasks.call('legion_tasks',{action:'wait',id:a.id});
   releases.get(a.id)!();
-  try{await waiting;throw Error('Expected persistence failure');}catch(error){if(!String(error).includes('fixture final rename failure'))throw error;}
+  if(mode==='transient-save-failure')await waiting;
+  else {try{await waiting;throw Error('Expected persistence failure');}catch(error){if(!String(error).includes('fixture final rename failure'))throw error;}}
   const state=await tasks.call('legion_tasks',{action:'read',id:a.id}) as {status:string};statuses=[state.status];
  }else if(mode==='batch'){
   const b=await tasks.call('legion_dispatch',{backend:'commandcode',prompt:'second'}) as {id:string};

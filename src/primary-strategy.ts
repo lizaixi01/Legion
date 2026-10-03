@@ -2,18 +2,18 @@ import {mkdir,writeFile,rename} from 'node:fs/promises';
 import {join} from 'node:path';
 import {randomUUID} from 'node:crypto';
 import {z} from 'zod';
-import type {HweDecisionEvidence} from './primary-hwe-check.js';
-import {fingerprintMatches} from './hwe-fingerprint.js';
+import {isDeepStrictEqual} from 'node:util';
 import {Dispatch} from './primary-task-contract.js';
-import type {DispatchLink} from './primary-agent.js';
+import type {DispatchLink} from './primary-task-contract.js';
 
 const Input=z.discriminatedUnion('action',[
  z.object({action:z.literal('read')}).strict(),
  z.object({action:z.enum(['execute','cancel']),decisionId:z.string().uuid()}).strict(),
  z.object({action:z.enum(['select','discard','continue']),reason:z.string().min(1).max(4000),evidenceIds:z.array(z.string().uuid()).min(1).max(3),selectedId:z.string().uuid().optional(),nextExperiment:z.string().min(1).max(4000).optional(),workers:z.array(Dispatch).min(1).max(64).optional()}).strict()
 ]);
-export const strategyTool={type:'function',name:'legion_strategy',description:'Record HWE decisions grounded in host evidence. Read returns evidence, decisions, plans and available capacity. Continue may include a frozen workers allocation. Execute launches pending allocations within shared capacity; repeat after workers settle to drain the plan without duplicating dispatched workers. Cancel drops only unstarted allocations; use legion_tasks cancel for active workers. Every batch rechecks evidence. Plans cannot survive a restart as launch authority. Select requires verified unchanged evidence. Infrastructure errors are not failed solutions. Decisions do not accept the whole task.',inputSchema:z.toJSONSchema(Input)};
-interface Issuer {ids:()=>string[];inspect:(id:string)=>Promise<HweDecisionEvidence>}
+export const strategyTool={type:'function',name:'legion_strategy',description:'Record task-environment decisions grounded in host evidence. Read returns evidence, decisions, plans and available capacity. Continue may include a frozen workers allocation. Execute launches pending allocations within shared capacity; repeat after workers settle to drain the plan without duplicating dispatched workers. Cancel drops only unstarted allocations; use legion_tasks cancel for active workers. Every batch rechecks evidence. Plans cannot survive a restart as launch authority. Select requires verified unchanged evidence. Infrastructure errors are not failed solutions. Decisions do not accept the whole task.',inputSchema:z.toJSONSchema(Input)};
+export interface DecisionEvidence {id:string;status:string;environment?:unknown}
+interface Issuer {ids:()=>string[];inspect:(id:string)=>Promise<DecisionEvidence>;compatible?:(a:DecisionEvidence,b:DecisionEvidence)=>boolean;scope?:string}
 interface Executor {
  capacity:()=>{limit:number;active:number;remainingCalls:number;available:number;deadline:number};
  dispatch:(work:z.infer<typeof Dispatch>,link:DispatchLink)=>Promise<unknown>;
@@ -60,7 +60,7 @@ export function createPrimaryStrategy(directory:string,issuer:Issuer,executor?:E
    const selected=evidence.find(e=>e.id===input.selectedId);
    if(!selected||selected.status!=='verified')throw Error('Select requires a verified referenced candidate');
    const measured=evidence.filter(e=>e.status==='verified');
-   if(measured.some(e=>!fingerprintMatches(e.environment,selected.environment)))throw Error('Cannot compare different verification environments');
+   if(measured.some(e=>!(issuer.compatible?issuer.compatible(e,selected):isDeepStrictEqual(e.environment,selected.environment))))throw Error('Cannot compare different verification environments');
   }else if(input.selectedId)throw Error('selectedId is only valid for select');
   if(input.action==='continue'&&!input.nextExperiment)throw Error('Continue requires the next experiment hypothesis');
   if(input.workers){
@@ -68,7 +68,7 @@ export function createPrimaryStrategy(directory:string,issuer:Issuer,executor?:E
    const capacity=executor.capacity();
    if(!capacity.limit||input.workers.length>capacity.remainingCalls||Date.now()>=capacity.deadline)throw Error('Allocation exceeds current call budget or delegation is disabled');
   }
-  const record={...input,id:randomUUID(),at:new Date().toISOString(),evidence,scope:'HWE public checks only; decision is not whole-task acceptance.'};
+  const record={...input,id:randomUUID(),at:new Date().toISOString(),evidence,scope:issuer.scope??'Installed task environment checks only; decision is not whole-task acceptance.'};
   await mkdir(directory,{recursive:true});await writeFile(join(directory,record.id+'.json'),JSON.stringify(record,null,2),{flag:'wx'});
   decisions.push(record);
   if(input.action==='select')selected={decisionId:record.id,evidenceId:input.selectedId!};

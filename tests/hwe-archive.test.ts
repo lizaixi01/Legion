@@ -71,3 +71,27 @@ test('an unreadable or empty archive is rejected before any container starts', (
   assert.equal(empty.ok, false);
   assert.match(empty.detail, /empty|no \.sv files/);
 });
+
+test('unsafe names, links, duplicate entries and corrupt tar headers are rejected', () => {
+  for (const entries of [
+    [{name: '../core.sv'}], [{name: '..\\core.sv'}], [{name: 'C:core.sv'}],
+    [{name: 'core.sv', typeflag: '2'}], [{name: 'core.sv', typeflag: '1'}],
+    [{name: 'core.sv'}, {name: 'core.sv', body: 'different'}],
+  ]) assert.equal(inspectRtlArchive(tarGz(entries)).ok, false);
+  const corrupt = header('core.sv', 20);corrupt[0] = 0x78;
+  assert.equal(inspectRtlArchive(gzipSync(Buffer.concat([corrupt, Buffer.alloc(512)]))).ok, false);
+  assert.equal(inspectRtlArchive(gzipSync(header('core.sv', 2000))).ok, false);
+  assert.equal(inspectRtlArchive(tarGz(Array.from({length: 513}, (_, i) => ({name: `file${i}.sv`})))).ok, false);
+});
+
+test('bridge PAX timestamps are accepted while layout overrides are rejected', () => {
+  function pax(key: string, value: string) {
+    const body = `${key}=${value}\n`;let length = Buffer.byteLength(body) + 2;
+    while (length !== Buffer.byteLength(body) + String(length).length + 1) length = Buffer.byteLength(body) + String(length).length + 1;
+    const metadata = Buffer.from(`${length} ${body}`),rtl = Buffer.from('module core; endmodule\n');
+    return gzipSync(Buffer.concat([header('././@PaxHeader', metadata.length, 'x'), metadata, Buffer.alloc((512 - metadata.length % 512) % 512),
+      header('core.sv', rtl.length),rtl,Buffer.alloc((512 - rtl.length % 512) % 512),block,block]));
+  }
+  const timestamp = inspectRtlArchive(pax('mtime', '1790613656.0737135'));assert.equal(timestamp.ok, true, timestamp.detail);assert.deepEqual(timestamp.files, ['core.sv']);
+  for (const key of ['path', 'linkpath', 'size', 'GNU.sparse.map']) assert.equal(inspectRtlArchive(pax(key, '../outside.sv')).ok, false);
+});
