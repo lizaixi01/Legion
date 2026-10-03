@@ -38,21 +38,27 @@ def run_session(args, prompt, seconds, cancel_file=None, grace_seconds=5, emit=p
     failed = False
     forced = False
     reason = None
+    def drain_events():
+        nonlocal completed_at, terminal_at, failed
+        try:
+            while True:
+                event = events.get_nowait()
+                if event and event.get('type') == 'turn.completed':
+                    completed_at = completed_at or time.monotonic();terminal_at=terminal_at or completed_at
+                if event and event.get('type') == 'turn.failed':
+                    failed = True;terminal_at=terminal_at or time.monotonic()
+        except queue.Empty: pass
     try:
         while True:
             # Drain output before examining the deadline or process exit. The CLI
             # can emit a terminal event and exit between two polls.
-            try:
-                while True:
-                    event = events.get_nowait()
-                    if event and event.get('type') == 'turn.completed':
-                        completed_at = completed_at or time.monotonic();terminal_at=terminal_at or completed_at
-                    if event and event.get('type') == 'turn.failed':
-                        failed = True;terminal_at=terminal_at or time.monotonic()
-            except queue.Empty: pass
+            drain_events()
             if cancelled(): reason = 'cancelled'; break
             code = process.poll()
             if code is not None and not reader.is_alive():
+                # The reader may finish after the first drain. Once it has
+                # stopped, all terminal events are queued and can be classified.
+                drain_events()
                 reason = 'completed' if completed_at and not failed else 'error'; break
             if terminal_at and time.monotonic() - terminal_at >= grace_seconds:
                 reason = 'error' if failed else 'completed'; break

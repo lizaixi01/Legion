@@ -38,6 +38,19 @@ async function milestone(root:string,type:string,id?:string){
 }
 async function savedEquals(root:string,state:ResearchState){assert.deepEqual(JSON.parse(await readFile(join(root,'state.json'),'utf8')),JSON.parse(JSON.stringify(state)));}
 
+test('resume preserves both verification concurrency and the configured Manager timeout',async()=>{
+ const f=await fixture(),custom={...config,verificationConcurrency:2 as const,manager:{...config.manager,timeoutSeconds:600}};
+ f.deps.decide=async()=>{throw Error('Fixture decision failed before allocation');};
+ const initial=await runResearch(f.root,custom,f.deps,new AbortController().signal);assert.equal(initial.status,'error');assert.equal(f.counts().workers,0);
+ const saved=await readFile(join(f.root,'state.json'),'utf8'),stops=f.counts().stops;
+ await assert.rejects(runResearch(f.root,{...custom,manager:{...custom.manager,timeoutSeconds:900}},f.deps,new AbortController().signal,true),/Resume configuration changed/);
+ assert.equal(await readFile(join(f.root,'state.json'),'utf8'),saved);assert.equal(f.counts().stops,stops);
+ f.deps.decide=async()=>({action:'finish',reason:'Resume under original frozen configuration',hypotheses:[],discard:[]});
+ const resumed=await runResearch(f.root,custom,f.deps,new AbortController().signal,true);
+ assert.equal(resumed.status,'completed');assert.equal(resumed.config.verificationConcurrency,2);assert.equal(resumed.config.manager.timeoutSeconds,600);assert.equal(resumed.candidates.length,0);
+ const log=await events(f.root),attempts=log.filter(e=>e.type==='decision_started');assert.equal(attempts.length,2);assert.notEqual(attempts[0].data.directory,attempts[1].data.directory);
+});
+
 for(const concurrency of [undefined,1,2] as const)test(`verification concurrency ${concurrency??'legacy default'} enforces its limit and refills a free slot`,{timeout:10000},async()=>{
  const f=await fixture(),run=runResearch(f.root,{...config,...(concurrency?{verificationConcurrency:concurrency}:{})},f.deps,new AbortController().signal);
  await f.entered.one!.promise;

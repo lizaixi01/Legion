@@ -1,9 +1,33 @@
-import json, pathlib, sys, tempfile, threading, time, unittest
+import io, json, pathlib, sys, tempfile, threading, time, unittest
+from unittest.mock import patch
 sys.path.insert(0,str(pathlib.Path(__file__).resolve().parents[1]/'scripts/hwe'))
 from session_runner import run_session
+import session_runner
 
 
 class SessionTests(unittest.TestCase):
+    def test_completion_arriving_between_drain_and_process_exit_is_retained(self):
+        ready=threading.Event();threads=[];thread_type=threading.Thread
+        class Pipe(io.BytesIO):
+            def __next__(self):
+                ready.wait(1)
+                return super().__next__()
+        class Child:
+            def __init__(self,*args,**kwargs):
+                self.stdin=io.BytesIO();self.stdout=Pipe(b'{"type":"turn.completed"}\n');self.returncode=0
+            def poll(self):
+                # The first event drain is empty. Finish the reader exactly
+                # during the following process-exit check, without sleeps.
+                ready.set();threads[0].join(1)
+                if threads[0].is_alive():raise AssertionError('Reader did not finish')
+                return 0
+        def thread(*args,**kwargs):
+            result=thread_type(*args,**kwargs);threads.append(result);return result
+        with patch.object(session_runner.subprocess,'Popen',Child),patch.object(session_runner.threading,'Thread',thread):
+            result=run_session(['fixture'],'fixture',1,emit=lambda *args,**kwargs:None)
+        self.assertEqual(result['status'],'completed');self.assertTrue(result['turnCompleted'])
+        self.assertEqual(result['exitCode'],0);self.assertFalse(result['processExitForced'])
+
     def run_code(self,code,seconds=2,**kw):
         lines=[]
         r=run_session([sys.executable,'-u','-c',code],'fixture',seconds,emit=lambda line,**_:lines.append(line),grace_seconds=.15,**kw)

@@ -41,7 +41,13 @@ export async function createPrimaryTasks(root:string,directory:string,project:st
  const capacity=()=>({limit,active:active.size,maxCalls,totalCalls:calls,totalRemaining:64-calls,remainingCalls:Math.max(0,Math.min(64-calls,maxCalls-workerCalls,budget?.remaining('worker')??maxCalls)),available:closed||signal?.aborted||Date.now()>=deadline||calls>=64||workerCalls>=maxCalls||budget?.remaining('worker')===0?0:Math.max(0,limit-active.size),deadline});
  const path=(id:string)=>{z.string().uuid().parse(id);return join(directory,id);};
  const revisions=new Map<string,number>();
- const save=async(r:RecordEntry)=>{const p=join(path(r.id),'task.json');await writeFile(p+'.tmp',JSON.stringify(r,null,2));await rename(p+'.tmp',p);revisions.set(r.id,(revisions.get(r.id)??0)+1);};
+ const save=async(r:RecordEntry)=>{
+  const p=join(path(r.id),'task.json');await writeFile(p+'.tmp',JSON.stringify(r,null,2));
+  // Windows readers can briefly hold the previous checkpoint open. Preserve
+  // the pending final record and retry only these transient filesystem errors.
+  for(let attempt=0;;attempt++){try{await rename(p+'.tmp',p);break;}catch(error){if(attempt>=7||!['EPERM','EACCES','EBUSY'].includes((error as NodeJS.ErrnoException).code??''))throw error;await new Promise(resolve=>setTimeout(resolve,25*(attempt+1)));}}
+  revisions.set(r.id,(revisions.get(r.id)??0)+1);
+ };
  const read=async(id:string)=>{
   for(;;){
    const slot=active.get(id),revision=revisions.get(id);

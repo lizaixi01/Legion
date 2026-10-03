@@ -58,6 +58,7 @@ legion --help         全部用法
 ```sh
 npm ci
 npm run desktop     # 开发态启动
+npm run build       # 测试前生成桌面资源
 npm test            # 行为测试
 npm run dist        # 构建 Windows 安装包到 dist-release/
 ```

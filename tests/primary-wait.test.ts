@@ -24,7 +24,7 @@ test('batch wait wakes on the first finished worker and capacity reflects remain
  }finally{for(const done of release.values())done();await tasks.close();}
 });
 
-for(const mode of ['read','batch','cancel','completed-cancel','continue','orphan','save-failure'])test(`task ${mode} status stays consistent across an in-flight disk read`,{timeout:20000},async()=>{
+for(const mode of ['read','batch','cancel','completed-cancel','continue','orphan','save-failure','transient-save-failure'])test(`task ${mode} status stays consistent across an in-flight disk read`,{timeout:20000},async()=>{
  const root=await mkdtemp(join(tmpdir(),'primary-wait-race-'));
  const {stdout}=await promisify(execFile)(process.execPath,['--unhandled-rejections=strict','--import','tsx','tests/fixtures/task-read-race.ts',root,mode],{timeout:15000,windowsHide:true});
  const result=JSON.parse(stdout.trim()) as {statuses:string[];diskStatus:string;injected:boolean};
