@@ -1,5 +1,7 @@
 # HWE 管理闭环开发试跑
 
+> 本页记录 2026-09-29 的开发运行。当前已完成的独立配对结果见[HWE batch-3](hwe-batch-3-comparison.md)；各类实验的解释范围见[公开摘要](experiment-summary.md)。
+
 已完成真实两轮管理闭环。最终选择 `divsharedquotrem`：39.94 iter/s，较冻结 baseline 提升 **29.7%**，LUT4 减少 **45.8%**。这是一轮开发验证，**不计入普通 Codex 与管理组的正式对照**。
 
 运行目录：`.runs/research-befd4e2c-0275-449d-86ca-9a924d091646`。
@@ -55,4 +57,4 @@
 
 ## 正式对照
 
-另开干净的普通 Codex 和 Management＋Subagent 运行，模型无法读取本次开发记录。预定协议见 [HWE 本机对照](hwe-comparison-protocol.md)，结果见 [首次正式对照](hwe-first-comparison.md)。在正式组完成前，不将上述 29.7% 改善解释为管理架构相对普通 Codex 的收益。
+后续另开干净的普通 Codex 和 Management＋Subagent 运行，不向模型提供本次开发记录。早期预定协议见 [HWE 本机对照](hwe-comparison-protocol.md)，中断见 [batch-1/2 历史对照](hwe-first-comparison.md)，2026-10-01 完成的独立配对见 [batch-3](hwe-batch-3-comparison.md)。本页 29.7% 是相对冻结 baseline 的改善，始终不能解释为相对普通 Codex 的管理收益。

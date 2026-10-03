@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "studyId": "engineering-development-pilot-draft-20261002",
+  "phase": "pilot",
+  "frozen": false,
+  "protocolSha256": null,
+  "taskSetSha256": null,
+  "tasks": [
+    {
+      "id": "P1-host-verifier-registry",
+      "baselineCommit": "de0490586847dd951fd00fe4e460123e741396bd",
+      "inputsSha256": null,
+      "evaluatorSha256": null
+    },
+    {
+      "id": "P2-git-worker-candidate",
+      "baselineCommit": "de0490586847dd951fd00fe4e460123e741396bd",
+      "inputsSha256": null,
+      "evaluatorSha256": null
+    },
+    {
+      "id": "P3-runtime-selection",
+      "baselineCommit": "de0490586847dd951fd00fe4e460123e741396bd",
+      "inputsSha256": null,
+      "evaluatorSha256": null
+    }
+  ],
+  "runs": []
+}

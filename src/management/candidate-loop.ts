@@ -1,4 +1,4 @@
-import {mkdir,readFile,writeFile,rename,appendFile} from 'node:fs/promises';
+import {mkdir,mkdtemp,readFile,writeFile,rename,appendFile} from 'node:fs/promises';
 import {join,dirname} from 'node:path';
 import {hash} from '../provenance.js';
 import {ResearchConfigSchema,normalizeResearchConfig,ResearchDecisionSchema,type Candidate,type Evidence,type Metrics,type QualityPolicy,type ResearchConfig,type ResearchContext,type ResearchDecision,type ResearchDeps,type ResearchState,type VerificationBatch} from './candidate-types.js';
@@ -110,8 +110,10 @@ export async function runCandidateLoop<M extends Metrics>(root:string,config:Res
   if(!eligible(state.baseline,policy))throw Error('Baseline did not pass complete verification');
   if(state.spentMs>=config.totalMs)state.status='budget';
   for(;state.status==='running'&&state.round<config.maxRounds&&state.candidates.length<config.maxWorkers;){
-   signal.throwIfAborted();const ctx=researchContext(state,Math.max(0,remaining-(Date.now()-started)));const round=state.round+1,dir=join(root,`round-${round}-${state.history.length}`);await mkdir(dir);
+   signal.throwIfAborted();const ctx=researchContext(state,Math.max(0,remaining-(Date.now()-started)));const round=state.round+1,base=join(root,`round-${round}-${state.history.length}`);let dir=base;
+   try{await mkdir(dir);}catch(error){if((error as NodeJS.ErrnoException).code!=='EEXIST')throw error;dir=await mkdtemp(base+'-retry-');}
    await writeFile(join(dir,'memory.json'),JSON.stringify(ctx,null,2));
+   await event('decision_started',{round,directory:dir});
    const decision=ResearchDecisionSchema.parse(await deps.decide(ctx,dir,signal));validateDecision(decision,ctx,config.concurrency);signal.throwIfAborted();
    state.history.push({round,decision});for(const id of decision.discard)state.candidates.find(c=>c.id===id)!.discarded=true;
    await event('decision',decision);
