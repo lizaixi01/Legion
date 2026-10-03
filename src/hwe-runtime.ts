@@ -9,6 +9,7 @@ import {execute,type ProcessResult} from './process.js';
 import {linuxPath} from './wsl-path.js';
 import {classifyHweEvidence} from './hwe-evidence.js';
 import type {HweEvidence as Evidence} from './hwe-quality.js';
+import {advertisesFast,type ServiceTier} from './service-tier.js';
 export {fingerprintMatches,fingerprintDifferences} from './hwe-fingerprint.js';
 const moduleBase=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 export const hweProjectRoot=existsSync(join(moduleBase,'package.json'))?moduleBase:resolve(moduleBase,'..');
@@ -17,10 +18,10 @@ export class HweCallError extends Error {
  constructor(action:string,readonly status:ProcessResult['status'],readonly logs:string,detail:string){super(`${action}: ${status}; ${detail}`);}
 }
 /** Opt-in launch setting; omitted preserves the existing backend default. */
-export function hweServiceTier(value=process.env.PROACTIVE_HWE_SERVICE_TIER):'fast'|'priority'|undefined {
+export function hweServiceTier(value=process.env.PROACTIVE_HWE_SERVICE_TIER):ServiceTier|undefined {
  if(value===undefined)return undefined;
- if(value==='fast'||value==='priority')return value;
- throw Error('PROACTIVE_HWE_SERVICE_TIER must be fast or priority');
+ if(value==='default'||value==='fast'||value==='priority')return value;
+ throw Error('PROACTIVE_HWE_SERVICE_TIER must be default, fast or priority');
 }
 /** Freeze official metadata for isolated CLI homes when speed is explicitly requested. */
 export async function hweModelPayload(payload:Record<string,unknown>,dir:string,env:NodeJS.ProcessEnv=process.env):Promise<Record<string,unknown>> {
@@ -32,7 +33,7 @@ export async function hweModelPayload(payload:Record<string,unknown>,dir:string,
  const model=catalog.models?.find(m=>m.slug===payload.model);
  if(!model)throw Error('HWE model catalog does not contain the requested model');
  if(!model.supported_reasoning_levels?.some(e=>e.effort===payload.effort))throw Error('HWE model catalog does not support the requested effort');
- if(serviceTier&&!model.service_tiers?.some(t=>t.id==='priority'||t.id==='fast')&&!model.additional_speed_tiers?.includes('fast'))throw Error('HWE model catalog does not advertise Fast for the requested model');
+ if(serviceTier&&serviceTier!=='default'&&!advertisesFast(model))throw Error('HWE model catalog does not advertise Fast for the requested model');
  await mkdir(dir,{recursive:true});const frozen=join(dir,'model-catalog.json');await writeFile(frozen,bytes);
  await writeFile(join(dir,'model-catalog-receipt.json'),JSON.stringify({source,sha256:hash(bytes),model:payload.model,effort:payload.effort,serviceTier:serviceTier??null},null,2));
  return {...payload,...(serviceTier?{serviceTier}:{}),modelCatalog:linuxPath(frozen)};

@@ -10,8 +10,9 @@ import {createChatService} from '../src/chat-service.js';
 
 test('failed attempts remain readable after repair, restart and concurrent follow-up requests',async()=>{
  const root=await mkdtemp(join(tmpdir(),'primary-history-'));let count=0;let release:()=>void=()=>{};
- const options={...defaultChatOptions,delegation:{mode:'fixed' as const,count:2}};
- const tasks=await createPrimaryTasks(root,join(root,'tasks'),root,options,undefined,async()=>{
+ const options={...defaultChatOptions,serviceTier:'fast' as const,worker:{model:defaultChatOptions.model,effort:defaultChatOptions.effort,serviceTier:'default' as const},delegation:{mode:'fixed' as const,count:2}};
+ const tasks=await createPrimaryTasks(root,join(root,'tasks'),root,options,undefined,async spec=>{
+  assert.equal(spec.serviceTier,'default');
   count++;if(count===2)await new Promise<void>(r=>{release=r;});
   return {status:count===1?'error':'completed',text:count===1?'original failure':'repair claim',usage:null,durationMs:1,sessionId:'session'};
  });
@@ -26,6 +27,8 @@ test('failed attempts remain readable after repair, restart and concurrent follo
  assert.equal(record.history.length,2);assert.equal(record.history[0].result.text,'original failure');
  assert.equal(record.history[1].prompt,'repair using failure');assert.equal(record.history[1].result.text,'repair claim');
  assert.ok(record.history[0].model);assert.ok(record.history[0].finishedAt);
+ assert.equal(record.history[0].serviceTier,'default');
+ assert.equal(JSON.parse(await readFile(join(record.history[0].logs,'request.json'),'utf8')).serviceTier,'default');
  assert.equal(JSON.parse(await readFile(join(record.history[0].logs,'attempt.json'),'utf8')).result.text,'original failure');
  assert.equal(record.trust,'unverified');await restored.close();
 });

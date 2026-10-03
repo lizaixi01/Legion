@@ -9,8 +9,8 @@ test('HWE speed selection preserves backend default and validates explicit Fast 
  try{
   delete process.env.PROACTIVE_HWE_SERVICE_TIER;
   assert.equal(hweServiceTier(),undefined);
-  for(const tier of ['fast','priority'] as const){process.env.PROACTIVE_HWE_SERVICE_TIER=tier;assert.equal(hweServiceTier(),tier);}
-  for(const value of ['','standard','ultrafast','typo'])assert.throws(()=>hweServiceTier(value),/must be fast or priority/);
+  for(const tier of ['default','fast','priority'] as const){process.env.PROACTIVE_HWE_SERVICE_TIER=tier;assert.equal(hweServiceTier(),tier);}
+  for(const value of ['','standard','ultrafast','typo'])assert.throws(()=>hweServiceTier(value),/must be default, fast or priority/);
  }finally{if(saved===undefined)delete process.env.PROACTIVE_HWE_SERVICE_TIER;else process.env.PROACTIVE_HWE_SERVICE_TIER=saved;}
 });
 test('isolated HWE launch freezes supported official metadata and preserves explicit values',async()=>{
@@ -30,4 +30,11 @@ test('isolated HWE launch freezes supported official metadata and preserves expl
 test('omitted speed and metadata preserve backend defaults',async()=>{
  const payload={model:'existing-model',effort:'existing-effort'};
  assert.deepEqual(await hweModelPayload(payload,'unused',{}),payload);
+});
+test('explicit Standard overrides the global Fast setting and does not require Fast capability',async()=>{
+ const dir=await mkdtemp(join(tmpdir(),'hwe-standard-')),source=join(dir,'source.json');
+ await writeFile(source,JSON.stringify({models:[{slug:'fixture',supported_reasoning_levels:[{effort:'high'}]}]}));
+ const payload=await hweModelPayload({model:'fixture',effort:'high',serviceTier:'default',modelCatalog:source},dir,{PROACTIVE_HWE_SERVICE_TIER:'fast'});
+ assert.equal(payload.serviceTier,'default');
+ await assert.rejects(hweModelPayload({model:'fixture',effort:'high',serviceTier:'fast',modelCatalog:source},dir,{}),/does not advertise Fast/);
 });

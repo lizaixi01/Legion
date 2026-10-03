@@ -8,14 +8,38 @@ ALLOWED = {'/backend-api/codex/responses', '/backend-api/codex/responses/compact
 TOOL_TYPES = {'function', 'custom', 'namespace', 'local_shell'}
 
 
+def codex_routing_hint(parsed):
+    """Match native Codex routing for the authenticated ChatGPT upstream.
+
+    Custom providers skip core/client.rs::build_routing_hint_header. The host
+    proxy knows its real upstream; derive routing only from the unchanged body,
+    never from client identity, credentials, or a claimed account entitlement.
+    """
+    model = parsed.get('model')
+    tier = parsed.get('service_tier')
+    if not isinstance(model, str) or not re.fullmatch(r'[a-zA-Z0-9._-]{1,160}', model):
+        raise ValueError('Invalid routing model')
+    if tier is not None and tier not in {'default', 'priority', 'fast', 'flex', 'auto'}:
+        raise ValueError('Invalid routing tier')
+    return 'model=' + model + (';tier=' + tier if tier is not None else '')
+
+
 def error_fields(error):
     # Arbitrary exception messages can contain credentials; never stringify them.
     reason = getattr(error, 'reason', None)
     cause = reason if isinstance(reason, BaseException) else error
     fields = {'exceptionType': type(error).__name__, 'reasonType': type(cause).__name__, 'errno': getattr(cause, 'errno', None)}
-    if isinstance(cause, OSError) and cause.errno is not None:
+    if isinstance(cause, ssl.SSLError):
+        # SSL_ERROR_EOF=8 is an SSL code, not OS errno 8 (Exec format error).
+        fields['errno'] = None
+        fields['sslErrorCode'] = cause.errno
+        fields['tlsFailure'] = 'tls_eof' if isinstance(cause, ssl.SSLEOFError) else 'certificate_verification' if isinstance(cause, ssl.SSLCertVerificationError) else 'tls_error'
+        if isinstance(cause, ssl.SSLCertVerificationError): fields['verifyCode'] = getattr(cause, 'verify_code', None)
+        for attr in ('library', 'reason'):
+            value = getattr(cause, attr, None)
+            if isinstance(value, str) and re.fullmatch(r'[A-Z0-9_]+', value): fields['ssl'+attr.title()] = value
+    elif isinstance(cause, OSError) and cause.errno is not None:
         fields['reason'] = os.strerror(cause.errno)
-    elif isinstance(cause, ssl.SSLCertVerificationError): fields['verifyCode'] = cause.verify_code
     elif isinstance(reason, str): fields['reason'] = reason if reason in {'timed out', 'unknown url type: https'} else 'redacted'
     return fields
 
@@ -116,12 +140,20 @@ class Handler(http.server.BaseHTTPRequestHandler):
             parsed = json.loads(body) if body else {}
             if any(t.get('type', '') not in TOOL_TYPES for t in parsed.get('tools', [])):
                 local_error(403, 'tool_refused'); return
+            record['received'] = {'model': parsed.get('model'), 'effort': parsed.get('reasoning', {}).get('effort'), 'serviceTier': parsed.get('service_tier')}
             record['sent'] = {'model': parsed.get('model'), 'effort': parsed.get('reasoning', {}).get('effort'), 'serviceTier': parsed.get('service_tier')}
             record['bodySha256'] = hashlib.sha256(body or b'').hexdigest()
             record['stage'] = 'auth_read'
             auth = json.loads(pathlib.Path(self.server.auth).read_text())['tokens']
             headers = {k:v for k,v in self.headers.items() if k.lower() not in {'host','authorization','chatgpt-account-id','connection','content-length'}}
+            if (self.server.context or {}).get('codexRouting') and record['path'].endswith('/responses'):
+                hint = codex_routing_hint(parsed)
+                # A single value prevents an inconsistent client header winning.
+                headers = {k:v for k,v in headers.items() if k.lower() != 'x-codex-routing-hint'}
+                headers['x-codex-routing-hint'] = hint
+                record['routing'] = {'source': 'host-codex-upstream', 'sent': hint}
             headers['Authorization'] = 'Bearer ' + auth['access_token']; headers['ChatGPT-Account-Id'] = auth['account_id']
+            record['requestHeaderNames'] = sorted(k.lower() for k in headers if k.lower() not in {'authorization','chatgpt-account-id','cookie'})
             target = self.path if record['path'].startswith('/backend-api/') else '/backend-api/codex' + self.path
             request = urllib.request.Request('https://chatgpt.com' + target, data=body, headers=headers, method=self.command)
             record['stage'] = 'upstream_open'
@@ -151,6 +183,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
             except urllib.error.HTTPError as error: response = error
             record['upstreamHttpStatus'] = response.status; record['headersMs'] = round((time.monotonic() - began) * 1000)
             upstream_id = response.headers.get('x-request-id')
+            record['responseTierHeaders'] = {key:response.headers.get(key) for key in ['x-service-tier','x-codex-service-tier','x-openai-service-tier'] if response.headers.get(key) in {'fast','priority','default','standard','flex','auto'}}
             if upstream_id and re.fullmatch(r'[\w-]{1,160}', upstream_id): record['upstreamRequestId'] = upstream_id
             if response.status >= 400: record['errorOrigin'] = 'upstream_http'
             record['stage'] = 'client_headers'; self.send_response(response.status)

@@ -52,7 +52,7 @@ def proxy_start():
  env=os.environ.copy();env['HTTP_PROXY']=env['HTTPS_PROXY']=s['egressProxy']
  proxy_args=[sys.executable,s['proxyScript'],s['auth'],str(sock)]
  context=root/'model-request-context.json'
- context.write_text(json.dumps({'callId':p.get('callId'),'owner':s['owner'],'role':'manager' if p.get('decisionSchema') else action,'model':p.get('model'),'effort':p.get('effort'),'serviceTier':p.get('serviceTier'),'requestMaxRetries':0 if action=='worker' else None,'streamMaxRetries':0 if action=='worker' else None,'maxModelRequests':p.get('maxModelRequests')}))
+ context.write_text(json.dumps({'callId':p.get('callId'),'owner':s['owner'],'role':'manager' if p.get('decisionSchema') else action,'model':p.get('model'),'effort':p.get('effort'),'serviceTier':p.get('serviceTier'),'codexRouting':p.get('serviceTier') in {'fast','priority'},'requestMaxRetries':0 if action=='worker' else None,'streamMaxRetries':0 if action=='worker' else None,'maxModelRequests':p.get('maxModelRequests')}))
  proxy_args.extend([str(root/'model-audit'),str(context)])
  log=(root/'model-transport.log').open('ab');proc=subprocess.Popen(proxy_args,env=env,stdout=log,stderr=log,start_new_session=True)
  (private/'pid').write_text(str(proc.pid))
@@ -118,7 +118,7 @@ elif action=='native':
   if trace.returncode==0:pathlib.Path(p['trace']).write_bytes(trace.stdout)
   docker('rm','-f',name);stop_proxy()
 elif action=='worker':
- if p.get('serviceTier') is not None and p['serviceTier'] not in {'fast','priority'}:raise ValueError('Unsupported serviceTier')
+ if p.get('serviceTier') is not None and p['serviceTier'] not in {'default','fast','priority'}:raise ValueError('Unsupported serviceTier')
  if p.get('managerContext'):
   if not p.get('decisionSchema'):raise ValueError('Manager context requires a decision session')
   manager_context=prepare_manager_context(p['managerContext'])
@@ -138,7 +138,7 @@ elif action=='worker':
   for feature in ['multi_agent','multi_agent_v2','apps','plugins','remote_plugin','skill_search','image_generation','browser_use','computer_use','enable_request_compression']:args+=['--disable',feature]
   args+=['--sandbox','danger-full-access','-c','approval_policy="never"','-c','web_search="disabled"','-c','model_provider="local"','-c','model_providers.local.name="Model-only proxy"','-c','model_providers.local.base_url="http://127.0.0.1:8091/backend-api/codex"','-c','model_providers.local.env_key="PB_MODEL_TOKEN"','-c','model_providers.local.wire_api="responses"','-c','model_reasoning_effort='+json.dumps(p['effort']),'--model',p['model'],'--json','--skip-git-repo-check','-']
   if p.get('decisionSchema'):args[-1:-1]=['--output-schema','/work/decision-schema.json','--output-last-message','/work/decision.json']
-  if p.get('serviceTier') is not None:args[-1:-1]=['-c','service_tier='+json.dumps(p['serviceTier'])]
+  if p.get('serviceTier') is not None:args[-1:-1]=['--enable','fast_mode','-c','service_tier='+json.dumps(p['serviceTier'])]
   if p.get('modelCatalog'):args[-1:-1]=['-c','model_catalog_json="/tmp/agent-home/model-catalog.json"']
   # Existing CLI defaults retry HTTP failures four times and interrupted streams
   # five times. Disable that hidden replay for HWE; proxy performs one attempt.

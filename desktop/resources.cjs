@@ -8,6 +8,7 @@ const files = {
   '/drop-files.js': 'drop-files.js',
   '/attachment-cards.js': 'attachment-cards.js',
   '/conversation-view.js': 'conversation-view.js',
+  '/fast-setting.js': 'fast-setting.js',
   '/ui-icons.js': 'ui-icons.js',
   '/style.css': 'style.css',
   '/message-links.js': '../dist/desktop/message-links.js',

@@ -6,7 +6,7 @@
 
 1. Manager 根据目标、已验证基线、前轮测量和失败记录，返回结构化假设、父快照、实验方法、预期变化和执行时间。
 2. 每个 Worker 获得单独 Docker 容器、独立 Codex 会话和父快照。只导出 RTL；REPORT.md 中的实验结论保留为未经独立确认的陈述。
-3. 本轮 Worker 全部结束后，候选按分配顺序进入验证队列。有空位即启动下一个，最多同时验证 `verificationConcurrency` 个；本轮全部收尾后才进入下一次 Manager 决策。外部验证器从冻结参考环境重新创建容器，加载导出的 RTL，运行 lint、CoreMark 编译、Verilator 构建、ISS/CRC cosim、riscv-formal、综合和三种 seed 的 nextpnr。Worker 对检查脚本的修改不会进入这里。
+3. 缺省保留本轮所有 Worker 收尾后验证的屏障；显式 `verificationScheduling=worker-ready` 则在 Worker 导出并确认快照哈希后立即入验证队列。两种模式均使用有界 Worker 队列与独立验证队列，本轮全部 Worker 和验证收尾后才进入下一次 Manager 决策。外部验证器从冻结参考环境重新创建容器，加载导出的 RTL，运行 lint、CoreMark 编译、Verilator 构建、ISS/CRC cosim、riscv-formal、综合和三种 seed 的 nextpnr。Worker 对检查脚本的修改不会进入这里。
 4. 只有通过全部门槛且指标完整、有限的结果才可成为当前最佳。Manager 根据失败证据修复分支、提出新路线、淘汰分支、调整每个 Worker 的时间，或结束。程序限制总轮数、调用次数、并行度和总时间。
 
 正确性范围是公开验证器的覆盖范围，不承诺“完美正确”。快速 formal 使用 ALTOPS，上游计数还可能包含 PREUNSAT，不能把数量直接当作非空证明覆盖；CoreMark CRC 不是任意程序的穷尽验证；Fmax 是 FPGA 布局布线时序估计，没有实物板卡测试。指标包括 CoreMark iter/s、Fmax、LUT4 和周期数，未通过者不参与排名。
@@ -49,6 +49,14 @@ GUI 不再提供独立的「微架构实验」任务页。HWE 通过普通主会
 本机路径配置目前集中在 `src/hwe-runtime.ts`；工具链安装属于这台 WSL 环境。readiness 要连续两次完整通过且周期数、fitness 相同，才写 ready.json。启动时检查源码/验证器指纹和 Docker 镜像 ID；环境变化需重新执行 readiness。
 
 ## 验证并发配置与恢复
+
+2026-10-03 增加独立 `allocationsPerRound`（1..4，每轮分配上限）与 `verificationScheduling`（round-barrier / worker-ready）。`concurrency` 继续表示 Worker 活跃上限，`verificationConcurrency` 仍仅允许 1、2。缺少新字段时分别按 concurrency 与 round-barrier 规范化；旧配置、旧状态和 CLI 新建缺省都不会静默开启流水线。保存状态仍 version 1，保持原配置字段形态；恢复比较的是所有有效字段，缺省与其显式等价值等价，改变分配数、Worker 上限或调度模式在任何清理/写入前拒绝。
+
+Worker 分配先全部记账，随后有空位才按分配序启动下一项。worker-ready 从已就绪候选中按分配序派验证，不等待尚未完成的早序 Worker。普通拒绝继续排队；Worker 模型/导出失败、验证基础设施故障、父/子哈希异常或持久化故障停止两条队列的新派发，已启动工作收尾，导出及已有有效独立证据保留。取消和总预算独立分类，不把 Worker 自身时间上限结束且成功导出直接当硬件拒绝。workerTiming 与 worker_started/worker_returned 记录位置时序；验证时序沿用原字段。父快照在 Worker 前后核对，候选在验证前后核对。
+
+恢复保持已消费分配，并增加 resumed=true 供评测排除完整公平样本；不会重发本轮排队或中断项。原有后续决策探索可继续，不能把它当无中断补跑。固定计划速度入口见 [实验协议](hwe-speed-experiment.md)，明确冻结 3×4 分配、A=2/B=4 Worker、两组验证=2 与共同 worker-ready 调度，不推广历史延伸策略，也不会因为没有提升自动停派。
+
+认证只读入口支持 `preflight <认证目录>`，普通运行可设置 `PROACTIVE_HWE_READINESS_SOURCE`；缺省仍使用旧根目录。冻结工具复制完整认证源原字节并核对逐文件哈希，实际启动重新做只读认证和冻结输入门禁。自然匹配即可复用，不能修改 ready.json、伪造指纹或放宽质量门槛。
 
 在既有研究配置 JSON 中设置 `"concurrency": 2, "verificationConcurrency": 2`，分别表示 Worker 与验证并发。验证目前只支持 1、2；设 1 即串行。未提供自定义配置的新 HWE 运行显式采用 2；自定义旧配置缺字段、通用调用缺字段及旧状态均按 1。不会将 HWE 新建缺省值合并到保存的任务中。
 
@@ -135,3 +143,17 @@ Worker 完成改动、必要局部检查与 REPORT.md 后应立即给最终答�
 短验收包括 Manager 的真实 decisionSchema 启动、Worker READY/注释加 lint、真实 HWE 容器中的正常/阻塞退出/到时/取消注入，以及实际 CLI 的单次连接拒绝。最终独立 owner 审计无本批容器、代理进程或 socket。尚不能证明小时级稳定性或 Fast 可交付；压缩、半流、响应头和大 stdin 的部分边界仅离线覆盖。完整协议、用量、原日志和限制见 [诊断报告](../.local/hwe-runtime-diagnostics-20261003-102325/report.md)。
 
 当前根目录旧 `.local/hwe-readiness` 的 verifierSha256 与认证环境不符；本轮未覆盖或重建它。既有 `.local/hwe-adapter-readiness-20261001-c74b9a20/.local/hwe-readiness` 与自然指纹一致。下一轮须在自己的冻结环境中复用原认证目录并核对指纹，沿用 Manager 900 秒/宿主 1,500,000 毫秒、独立验证并发 2；如果使用根目录默认入口，先明确选择匹配的既有认证输入。以 Standard 为共同条件可准备下一轮策略 benchmark；以实际 Fast 为必要条件时仍缺上游确认。本轮没有自动启动。
+
+后续内部 Fast 诊断新增 received（CLI 到代理的字段）；代理保持请求正文原字节、declared/sent/response 三层记录仍保留。真实 Manager 显式 fast 经 CLI 转成 priority，完整响应仍为 default。一次有界兼容性诊断将出站值改为 fast，后端返回 HTTP 400 / Unsupported service_tier: fast；该诊断改写已撤回，原日志与实现快照保留。公开 Responses API 的 fast/priority 别名语义不能直接套用此 ChatGPT 后端。实际 Fast 未生效，服务端降档原因仍未返回；不能把诊断分类或标准档短验收写成 Fast 修复成功。
+
+## 独立 Fast 控制（2026-10-03）
+
+研究配置现在接受 `manager.serviceTier`、`worker.serviceTier`，值为 `fast`、兼容别名 `priority` 或明确关闭的 `default`。每个角色显式值优先于 `PROACTIVE_HWE_SERVICE_TIER`；缺省仍保留旧环境变量/后端行为。恢复比较保留这个差异：省略不等于明确关闭，改变已保存角色档位必须拒绝恢复；不能通过恢复切换实验条件。两组模型目录仍应使用同字节冻结输入。Standard 也可冻结目录，但不要求目录声明 Fast 能力；请求 Fast 而目录不支持时仍拒绝。
+
+桌面聊天的 Manager 模型菜单和执行模型菜单各有 Fast 按钮，各自保存设置。Manager 传给 app-server 的 thread/start、thread/resume 和 turn/start；Codex Worker 的初次/续接 CLI 显式传入 service_tier，并启用目录中的 Fast 选择能力。Command Code 不使用 Codex 服务档位。目录只声明可请求的能力，不证明实际服务档；按钮显示请求设置，不能显示“已确认 Fast”。app-server 没有提供实际响应档位的当前调用标记为 unconfirmed。
+
+本机官方 Codex 源码 `bcd6d9a` 的 core/client.rs 会为原生 ChatGPT 后端构造 `x-codex-routing-hint: model=…;tier=…`。隔离自定义提供方不会自动进入该分支。HWE 显式 Fast 调用现在由宿主代理从实际、未改写的正文补齐该提示，并写 routing 审计；缺省与显式 Standard 不启用此补充。它不伪造账户、客户端身份或权限，也不改变上游、认证及 HTTP/SSE 方案。真实 Manager 和 Worker 请求补齐提示后均仍返回 default，因而这只是补齐原生路由信息，尚未修复实际 Fast。
+
+最后短预检还显式启用了 fast_mode。原生提供方对照仅在独立复制的 harness 中进行：覆盖保留的 openai ID 被 CLI 拒绝；改用官方 openai_base_url 后停在 workspace routing discovery，零模型请求；均未替换生产提供方，也未开放容器网络。最多 1 次 Manager、3 次 Worker 容器预检，只有 Manager/隔离 Worker 各 1 个请求到达模型。父快照前后哈希不变，各 owner 独立审计零残留。原始退出码、强制退出标记和失败日志保留；不计入正式测速。
+
+当前具体未解决项是：成功到达上游的显式 priority 请求仍返回 default，上游没有给出原因；尚不能归因于账户、地区、CLI 版本或代理。本轮不继续无界重试。官方 [配置参考](https://learn.chatgpt.com/docs/config-file/config-reference) 明确 fast 映射 priority，直接重写成 fast 的失败诊断不能再作为修复。详细证据见 [Fast 控制报告](../.local/hwe-fast-controls-20261003-144700/report.md)。

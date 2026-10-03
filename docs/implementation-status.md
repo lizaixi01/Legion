@@ -808,3 +808,48 @@ Manager 900 秒/宿主 1,500,000 毫秒、Worker 与验证独立并发、验证 
 最终在固定的独立集成工作区验证：TypeScript **398/398**、WSL Python **51/51**、定向交互回归 **32/32**、类型检查、构建和差异检查通过。新检出的桌面测试须先构建 renderer 资源，README 已注明。认证 evaluate.py/formal_result.py 的 LF 字节与开始整理时相同，10 个绑定哈希的 formal JSON/text 夹具与重构提交逐字节一致，五个来源提交均被保留；没有改写 readiness、原始实验或重新运行模型/硬件 benchmark。
 
 开始时的 27 个改动文件、字节哈希和差异另保留在本地 `.local/consolidation-20261003/`。整理期间另一个聊天开始开发 Worker 与验证并发的新行为，其后来新增的未完成改动留在原工作区，不混入本次已固定并验证的集成版本。并发聊天写入同一目录时，收拢和最终检查应在独立工作区完成，避免把活跃编辑误当作已验收快照。
+
+## 2026-10-03：固定计划速度实验基础设施与受限真实验收
+
+本次用户指定先测速度：固定每轮4项分配，共3轮12项，A/B只有Worker并发2/4不同，验证并发共同为2。新增 allocationsPerRound 与显式 verificationScheduling=worker-ready，旧缺省仍为分配数=concurrency、round-barrier；有界Worker队列与动态验证队列共享故障停派，跨轮屏障、哈希、稳定选优和已消费分配规则保留。恢复有效配置比较包含新增字段，并保存 resumed=true 供排除公平样本。候选身份冻结；没有因无提升自动终止或推广延伸规则。Manager默认900秒/宿主1500000毫秒及既有自然交卷/导出退出机制保留，桌面primary-agent未接入。
+
+[协议与准确入口](hwe-speed-experiment.md)、[中文报告](../.local/hwe-speed-acceptance-20261003-122900/report.md)、[结构化交付](../.local/hwe-speed-acceptance-20261003-122900/delivery.json)保存完整条件和证据。固定计划评测层提供prepare/preflight/run/analyze/cancel/cleanup及原始日志/退出码捕获；冻结完整提示、父哈希、任务顺序、代码、npm运行依赖、认证源、同字节模型目录、内部CLI二进制/版本、Node版本及分析口径。正式Manager调用为0，由计划重放3次分配；A1→B1、B2→A2逐组执行同一宿主锁。未启动正式12任务benchmark或执行本任务Git commit。
+
+开发验证：TypeScript全量412/412、Python53/53、修复后定向21/21、typecheck、build通过。新增行为覆盖固定4分配的Worker2/4上限、Worker未全结束即验证、验证上限2、旧配置与恢复、稳定选择、父/子变更、故障停派、取消/预算、持久化/清理失败、固定计划无提升仍执行全部12项、真实日志退出及TLS故障分类。
+
+受限真实调用恰为1次Manager READY、8次短Worker。A的4个Worker均completed、只追加指定注释、真实日志证明各一次lint/exit0；其队列复验另行标记的历史快照，1 PASS/3正常拒绝，完整checks、formal子项、三seed、指标和哈希语义一致，未解释差异0。首派发到最后验证843026ms，Worker/验证位置峰值2/2，重叠87926ms；Docker独立采样峰值亦2/2、10个重叠样本、1条采样错误。历史复制与模型实际提交分开，不能声称新注释源码获得全验收或产生优化收益。
+
+B真实Worker位置及采样均达到4，但四次会话均因URLError/SSLEOFError失败，没有完整交卷或派验证。其中两次首请求失败，两次有初始成功响应后失败；本地代理生成502，每请求一次出站尝试。不能断言上游HTTP502或并发4导致故障，TLS关闭来源未确定。原始errno8被误当OS错误“Exec format error”，现修正SSL错误码与证书诊断，传输故障明确归基础设施；原批标签与日志不改写。输入管道异常路径补齐close，Python回归无原ResourceWarning。没有换认证/传输、隐藏重试或突破8次调用预算。
+
+本批26个真实模型请求中22个完整响应均default（Standard），4个响应档位未确认；声明与实际发送均gpt-6.1-sol/xhigh/priority、模型目录同字节，实际Fast仍未确认。认证源hwe-adapter-readiness-20261001-c74b9a20自然匹配，旧根readiness仅verifierSha256不匹配，不改ready.json、不放宽质量门槛、不重跑readiness；既有诊断清单34项历史文件哈希保留核对通过。
+
+零模型取消回放确认两真实验证容器后取消，3673ms收尾、两排队项未启动、baseline保留、cancelled/cleanup成功。最终四个本批owner独立审计无容器、模型代理、bridge或socket残留，其他任务资源未清理。全部短验收在45分钟边界内；不计正式成绩，也不给失败B计算速度比。现有具体阻碍为Worker4成功真实验收缺失与TLS传输未稳定确认；launchReady=false，正式入口拒绝派发。需另行授权有限的新批验收并重新冻结，不能把故障恢复伪装成完整公平实验。Fast未确认本身不阻挡共同冻结条件。本任务停止，不自动追加模型/正式实验。
+
+## 2026-10-03 后续准备验收与 Fast 诊断
+
+用户继续授权完成准备并排查 Fast。新增调用有界为 1 次 Manager、8 次 Worker：Manager fast 选择经 CLI 转成 priority，响应 default；两次直接出站 fast 的诊断均被上游 HTTP 400 / Unsupported service_tier: fast 拒绝，改写随后撤回；6 次正常 priority Worker 全部自然交卷、精确注释修改、各一次真实 lint/exit0。请求正文仍原字节透传，新增 received 字段观察 CLI 规范化，账号、认证、内部 CLI、传输、模型/effort 和重试规则未更换。28 个完整响应均 Standard；实际 Fast 仍未修复，服务端降档原因未返回，不把可用目录元数据或外层 UI 当成资格证明。
+
+两个新的开发批次分别确认并发 4 的四个真实 Worker、并发 2 的两个真实 Worker加两个明确零模型复制分配；四分配位置峰值分别4/2、2/2，提前验证阶段重叠14351ms、6412ms，验证上限2。完整回放为1 PASS/3正常拒绝、4正常拒绝，父/子身份及全部结构化验证语义一致。两批负载与真实调用数不同，只作 development-qualification，pairedTiming=false、speedup=null。Docker采样观察到各自峰值，但没有新实际容器重叠样本，分别5/2条采样错误保留；此前并发2的容器重叠证据继续保留。
+
+并发4原始退出码1和结果consistent=false保留；唯一文字差异是并行SBY输出有界末尾的前缀截断。hwe-replay-review另行核对全部其他checks/metrics/状态，以及失败摘要、断言位置、步骤、反例值一致，解释日志时钟/交错；断言、反例、状态和快照变化回归均拒绝。没有修改evaluate.py、formal_result.py、ready.json或硬件验收规则。修正产物审计把REPORT文本中提到lint误算为再次执行的问题；先前错误审计仍保存。新零模型取消在两真实验证容器启动后3982ms收尾，两排队项未派发。
+
+最终TypeScript **417/417**、Python **57/57**、typecheck、build、差异检查通过。中间全量测试受真实验收占有的执行锁影响失败，原日志保留；生命周期收尾释放锁后全量重跑通过。新资格入口核对两批共同执行实现、认证/模型目录、真实产物、调用预算、无恢复、取消和owner审计，冻结原始证据并禁止跨批计成绩。
+
+新增真实验收含取消约29.85分钟；本次5个实际owner独立审计无容器/代理/socket残留，34项重点历史文件哈希保持不变。旧TLS失败批次与旧launchReady=false冻结包不改写。新的[中文报告](../.local/hwe-speed-preparation-20261003-135600/report.md)、[结构化交付](../.local/hwe-speed-preparation-20261003-135600/delivery.json)、[冻结包](../.local/hwe-speed-experiment-20261003-135600/START-HERE.md)记录最终状态：具备共同Standard条件的基础设施资格，实际Fast为未解决项。固定12任务、3批×4、A1→B1/B2→A2、gpt-6.1-sol/xhigh、验证2、Manager模型调用0均保持。正式benchmark没有启动，本任务没有创建commit。
+## 2026-10-03：Manager / Worker Fast 控制
+
+为桌面 Manager 模型菜单和执行模型菜单新增独立 Fast 请求按钮；配置由官方目录能力校验并保存。通用 app-server 的 thread/start、thread/resume、turn/start 和 Codex 初次/续接 CLI 接到对应角色；省略保留旧行为，default 明确关闭。研究配置支持 manager.serviceTier / worker.serviceTier，角色值优先于旧全局环境变量，恢复比较不忽略档位改变。主会话任务请求及尝试历史保留请求值；缺实际响应档位标 unconfirmed。没有把桌面调度器接入候选 benchmark。
+
+HWE 显式 Fast 从未改写的实际正文补齐原生 Codex 路由提示并显式启用 fast_mode。短验收共 1 次 Manager、3 次 Worker 容器预检，其中两次原生提供方对照在模型请求前失败，只有 2 个成功请求到达上游；gpt-6.1-sol / xhigh、同字节目录，均 fast → priority → default。因此独立控制和观察缺口已补齐，实际 Fast 仍未解决，不能写成 Fast 修复完成。未知上游降档原因、原生路由发现失败和真实退出状态均保留；四个 owner 最终审计零残留。
+
+最终 424/424 TypeScript、59/59 Python 行为测试，typecheck、build 与变更格式检查通过。曾发现桌面新模块没有加入资源白名单，已修复并通过完整模块图回归；失败日志保留。既有冻结 Standard 实验包未改写，本轮没有正式 benchmark、认证重建、账户/认证/传输切换或 Git commit。包含本轮新增实现或要求 Fast 的正式实验需另建冻结批次，不能混入原成绩。详细数据与限制见 [Fast 控制报告](../.local/hwe-fast-controls-20261003-144700/report.md) 和 [结构化记录](../.local/hwe-fast-controls-20261003-144700/result.json)。
+
+## 2026-10-03：暂不使用 Fast，Standard 准备完成
+
+用户决定暂不使用 Fast。新准备入口将 Manager、Worker 与实验元数据明确设为 default，正式启动按冻结包记录的 tier 选择，不再硬编码 priority；已存在的旧包保留原记录和原字节。角色显式值仍优先于环境，模型保持 gpt-6.1-sol/xhigh。6 项相关行为测试、typecheck、build 与格式检查通过；本次没有新增模型调用。
+
+包含新增实现的 [Standard 冻结包](../.local/hwe-speed-standard-experiment-20261003-145500/START-HERE.md) 已重新准备并通过只读 preflight：matches=true、launchReady=true、changed=[]、认证差异为空。原调度短验收被明确作为开发资格复用，pairedTiming=false，不冒充新调用或正式速度成绩。12 项固定任务、3批×4、两对顺序、A=2/B=4、验证=2、Manager模型调用=0保持。Standard 条件下没有已知启动门禁阻碍；实际 Fast 和长时网络稳定性仍未确认。没有启动正式 benchmark，没有创建 commit。
+
+## 2026-10-03：提交准备基础设施
+
+用户随后授权提交。提交范围是上述已验证基础设施、独立角色档位控制、测试与实验协议；实际 Fast 未解决仍是明确限制。原始实验、短验收证据、认证和冻结包继续留在被忽略的 .local 目录，不作为 Git 提交内容；已有失败证据不覆盖。当前 Standard 冻结包继续对应相同执行代码，提交动作不改变实验条件，也不启动正式 benchmark。后续代码内容变化须另冻新批次并重做门禁。

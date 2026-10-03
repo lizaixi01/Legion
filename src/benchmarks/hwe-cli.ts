@@ -12,6 +12,8 @@ import {runOrdinaryHwe} from '../hwe-ordinary.js';
 import {runNativeHwe} from '../hwe-native.js';
 import {applyRunDeadline} from '../run-deadline.js';
 import {createFixedHweDeps,compareFixedHweRuns} from './hwe-queue-replay.js';
+import {preflightReadiness} from '../hwe-readiness.js';
+import {speedMain} from './hwe-speed-cli.js';
 const [action,arg]=process.argv.slice(2);const controller=new AbortController();process.on('SIGINT',()=>controller.abort());process.on('SIGTERM',()=>controller.abort());
 applyRunDeadline(controller,process.env.PROACTIVE_RUN_DEADLINE);
 export const defaultResearchConfig:ResearchConfig={goal:'Improve the frozen RV32IM baseline CoreMark fitness while preserving all correctness gates. Explore distinct focused microarchitectural hypotheses; report LUT4 area and frequency tradeoffs.',maxRounds:3,maxWorkers:6,concurrency:2,verificationConcurrency:2,totalMs:21600000,manager:{model:'gpt-6-sol',effort:'high'},worker:{model:'gpt-6-sol',effort:'medium'}};
@@ -22,14 +24,11 @@ async function injectedDeps(root:string,config:ResearchConfig):Promise<ResearchD
  if(typeof imported.createDeps!=='function')throw Error('PROACTIVE_ARM_DEPS must export createDeps(root, config)');
  return imported.createDeps(root,config) as ResearchDeps;
 }
-if(action==='preflight'){
+if(action==='speed'){
+ await speedMain(process.argv.slice(3));
+}else if(action==='preflight'){
  // Read-only readiness gate: no model, baseline rerun or scoring call.
- const readiness=resolve('.local/hwe-readiness'),ready=JSON.parse(await readFile(join(readiness,'ready.json'),'utf8'));
- const baselineMatches=hash(await readFile(join(readiness,'baseline.tar.gz')))===ready.sha256;
- const environment=await hweFingerprint(),differences=fingerprintDifferences(ready.environment,environment);
- const matches=baselineMatches&&differences.length===0;
- console.log(JSON.stringify({matches,baselineMatches,differences,environment,scope:'Readiness compatibility only; no candidate has been scored'},null,2));
- if(!matches)process.exitCode=1;
+ const result=await preflightReadiness(arg);console.log(JSON.stringify(result,null,2));if(!result.matches)process.exitCode=1;
 }else if(action==='readiness'){
  const root=resolve('.local/hwe-readiness');await mkdir(root,{recursive:true});const owner='hwe-readiness';const release=await lockWorkspace(root,root);
  try{

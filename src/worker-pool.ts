@@ -1,9 +1,10 @@
 import {mkdir,readFile,writeFile} from 'node:fs/promises';
 import {join} from 'node:path';
 import {execute} from './process.js';
+import {tierConfig,type ServiceTier} from './service-tier.js';
 export type Backend='codex'|'commandcode';
 export type Outcome='completed'|'rate-limited'|'quota'|'auth'|'transport'|'error'|'timeout'|'cancelled';
-export interface WorkerSpec{backend:Backend;model:string;effort:string;command:string;prefix:string[];modPath?:string;permission?:'read-only'|'workspace-write'|'danger-full-access';schemaPath?:string;outputPath?:string}
+export interface WorkerSpec{backend:Backend;model:string;effort:string;serviceTier?:ServiceTier;command:string;prefix:string[];modPath?:string;permission?:'read-only'|'workspace-write'|'danger-full-access';schemaPath?:string;outputPath?:string}
 export interface Job{ id:string;prompt:string;workspace:string;logDir:string;timeoutMs:number;sessionId?:string;deadline?:number }
 export interface Result{status:Outcome;durationMs:number;sessionId?:string;text:string;usage:unknown;detail?:string}
 export function failureKind(code:number|null,message:string):Outcome{
@@ -15,7 +16,7 @@ export function failureKind(code:number|null,message:string):Outcome{
 }
 export function workerArgs(spec:WorkerSpec,job:Job){
  if(spec.backend==='commandcode')return [...spec.prefix,'-p','--output-format','json','--model',spec.model,'--max-turns','32','--skip-onboarding','--no-auto-update','--no-skills','--trust',...(spec.permission&&spec.permission!=='read-only'&&spec.modPath?.endsWith('workspace-mod.mjs')?['--yolo']:[]),'--permission-mode',spec.permission&&spec.permission!=='read-only'?'accept-edits':'dont-ask',...(spec.modPath?['--mod',spec.modPath]:[]),...(job.sessionId?['--resume',job.sessionId]:[])];
- return [...spec.prefix,'exec','--ignore-user-config','--ignore-rules','--disable','multi_agent','--disable','multi_agent_v2','--sandbox',spec.permission??'read-only','-c','approval_policy="never"','-c','windows.sandbox="elevated"','-c',`model_reasoning_effort="${spec.effort}"`,...(job.sessionId?['resume',job.sessionId]:[]),'--model',spec.model,'--json','--skip-git-repo-check',...(spec.schemaPath?['--output-schema',spec.schemaPath]:[]),...(spec.outputPath?['--output-last-message',spec.outputPath]:[]),'-'];
+ return [...spec.prefix,'exec','--ignore-user-config','--ignore-rules','--disable','multi_agent','--disable','multi_agent_v2','--sandbox',spec.permission??'read-only','-c','approval_policy="never"','-c','windows.sandbox="elevated"','-c',`model_reasoning_effort="${spec.effort}"`,...tierConfig(spec.serviceTier),...(job.sessionId?['resume',job.sessionId]:[]),'--model',spec.model,'--json','--skip-git-repo-check',...(spec.schemaPath?['--output-schema',spec.schemaPath]:[]),...(spec.outputPath?['--output-last-message',spec.outputPath]:[]),'-'];
 }
 export function parseOutput(backend:Backend,output:string,exitCode:number|null):Omit<Result,'durationMs'>{
  const events=output.split(/\r?\n/).filter(Boolean).map(line=>JSON.parse(line));
@@ -32,7 +33,7 @@ export function parseOutput(backend:Backend,output:string,exitCode:number|null):
 export async function runWorker(spec:WorkerSpec,job:Job,signal?:AbortSignal):Promise<Result>{
  if(spec.backend==='commandcode'){const config=JSON.parse(await readFile(join(process.env.USERPROFILE!,'.commandcode/config.json'),'utf8'));if(config.reasoningEffort?.[spec.model]!==spec.effort)throw Error('Command Code account effort differs from requested effort; configure it before launching the pool');}
  await mkdir(job.workspace,{recursive:true});await mkdir(job.logDir,{recursive:true});
- await writeFile(join(job.logDir,'invocation.json'),JSON.stringify({backend:spec.backend,command:spec.command,model:spec.model,effort:spec.effort,args:workerArgs(spec,job),workspace:job.workspace},null,2));
+ await writeFile(join(job.logDir,'invocation.json'),JSON.stringify({backend:spec.backend,command:spec.command,model:spec.model,effort:spec.effort,serviceTier:spec.serviceTier??null,actualServiceTier:null,actualTierStatus:'unconfirmed',args:workerArgs(spec,job),workspace:job.workspace},null,2));
  const execution=await execute({command:spec.command,args:workerArgs(spec,job),cwd:job.workspace,logDir:job.logDir,input:job.prompt,timeoutMs:job.timeoutMs,signal,env:{...process.env,NO_COLOR:'1'}});
  await writeFile(join(job.logDir,'execution.json'),JSON.stringify(execution,null,2));
  let result:Result;

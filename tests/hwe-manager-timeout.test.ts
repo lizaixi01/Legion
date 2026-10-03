@@ -23,6 +23,11 @@ function bridge(events:unknown[],inspect?:(payload:Record<string,unknown>,timeou
   inspect?.(payload,timeoutMs);await writeFile(join(dir,'response.json'),JSON.stringify(finish));const logs=join(dir,'fake-bridge');await mkdir(logs);await writeFile(join(logs,'stdout.jsonl'),events.map(e=>JSON.stringify(e)).join('\n')+'\n');return {logs,result:{status:'completed',exitCode:0,durationMs:1}};
  };
 }
+test('Manager role tier reaches its call independently of Worker tier',async()=>{
+ const f=await fixture();let observed=false;
+ const deps=createHweDeps(f.root,{...config,manager:{...config.manager,serviceTier:'fast'},worker:{...config.worker,serviceTier:'default'}},'hypothesis',bridge([{type:'turn.completed',usage}],payload=>{observed=true;assert.equal(payload.serviceTier,'fast');assert.equal(payload.model,config.manager.model);}));
+ await deps.decide(f.ctx,f.dir,new AbortController().signal);assert.equal(observed,true);
+});
 test('a completed Manager decision has a longer bounded window and recorded actual limits',async()=>{
  const f=await fixture();let calls=0;
  const deps=createHweDeps(f.root,config,'hypothesis',bridge([{type:'turn.completed',usage}],(payload,timeout)=>{calls++;assert.equal(payload.seconds,900);assert.equal(timeout,1500000);}));

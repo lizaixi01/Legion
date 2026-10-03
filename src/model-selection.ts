@@ -1,6 +1,6 @@
 import {z} from 'zod';
 import {ChatOptionsSchema,validateChatOptions} from './chat-options.js';
-export const ModelSelectionSchema=ChatOptionsSchema.pick({model:true,effort:true});
+export const ModelSelectionSchema=ChatOptionsSchema.pick({model:true,effort:true,serviceTier:true});
 export type ModelSelection=z.infer<typeof ModelSelectionSchema>;
 export async function validateModelSelection(input:unknown):Promise<ModelSelection>{
   const selected=ModelSelectionSchema.parse(input);

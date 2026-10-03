@@ -21,9 +21,10 @@ test('host cancellation signals bridge, waits for export, and preserves cancelle
 });
 for(const status of ['completed','timeout','cancelled','error'])test(`worker adapter preserves ${status} and exported snapshot`,async()=>{
  const root=await mkdtemp(join(tmpdir(),'hwe-worker-')),dir=join(root,'worker');await mkdir(dir);
- const config={goal:'Fixture',maxRounds:1,maxWorkers:1,concurrency:1,totalMs:1000,manager:{model:'fixture',effort:'high'},worker:{model:'fixture',effort:'high'}};
+ const config={goal:'Fixture',maxRounds:1,maxWorkers:1,concurrency:1,totalMs:1000,manager:{model:'fixture',effort:'high',serviceTier:'fast' as const},worker:{model:'fixture',effort:'high',serviceTier:'default' as const}};
  const deps=createHweDeps(root,config,'hypothesis',async(action,callDir,owner,payload)=>{
   assert.equal(action,'worker');assert.match(String(payload.prompt),/upper bound/);assert.match(String(payload.prompt),/necessary local checks/);
+  assert.equal(payload.serviceTier,'default');
   await writeFile(join(callDir,'rtl.tar.gz'),'source');await writeFile(join(callDir,'REPORT.md'),'Unverified report');
   const logs=join(callDir,'logs');await mkdir(logs);
   await writeFile(join(logs,'stdout.jsonl'),JSON.stringify({type:'worker.snapshot',status,timedOut:status==='timeout',turnCompleted:status==='completed',processExitForced:status==='completed'})+'\n');
@@ -31,4 +32,14 @@ for(const status of ['completed','timeout','cancelled','error'])test(`worker ada
  });
  const work=await deps.work({id:'fixture',parent:'baseline',claim:'Local',experiment:'Local',expected:'Export',workerSeconds:30},{id:'baseline',round:0,hypothesis:{id:'baseline',parent:'',claim:'B',experiment:'B',expected:'B',workerSeconds:30},status:'verified',snapshot:{path:join(root,'baseline.tar.gz'),sha256:'fixture'}},dir,new AbortController().signal);
  assert.equal(work.worker?.status,status);assert.equal(work.snapshot?.sha256,hash('source'));assert.equal(work.worker?.report,'Unverified report');
+});
+test('local TLS failure is infrastructure and keeps model failure/export evidence',async()=>{
+ const root=await mkdtemp(join(tmpdir(),'hwe-tls-')),dir=join(root,'worker');await mkdir(dir);
+ const config={goal:'Fixture',maxRounds:1,maxWorkers:1,concurrency:1,totalMs:1000,manager:{model:'fixture',effort:'high'},worker:{model:'fixture',effort:'high'}};
+ const deps=createHweDeps(root,config,'hypothesis',async(_action,callDir)=>{
+  await writeFile(join(callDir,'rtl.tar.gz'),'partial export');const logs=join(callDir,'logs');await mkdir(logs);await mkdir(join(callDir,'model-audit'));await writeFile(join(callDir,'model-audit/tls.diagnostic.json'),JSON.stringify({errorOrigin:'local',errorKind:'transport_exception',reasonType:'SSLEOFError'}));
+  await writeFile(join(logs,'stdout.jsonl'),JSON.stringify({type:'turn.failed',error:{message:'unexpected status 502 Bad Gateway'}})+'\n'+JSON.stringify({type:'worker.snapshot',status:'error'})+'\n');return {logs,result:{status:'completed',exitCode:0,durationMs:1}};
+ });
+ const parent={id:'baseline',round:0,hypothesis:{id:'baseline',parent:'',claim:'B',experiment:'B',expected:'B',workerSeconds:30},status:'verified' as const,snapshot:{path:'fixture',sha256:hash('B')}};
+ const work=await deps.work({id:'fixture',parent:'baseline',claim:'Local',experiment:'Local',expected:'Export',workerSeconds:30},parent,dir,new AbortController().signal);assert.equal(work.worker?.failureKind,'infrastructure');assert.match(work.worker!.detail!,/provider-error/);assert.equal(work.snapshot?.sha256,hash('partial export'));
 });

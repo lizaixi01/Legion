@@ -5,10 +5,12 @@ import {createInterface} from 'node:readline';
 import {join} from 'node:path';
 import {performance} from 'node:perf_hooks';
 import type {WorkerRequest,WorkerResult} from './types.js';
+import type {ServiceTier} from './service-tier.js';
 
 type RpcMessage={id?:number;method?:string;params?:any;result?:any;error?:{message?:string}};
 type Pending={resolve:(value:any)=>void;reject:(error:Error)=>void;timer:NodeJS.Timeout};
 export interface AgentTransportOptions {
+  serviceTier?:ServiceTier;
   effort:string; permission:'read-only'|'workspace-write'|'danger-full-access'; instructions:string;
   tools?:unknown[]; callTool?:(name:string,args:unknown)=>Promise<unknown>;
   onSession?:(id:string)=>Promise<void>;
@@ -21,7 +23,7 @@ export async function codexAppServerWorker(command:string,model:string,request:W
   if(request.signal?.aborted)return {status:'cancelled',durationMs:0,usage:[],detail:'启动前已停止'};
   if(!Number.isFinite(request.timeoutMs)||request.timeoutMs<=0)return {status:'error',durationMs:0,usage:[],detail:'执行时限无效'};
   const args=['app-server','--stdio','--disable','multi_agent','--disable','multi_agent_v2',request.continuousGoal?'--enable':'--disable','goals'];
-  await Promise.all([writeFile(stdoutPath,''),writeFile(stderrPath,''),writeFile(join(request.attemptDir,'invocation.json'),JSON.stringify({command,args,cwd:request.workspace,model,transport:'codex-app-server'},null,2))]);
+  await Promise.all([writeFile(stdoutPath,''),writeFile(stderrPath,''),writeFile(join(request.attemptDir,'invocation.json'),JSON.stringify({command,args,cwd:request.workspace,model,effort:agent?.effort??'low',serviceTier:agent?.serviceTier??null,actualServiceTier:null,actualTierStatus:'unconfirmed',transport:'codex-app-server'},null,2))]);
   if(request.signal?.aborted||performance.now()-started>=request.timeoutMs)return {status:request.signal?.aborted?'cancelled':'error',durationMs:Math.round(performance.now()-started),usage:[],detail:'启动登记期间已停止或超时'};
   const child:ChildProcess=spawn(command,args,{cwd:request.workspace,shell:false,windowsHide:true,stdio:['pipe','pipe','pipe']});
   const pending=new Map<number,Pending>();let nextId=0,buffer='',closed=false,threadId='',turnId='',aborted=false,failed:Error|undefined;
@@ -101,7 +103,8 @@ export async function codexAppServerWorker(command:string,model:string,request:W
     ensureLive();
     notify('initialized');
     const instructions="You are Legion's lightweight outer conversation agent. Reply naturally and briefly to greetings, identity questions, thanks, and casual conversation. Match the user's language. You cannot inspect or change project files, run commands, or perform requested work. If the user asks for substantive work, explain briefly that the main agent handles it. Never claim that you performed an action.";
-    const settings={model,cwd:request.workspace,approvalPolicy:'never',sandbox:agent?.permission??'read-only',...(agent?{developerInstructions:agent.instructions,config:{'windows.sandbox':'elevated'}}:{baseInstructions:instructions})};
+    const tier=agent?.serviceTier===undefined?{}:{serviceTier:agent.serviceTier};
+    const settings={model,...tier,cwd:request.workspace,approvalPolicy:'never',sandbox:agent?.permission??'read-only',...(agent?{developerInstructions:agent.instructions,config:{'windows.sandbox':'elevated'}}:{baseInstructions:instructions})};
     // Quiesce a persisted active goal before loading its runtime; resume may restore idle continuation.
     if(nativeGoal&&request.sessionId){threadId=request.sessionId;await nativeGoal.prepare(request.continuousGoal!.objective);}
     ensureLive();
@@ -115,7 +118,7 @@ export async function codexAppServerWorker(command:string,model:string,request:W
     ensureLive();
     const permission=agent?.permission??'read-only';
     const sandboxPolicy=permission==='danger-full-access'?{type:'dangerFullAccess'}:permission==='workspace-write'?{type:'workspaceWrite',writableRoots:[request.workspace],networkAccess:true,excludeTmpdirEnvVar:false,excludeSlashTmp:false}:{type:'readOnly',networkAccess:false};
-    const start=await rpc('turn/start',{threadId,input:[{type:'text',text:request.prompt,text_elements:[]}],cwd:request.workspace,model,effort:agent?.effort??'low',approvalPolicy:'never',sandboxPolicy});
+    const start=await rpc('turn/start',{threadId,...tier,input:[{type:'text',text:request.prompt,text_elements:[]}],cwd:request.workspace,model,effort:agent?.effort??'low',approvalPolicy:'never',sandboxPolicy});
     turnId=start?.turn?.id;if(!turnId)throw Error('Codex app-server 没有返回轮次 ID');
     if(nativeGoal){nativeGoal.started(turnId);ensureLive();await nativeGoal.activate();}
     const terminal=await Promise.race([done,abortWait]);

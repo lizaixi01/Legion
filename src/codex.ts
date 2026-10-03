@@ -5,6 +5,7 @@ import { join } from 'node:path';
 import { z } from 'zod';
 import { execute } from './process.js';
 import type { WorkerRequest, WorkerResult } from './types.js';
+import {tierConfig,type ServiceTier} from './service-tier.js';
 
 const Event = z.object({ type: z.string(), thread_id: z.string().optional(), usage: z.unknown().optional(), message: z.unknown().optional(), error: z.object({ message: z.unknown().optional() }).partial().optional() });
 export type CodexFailure = { kind: 'usage-limit' | 'provider-error'; message: string };
@@ -47,10 +48,11 @@ export async function parseCodexLog(path: string): Promise<{ sessionId?: string;
   return result;
 }
 
-export interface ExecutionOptions { permission: 'read-only' | 'workspace-write' | 'danger-full-access'; agents: 0 | 2 | 4 }
+export interface ExecutionOptions { permission: 'read-only' | 'workspace-write' | 'danger-full-access'; agents: 0 | 2 | 4; serviceTier?:ServiceTier }
 export function codexArguments(model: string, effort: string, sessionId?: string, platform: NodeJS.Platform = process.platform, options: ExecutionOptions = {permission:'workspace-write',agents:0}): string[] {
     const args = ['exec', '--ignore-user-config', '--ignore-rules', options.agents ? '--enable' : '--disable', 'multi_agent', '--disable', 'multi_agent_v2', '--sandbox', options.permission, '-c', 'approval_policy="never"', '-c', `model_reasoning_effort=${JSON.stringify(effort)}`];
     if(options.agents)args.push('-c',`agents.max_threads=${options.agents}`,'-c','agents.max_depth=1');
+    args.push(...tierConfig(options.serviceTier));
     // Ignoring personal config also removes the Windows sandbox implementation.
     // Select it explicitly so workspace-write does not become read-only.
     if (platform === 'win32') args.push('-c', 'windows.sandbox="elevated"');

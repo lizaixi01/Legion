@@ -1,5 +1,5 @@
 """Behavior regressions for shared HWE/ProgramBench model transport (no models)."""
-import contextlib, errno, http.client, importlib.util, io, json, pathlib, socket, tempfile, threading, time, unittest, urllib.error
+import contextlib, errno, http.client, importlib.util, io, json, pathlib, socket, ssl, tempfile, threading, time, unittest, urllib.error
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 spec=importlib.util.spec_from_file_location('model_proxy',ROOT/'scripts/runtime/model_proxy.py')
 proxy=importlib.util.module_from_spec(spec);spec.loader.exec_module(proxy)
@@ -31,14 +31,42 @@ class Opener:
 
 
 class TransportTests(unittest.TestCase):
+    def test_codex_routing_uses_actual_body_without_changing_it(self):
+        body={'model':'gpt-6.1-sol','service_tier':'priority','input':'PRIVATE-PROMPT-SENTINEL'}
+        reply=Reply([b'data: {"type":"response.completed","response":{"model":"gpt-6.1-sol","service_tier":"priority","status":"completed"}}\n\n'])
+        status,_,record,opener=self.call(reply,body=body,routing=True)
+        self.assertEqual(status,200)
+        request=opener.requests[0][0]
+        self.assertEqual(request.get_header('X-codex-routing-hint'),'model=gpt-6.1-sol;tier=priority')
+        self.assertEqual(json.loads(request.data),body)
+        self.assertEqual(record['routing']['sent'],'model=gpt-6.1-sol;tier=priority')
+        self.assertEqual(record['tierStatus'],'confirmed')
+
+    def test_routing_is_opt_in_and_invalid_model_cannot_inject_headers(self):
+        reply=Reply([b'data: {"type":"response.completed","response":{"model":"gpt-6.1-sol","service_tier":"default","status":"completed"}}\n\n'])
+        _,_,record,opener=self.call(reply)
+        self.assertIsNone(opener.requests[0][0].get_header('X-codex-routing-hint'))
+        self.assertNotIn('routing',record)
+        with self.assertRaises(ValueError):proxy.codex_routing_hint({'model':'model\r\nAuthorization: bad'})
+
+    def test_ssl_eof_is_not_an_operating_system_exec_format_error(self):
+        fields=proxy.error_fields(urllib.error.URLError(ssl.SSLEOFError(ssl.SSL_ERROR_EOF,'SECRET-TOKEN-SENTINEL')))
+        self.assertIsNone(fields['errno']);self.assertEqual(fields['sslErrorCode'],ssl.SSL_ERROR_EOF)
+        self.assertEqual(fields['tlsFailure'],'tls_eof');self.assertEqual(fields['reasonType'],'SSLEOFError')
+        self.assertNotIn('SECRET',json.dumps(fields));self.assertNotIn('Exec format',json.dumps(fields))
+
+    def test_certificate_verification_code_is_retained_without_sensitive_message(self):
+        error=ssl.SSLCertVerificationError(ssl.SSL_ERROR_SSL,'SECRET-TOKEN-SENTINEL');error.verify_code=20
+        fields=proxy.error_fields(urllib.error.URLError(error));self.assertEqual(fields['verifyCode'],20)
+        self.assertEqual(fields['tlsFailure'],'certificate_verification');self.assertNotIn('SECRET',json.dumps(fields))
     def setUp(self):
         self.tmp=tempfile.TemporaryDirectory();self.root=pathlib.Path(self.tmp.name)
         self.auth=self.root/'auth.json';self.auth.write_text(json.dumps({'tokens':{'access_token':'SECRET-TOKEN-SENTINEL','account_id':'SECRET-ACCOUNT-SENTINEL'}}))
     def tearDown(self):self.tmp.cleanup()
-    def call(self,response,body=None,disconnect=False,path='/responses'):
+    def call(self,response,body=None,disconnect=False,path='/responses',tier='priority',routing=False):
         opener=Opener(response);sock=str(self.root/'model.sock');audit=self.root/'audit'
         with proxy.Server(sock,proxy.Handler) as server:
-            proxy.configure(server,self.auth,audit,{'model':'gpt-6.1-sol','effort':'xhigh','serviceTier':'priority'},opener)
+            proxy.configure(server,self.auth,audit,{'model':'gpt-6.1-sol','effort':'xhigh','serviceTier':tier,'codexRouting':routing},opener)
             thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
             c=UnixHTTP(sock);payload=body or {'model':'gpt-6.1-sol','reasoning':{'effort':'xhigh'},'service_tier':'priority','input':'PRIVATE-PROMPT-SENTINEL'}
             c.request('POST',path,json.dumps(payload),{'Content-Type':'application/json','Authorization':'Bearer CLIENT-TOKEN-SENTINEL'})
@@ -66,6 +94,21 @@ class TransportTests(unittest.TestCase):
         self.assertEqual(json.loads(o.requests[0][0].data)['service_tier'],'priority')
         self.assertEqual(r['response']['usage']['input_tokens'],10);self.assertTrue(reply.closed)
         self.assertEqual(r['upstreamAttempts'],1)
+
+    def test_explicit_fast_keeps_the_cli_priority_wire_alias_and_audits_it(self):
+        body={'model':'gpt-6.1-sol','reasoning':{'effort':'xhigh'},'service_tier':'priority','input':'PRIVATE-PROMPT-SENTINEL','store':False}
+        reply=Reply([b'data: {"type":"response.completed","response":{"model":"gpt-6.1-sol","service_tier":"fast","status":"completed"}}\n\n'])
+        status,_,r,o=self.call(reply,body=body,tier='fast')
+        self.assertEqual(status,200);self.assertEqual(r['tierStatus'],'confirmed')
+        self.assertEqual(r['declared']['serviceTier'],'fast');self.assertEqual(r['received']['serviceTier'],'priority')
+        self.assertEqual(r['sent']['serviceTier'],'priority');self.assertNotIn('tierTranslation',r)
+        self.assertEqual(json.loads(o.requests[0][0].data),body)
+        self.assertEqual(len(o.requests),1)
+
+    def test_fast_selection_does_not_hide_a_standard_response(self):
+        reply=Reply([b'data: {"type":"response.completed","response":{"model":"gpt-6.1-sol","service_tier":"default","status":"completed"}}\n\n'])
+        _,_,r,_=self.call(reply,tier='fast')
+        self.assertEqual(r['tierStatus'],'downgraded');self.assertEqual(r['response']['service_tier'],'default')
 
     def test_upstream_http_error_retains_origin_and_status_without_retry(self):
         err=urllib.error.HTTPError('https://chatgpt.com/responses',429,'limited',{'Content-Type':'application/json'},io.BytesIO(b'{"error":"limited"}'))

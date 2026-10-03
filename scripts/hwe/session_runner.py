@@ -30,8 +30,11 @@ def run_session(args, prompt, seconds, cancel_file=None, grace_seconds=5, emit=p
     reader = threading.Thread(target=read, daemon=True); reader.start()
     input_error=[]
     def write_input():
-        try:process.stdin.write(prompt.encode());process.stdin.close()
+        try:process.stdin.write(prompt.encode())
         except (BrokenPipeError,OSError) as error:input_error.append(type(error).__name__)
+        finally:
+            try:process.stdin.close()
+            except (BrokenPipeError,OSError):pass
     writer=threading.Thread(target=write_input,daemon=True);writer.start()
     completed_at = None
     terminal_at = None
