@@ -1,0 +1,260 @@
+{
+  "schemaVersion": 1,
+  "summaryDate": "2026-10-04",
+  "scope": "Public summary of historical external-task experiments; no new runs or runtime integration.",
+  "historicalPublicSummary": {
+    "sha256": "873b573cb85803c3e131cb4e80ff4c0e9668c8ba7203eb25bca5fb838f0fac7b",
+    "url": "https://github.com/lizaixi01/Legion/blob/a3468d7128d25cfacbfddc14b7d321ee79a5c154/docs/results/hwe-experiments-20261003.json"
+  },
+  "sources": [
+    {
+      "id": "depth",
+      "batchId": "hwe-depth-batch-20261001-230336",
+      "resultSha256": "defe3d64ec4a25cc62748cbc35c4197ade1cb8616baf3ba6463b2f8d38f2bd2d",
+      "reportSha256": "f4dd7e52969fd542f3cb5e401223f37ddbb886e7f3ba577e58e60f47b17d1c7a"
+    },
+    {
+      "id": "throughput",
+      "batchId": "hwe-validation-throughput-20261002-115619",
+      "resultSha256": "e230897d914a6eff2b1053e24f2ac8bf31a6a403ec53eeaaf97b08af4d2ca137",
+      "reportSha256": "dd7391e531f68c83362254fbf7b0167eb191d9a43aaffdbe0cfa982a6d3bf20e"
+    },
+    {
+      "id": "queue",
+      "batchId": "hwe-queue-acceptance-20261002-180648",
+      "resultSha256": "43ebe0e98d96256cf30b06fa4d6e78f06ed339152b127cdaea16c5e3dcdcf45a",
+      "reportSha256": "ab1174066f77c649e2444f7c3b2b6e43f52385ad2a0253e681f01a26934e9822"
+    },
+    {
+      "id": "strategy",
+      "batchId": "hwe-strategy-ab-20261002-195054",
+      "resultSha256": "e8b01e740490af5a4105b44af98b761914434bb9b64446c1558644a69bc62f8e",
+      "reportSha256": "a6ebfa110785f30ff5aabb81960a02c22d97f4257b0de99cb3d0d8f26b57331c"
+    },
+    {
+      "id": "hardware-pair",
+      "batchId": "hwe-comparison-batch-3",
+      "resultSha256": "96bc11c462150135493bbd50ecf662e5c625726b779ef2820bc515b02d3c07bf"
+    },
+    {
+      "id": "fixed-speed",
+      "batchId": "hwe-speed-supervision-20261003-205140",
+      "resultSha256": "33931f6623af1e4a3792080dee03f2a47d086779e699551b316a3cd5b84629de"
+    },
+    {
+      "id": "coding-A",
+      "batchId": "programbench-regrade-90ed937e-f36c-4b41-beeb-5e87275a95ad",
+      "gradeSha256": "78d5fd605f5e1db7a65351a93732a7ccdbe9821be385a917e79a0a5146bdf0ec"
+    },
+    {
+      "id": "coding-B",
+      "batchId": "programbench-regrade-af40a6f0-f238-40fb-9f33-1ce9458fea54",
+      "gradeSha256": "949d8d9f044023fa16081ae22a25928a77c5e94903dbc14c2071ef2affb7f1f2"
+    }
+  ],
+  "depth": {
+    "kind": "artifact-quality",
+    "sourceId": "depth",
+    "implementationCommit": "de0490586847dd951fd00fe4e460123e741396bd",
+    "commonDeclaredDeviation": "Manager timeout 300 to 900 seconds; host wait 900000 to 1500000 milliseconds.",
+    "workerConcurrency": 2,
+    "verificationConcurrency": 1,
+    "arms": {
+      "S": {
+        "rounds": 2,
+        "workerAllocations": 4,
+        "wallMs": 5248657,
+        "tokenTotal": 4441276,
+        "fitness": 30.79,
+        "snapshotSha256": "731e4130fb8566f4e2cb68a06796a388ad6ec5cd79faec6a162d9b3de3435296"
+      },
+      "D": {
+        "rounds": 6,
+        "workerAllocations": 12,
+        "wallMs": 17779230,
+        "tokenTotal": 19633035,
+        "fitness": 92.11,
+        "snapshotSha256": "eda07101213fe06885c9e2058a0e7eeaaee5c53a22096d018f91f37463cc068f"
+      }
+    },
+    "comparison": {
+      "fitnessRatio": 2.9915556999025656,
+      "wallRatio": 3.3873865257341067,
+      "tokenRatio": 4.420584309554282
+    },
+    "firstImprovementDMinutes": 208.36618333333334
+  },
+  "verification": {
+    "kind": "fixed-artifact-verification-throughput",
+    "sourceId": "throughput",
+    "stageOrder": [
+      "S1",
+      "P1",
+      "P2",
+      "S2"
+    ],
+    "candidatesPerStage": 5,
+    "expectedPassPerStage": 3,
+    "expectedRejectPerStage": 2,
+    "stages": [
+      {
+        "id": "S1",
+        "concurrency": 1,
+        "wallSeconds": 3506.4
+      },
+      {
+        "id": "P1",
+        "concurrency": 2,
+        "wallSeconds": 2240.5
+      },
+      {
+        "id": "P2",
+        "concurrency": 2,
+        "wallSeconds": 2068
+      },
+      {
+        "id": "S2",
+        "concurrency": 1,
+        "wallSeconds": 3344.7
+      }
+    ],
+    "combined": {
+      "serialSeconds": 6851.1,
+      "parallelSeconds": 4308.5,
+      "speedup": 1.5901357781130325,
+      "timeReductionPct": 37.11228853760711
+    },
+    "resultsConsistent": true,
+    "wholeSearchSpeedup": null
+  },
+  "coding": {
+    "kind": "task-score",
+    "task": "ProgramBench gron",
+    "arms": {
+      "A": {
+        "passed": 177,
+        "total": 224,
+        "score": 0.7901785714285714,
+        "label": "ordinary Codex",
+        "tokens": 324207,
+        "wallSeconds": 365.1
+      },
+      "B": {
+        "passed": 170,
+        "total": 224,
+        "score": 0.7589285714285714,
+        "label": "rule-managed two complete candidates",
+        "tokens": 565595,
+        "wallSeconds": 505.3
+      }
+    },
+    "percentagePointDifference": -3.125,
+    "tokenRatio": 1.7445490072700467,
+    "scope": "One development task with historical executor differences; failed first baseline attempt is excluded and has unknown cost."
+  },
+  "hardwarePair": {
+    "kind": "artifact-quality",
+    "sourceId": "hardware-pair",
+    "arms": {
+      "A": {
+        "fitness": 113.14,
+        "wallMs": 2059555,
+        "workerCalls": 1,
+        "managerCalls": 0,
+        "status": "completed"
+      },
+      "B": {
+        "fitness": 144.34,
+        "wallMs": 3614354,
+        "workerCalls": 4,
+        "managerCalls": 2,
+        "status": "budget"
+      }
+    },
+    "fitnessRatio": 1.2757645395085735,
+    "wallRatio": 1.7549198734678122,
+    "scope": "Single-task comparison with different total resources; no isolated manager effect or human-time measurement."
+  },
+  "strategy": {
+    "kind": "exploration-after-recovery",
+    "sourceId": "strategy",
+    "fairPairedComparison": false,
+    "reason": "A stopped on infrastructure failure and resumed with the original remaining quota; recovery is exploratory.",
+    "arms": {
+      "A": {
+        "fitness": 152.69,
+        "activeWallMs": 8649015,
+        "calendarWallMs": 9984253
+      },
+      "B": {
+        "fitness": 68.55,
+        "activeWallMs": 11234917,
+        "calendarWallMs": 11234917
+      }
+    },
+    "winner": null
+  },
+  "queueAcceptance": {
+    "kind": "integration-acceptance",
+    "sourceId": "queue",
+    "wallMs": 1891881,
+    "roundSizes": [
+      4,
+      1
+    ],
+    "verificationConcurrency": 2,
+    "hasPairedSerialControl": false,
+    "speedup": null
+  },
+  "fixedSpeed": {
+    "kind": "incomplete-formal-comparison",
+    "sourceId": "fixed-speed",
+    "arms": {
+      "A1": {
+        "launched": true,
+        "status": "budget",
+        "complete": true,
+        "configConcurrency": 2,
+        "allocationsConsumed": 12,
+        "dispatchToLastVerificationMs": 10856271
+      },
+      "B1": {
+        "launched": true,
+        "status": "error",
+        "complete": false,
+        "configConcurrency": 4,
+        "allocationsConsumed": 4,
+        "dispatchToLastVerificationMs": 5380366
+      },
+      "B2": {
+        "launched": false
+      },
+      "A2": {
+        "launched": false
+      }
+    },
+    "outcomes": {
+      "A1": {
+        "passed": 11,
+        "rejected": 1,
+        "infrastructureFailed": 0
+      },
+      "B1": {
+        "passed": 2,
+        "rejected": 1,
+        "infrastructureFailed": 1
+      }
+    },
+    "speedup": null,
+    "cause": "B1 verification timeout; B2/A2 not launched"
+  },
+  "limitations": [
+    "Historical external-task experiments do not certify the current product implementation.",
+    "Artifact fitness is not Legion efficiency or human productivity.",
+    "Fixed-candidate verification throughput is not whole-search speedup.",
+    "Interrupted or incomplete pairs cannot determine a winner or a speed ratio.",
+    "Single-task samples do not estimate general success rates or establish causal management benefits.",
+    "Public hardware checks have bounded formal, finite simulation and estimated FPGA timing coverage.",
+    "Full source archives, logs, authentication and frozen runtimes remain local and are not published here."
+  ]
+}
