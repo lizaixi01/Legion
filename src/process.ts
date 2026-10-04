@@ -11,6 +11,7 @@ export interface ProcessRequest {
 export interface ProcessResult {
   status: 'completed' | 'error' | 'timeout' | 'cancelled';
   exitCode: number | null; durationMs: number; detail?: string;
+  started?: boolean; pid?: number; signal?: NodeJS.Signals | null;
 }
 
 export async function execute(request: ProcessRequest): Promise<ProcessResult> {
@@ -58,7 +59,7 @@ export async function execute(request: ProcessRequest): Promise<ProcessResult> {
         request.signal?.removeEventListener('abort', abort);
         void (async () => {
           if (killJob) await killJob;
-          resolve({ status: stopped ?? (spawnError || exitCode !== 0 ? 'error' : 'completed'), exitCode, durationMs: Math.round(performance.now() - start), detail: spawnError ?? (exitCode !== 0 ? `Exit ${exitCode}; signal ${exitSignal}` : undefined) });
+          resolve({ status: stopped ?? (spawnError || exitCode !== 0 ? 'error' : 'completed'), started: child.pid !== undefined, pid: child.pid, signal: exitSignal, exitCode, durationMs: Math.round(performance.now() - start), detail: spawnError ?? (exitCode !== 0 ? `Exit ${exitCode}; signal ${exitSignal}` : undefined) });
         })().catch(reject);
       });
       child.stdin?.end(request.input ?? '');
