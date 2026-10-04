@@ -1,12 +1,12 @@
 import {mkdir,readFile,writeFile} from 'node:fs/promises';
 import {join} from 'node:path';
-import {execute} from './process.js';
+import {execute,type ProcessResult} from './process.js';
 import {tierConfig,type ServiceTier} from './service-tier.js';
 export type Backend='codex'|'commandcode';
 export type Outcome='completed'|'rate-limited'|'quota'|'auth'|'transport'|'error'|'timeout'|'cancelled';
 export interface WorkerSpec{backend:Backend;model:string;effort:string;serviceTier?:ServiceTier;command:string;prefix:string[];modPath?:string;permission?:'read-only'|'workspace-write'|'danger-full-access';schemaPath?:string;outputPath?:string}
 export interface Job{ id:string;prompt:string;workspace:string;logDir:string;timeoutMs:number;sessionId?:string;deadline?:number }
-export interface Result{status:Outcome;durationMs:number;sessionId?:string;text:string;usage:unknown;detail?:string}
+export interface Result{status:Outcome;durationMs:number;sessionId?:string;text:string;usage:unknown;detail?:string;execution?:ProcessResult;terminalEvent?:string}
 export function failureKind(code:number|null,message:string):Outcome{
  if(/usage limit|insufficient credits|quota|credit balance/i.test(message)||code===10)return 'quota';
  if(code===5||/rate.?limit|too many requests|\b429\b/i.test(message))return 'rate-limited';
@@ -23,12 +23,12 @@ export function parseOutput(backend:Backend,output:string,exitCode:number|null):
  if(backend==='commandcode'){
   const last=events.findLast(e=>e.type==='result');
   if(!last)return {status:'error',text:'',usage:null,detail:'Missing terminal result'};
-  return {status:exitCode===0&&last.subtype==='success'?'completed':failureKind(exitCode,JSON.stringify(last.error??last.subtype)),text:last.finalText??'',usage:last.usage??null,sessionId:last.sessionId,detail:last.subtype==='success'?undefined:JSON.stringify(last.error??last.subtype)};
+  return {status:exitCode===0&&last.subtype==='success'?'completed':failureKind(exitCode,JSON.stringify(last.error??last.subtype)),terminalEvent:'result',text:last.finalText??'',usage:last.usage??null,sessionId:last.sessionId,detail:last.subtype==='success'?undefined:JSON.stringify(last.error??last.subtype)};
  }
  const terminal=events.findLast(e=>e.type==='turn.completed'||e.type==='turn.failed');
  const error=events.findLast(e=>e.type==='error'||e.type==='turn.failed');
  const message=String(error?.error?.message??error?.message??'No successful terminal event');
- return {status:exitCode===0&&terminal?.type==='turn.completed'?'completed':failureKind(null,message),text:events.filter(e=>e.type==='item.completed'&&e.item?.type==='agent_message').map(e=>e.item.text).join('\n'),usage:terminal?.usage??null,sessionId:events.find(e=>e.type==='thread.started')?.thread_id,detail:terminal?.type==='turn.completed'?undefined:message};
+ return {status:exitCode===0&&terminal?.type==='turn.completed'?'completed':failureKind(null,message),terminalEvent:terminal?.type,text:events.filter(e=>e.type==='item.completed'&&e.item?.type==='agent_message').map(e=>e.item.text).join('\n'),usage:terminal?.usage??null,sessionId:events.find(e=>e.type==='thread.started')?.thread_id,detail:terminal?.type==='turn.completed'?undefined:message};
 }
 export async function runWorker(spec:WorkerSpec,job:Job,signal?:AbortSignal):Promise<Result>{
  if(spec.backend==='commandcode'){const config=JSON.parse(await readFile(join(process.env.USERPROFILE!,'.commandcode/config.json'),'utf8'));if(config.reasoningEffort?.[spec.model]!==spec.effort)throw Error('Command Code account effort differs from requested effort; configure it before launching the pool');}
@@ -39,6 +39,7 @@ export async function runWorker(spec:WorkerSpec,job:Job,signal?:AbortSignal):Pro
  let result:Result;
  try{result={...parseOutput(spec.backend,await readFile(join(job.logDir,'stdout.jsonl'),'utf8'),execution.exitCode),durationMs:execution.durationMs};}
  catch{result={status:'error',text:'',usage:null,durationMs:execution.durationMs,detail:'Invalid or incomplete event stream; see local logs'};}
+ result.execution=execution;
  if(result.status!=='completed'&&execution.detail)result.detail=[result.detail,execution.detail].filter(Boolean).join('; ');
  if(execution.status==='timeout'||execution.status==='cancelled')result.status=execution.status;
  await writeFile(join(job.logDir,'result.json'),JSON.stringify(result,null,2));return result;

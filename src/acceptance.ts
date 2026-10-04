@@ -8,7 +8,10 @@ import {checkOutcome} from './run.js';
 import {withinDeadline} from './deadline.js';
 import type {CheckReport} from './types.js';
 
-export interface Acceptance {status:'pending'|'checking'|'accepted'|'rejected'|'unverified'|'blocked'|'not_applicable';candidateId?:string;uncovered:string[];detail:string;evidence?:string}
+export interface Acceptance {status:'pending'|'checking'|'accepted'|'rejected'|'unverified'|'blocked'|'not_applicable';candidateId?:string;uncovered:string[];detail:string;evidence?:string;
+ evidenceStatus?:Acceptance['status'];reviewStatus?:'accepted'|'needs_repair'|'unverified'|'infrastructure_failure'|'not_run';
+ failureClass?:'reviewer_infrastructure_failure';limitations?:string[];
+}
 export interface FrozenContract extends AcceptanceContract {
  taskId:string;version:1;kind:'delivery';originalRequirement:string;nonGoals:string[];assumptions:string[];
  dependencies:Record<string,string>;writableScope:string[];skills:string[];
