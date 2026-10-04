@@ -1,6 +1,6 @@
 # Legion
 
-**多 Agent 任务管理器：给一个目标，组织多个 Worker 执行，检查证据，再继续或交付。**
+**Agent management：给一个目标，组织多个 Worker 执行，检查证据，再继续或交付。**
 
 Windows · Codex / Command Code · Apache-2.0
 
