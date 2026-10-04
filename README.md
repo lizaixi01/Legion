@@ -27,14 +27,14 @@ Legion 是现成执行器之上的持续管理层：围绕目标安排任务、�
 
 从 [Releases](https://github.com/lizaixi01/Legion/releases/latest) 下载 `Legion-Setup-*.exe`，安装后打开 Legion。安装时可选择桌面快捷方式；卸载保留 `%APPDATA%\Legion` 中的会话与运行记录。
 
-安装包与 main 的开发进度可能不同；本文的能力说明以 **2026-10-04 的产品工作分支**为准。
+本文的能力说明以 [2026-10-04 的产品分支](https://github.com/lizaixi01/Legion/tree/codex/remove-hwe-binding-20261004) 为准。本次交付未发布新的安装器，也未更新已安装版本；使用该产品版本请按下方指定分支运行。
 
 ### 从源码运行
 
 需要 **Node.js 22+** 和本机可用的 Codex 登录；沿用现有登录，不额外配置 API Key。
 
 ```sh
-git clone https://github.com/lizaixi01/Legion.git
+git clone --branch codex/remove-hwe-binding-20261004 https://github.com/lizaixi01/Legion.git
 cd Legion
 npm ci
 npm run runtime:install  # 安装项目固定的 Codex CLI 0.159.2
