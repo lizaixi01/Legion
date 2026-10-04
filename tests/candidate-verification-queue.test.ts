@@ -5,13 +5,14 @@ import {watch} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join,dirname,basename} from 'node:path';
 import {hash} from '../src/provenance.js';
-import {runResearch,eligible,ResearchConfigSchema,type ResearchConfig,type ResearchDeps,type Evidence,type ResearchState} from '../src/research-loop.js';
+import {runFixture as runResearch,eligible,ResearchConfigSchema,type ResearchConfig,type ResearchDeps,type Evidence,type ResearchState} from './fixtures/candidate-policy.js';
 import {researchSummary} from '../src/research-summary.js';
-import {classifyHweEvidence} from '../src/hwe-evidence.js';
+import {runCandidateLoop} from '../src/management/candidate-loop.js';
+import {scorePolicy} from './fixtures/candidate-policy.js';
 
 function gate<T=void>(){let resolve!:(value:T)=>void;const promise=new Promise<T>(r=>resolve=r);return {promise,resolve};}
 const h=(id:string)=>({id,parent:'baseline',claim:'Offline fixture',experiment:'Controlled independent verifier',expected:'Measured result',workerSeconds:30});
-const pass=(fitness=110):Evidence=>({status:'pass',checks:{fixture:true},metrics:{fitness,fmax_mhz:100,lut4:1000,cycles:100},limitations:['Offline fixture only']});
+const pass=(fitness=110):Evidence=>({status:'pass',checks:{fixture:true},metrics:{score:fitness},limitations:['Offline fixture only']});
 const config:ResearchConfig={goal:'Queue behavior without models or containers',maxRounds:2,maxWorkers:8,concurrency:4,totalMs:60000,manager:{model:'fixture',effort:'high'},worker:{model:'fixture',effort:'high'}};
 const ids=['one','two','three','four'];
 async function fixture(){
@@ -19,9 +20,9 @@ async function fixture(){
  const entered=Object.fromEntries(ids.map(id=>[id,gate()])),results=Object.fromEntries(ids.map(id=>[id,gate<Evidence>()]));
  const calls:string[]=[],signals:AbortSignal[]=[],dirs:string[]=[],manager=gate();let active=0,peak=0,stops=0,decisions=0,workers=0;
  const deps:ResearchDeps={
-  baseline:async dir=>{await mkdir(dir);const path=join(dir,'rtl');await writeFile(path,'baseline');return {id:'baseline',round:0,hypothesis:h('baseline'),status:'verified',snapshot:{path,sha256:hash('baseline')},evidence:pass(100)};},
+  baseline:async dir=>{await mkdir(dir);const path=join(dir,'artifact');await writeFile(path,'baseline');return {id:'baseline',round:0,hypothesis:h('baseline'),status:'verified',snapshot:{path,sha256:hash('baseline')},evidence:pass(100)};},
   decide:async ctx=>{decisions++;if(decisions===1)return {action:'experiment',reason:'Controlled batch',hypotheses:ids.map(h),discard:[]};manager.resolve();assert.equal(active,0);assert.deepEqual(ctx.records.map(c=>c.id),['baseline',...ids]);return {action:'finish',reason:'All evidence collected',hypotheses:[],discard:[]};},
-  work:async(hyp,_parent,dir)=>{workers++;const path=join(dir,'rtl');await writeFile(path,hyp.id);return {snapshot:{path,sha256:hash(hyp.id)},worker:{status:'completed',durationMs:1,usage:[],report:'Unverified claim: score 999999'}};},
+  work:async(hyp,_parent,dir)=>{workers++;const path=join(dir,'artifact');await writeFile(path,hyp.id);return {snapshot:{path,sha256:hash(hyp.id)},worker:{status:'completed',durationMs:1,usage:[],report:'Unverified claim: score 999999'}};},
   verify:async(snapshot,dir,signal)=>{const id=basename(dirname(snapshot.path));assert.equal(await readFile(snapshot.path,'utf8'),id);assert.equal(snapshot.sha256,hash(id));assert.equal(dir,join(root,id,'verification'));calls.push(id);signals.push(signal);dirs.push(dir);active++;peak=Math.max(peak,active);entered[id]!.resolve();try{return await results[id]!.promise;}finally{active--;};},
   stop:async()=>{assert.equal(active,0,'cleanup must follow the drain barrier');stops++;},
  };
@@ -79,14 +80,14 @@ test('baseline retains an equal score under strict comparison',async()=>{
 test('normal rejection refills the queue; a mixed infrastructure fault drains a valid sibling without further dispatch', {timeout:10000},async()=>{
  const f=await fixture(),run=runResearch(f.root,{...config,verificationConcurrency:2},f.deps,new AbortController().signal);
  await Promise.all([f.entered.one!.promise,f.entered.two!.promise]);f.results.one!.resolve({status:'fail',checks:{assertion:false},limitations:[]});await f.entered.three!.promise;
- const mixed:Evidence={status:'fail',checks:{assertion:false,engine:{status:'error',detail:'solver unavailable'}},infrastructureError:true,limitations:[]};f.results.three!.resolve(mixed);await milestone(f.root,'verified','three');assert.deepEqual([...f.calls].sort(),['one','three','two']);assert.equal(f.signals[1]!.aborted,false);assert.equal(f.counts().stops,0);f.results.two!.resolve(pass(120));
+ const mixed:Evidence={status:'fail',checks:{assertion:false,engine:{status:'error',detail:'verifier unavailable'}},infrastructureError:true,limitations:[]};f.results.three!.resolve(mixed);await milestone(f.root,'verified','three');assert.deepEqual([...f.calls].sort(),['one','three','two']);assert.equal(f.signals[1]!.aborted,false);assert.equal(f.counts().stops,0);f.results.two!.resolve(pass(120));
  const state=await run;assert.equal(state.status,'error');assert.equal(state.best,'two');assert.equal(state.candidates[0]!.status,'rejected');assert.equal(state.candidates[2]!.status,'rejected');assert.deepEqual(state.candidates[2]!.evidence,mixed);assert.equal(state.candidates[3]!.status,'interrupted');assert.equal(state.candidates[3]!.verification?.startedAt,undefined);assert.equal(f.counts().decisions,1);await savedEquals(f.root,state);
 });
 
 for(const kind of ['throw','timeout','invalid','incomplete','tamper-before','tamper-after'] as const)test(`${kind} blocks delivery and stops new verification`,{timeout:10000},async()=>{
  const f=await fixture();const work=f.deps.work;let calls=0;
  f.deps.work=async(...args)=>{const result=await work(...args);if(kind==='tamper-before'&&args[0].id==='one')await writeFile(result.snapshot!.path,'changed');return result;};
- f.deps.verify=async snapshot=>{calls++;if(kind==='throw')throw Error('lost verifier');if(kind==='tamper-after')await writeFile(snapshot.path,'changed');return kind==='timeout'?{status:'timeout',checks:{tool:'timeout'},limitations:[]}:kind==='invalid'?pass(NaN):kind==='incomplete'?classifyHweEvidence(pass()):pass();};
+ f.deps.verify=async snapshot=>{calls++;if(kind==='throw')throw Error('lost verifier');if(kind==='tamper-after')await writeFile(snapshot.path,'changed');return kind==='timeout'?{status:'timeout',checks:{tool:'timeout'},limitations:[]}:kind==='invalid'?pass(NaN):kind==='incomplete'?{status:'pass',checks:{fixture:true},limitations:[]}:pass();};
  const state=await runResearch(f.root,{...config,verificationConcurrency:1},f.deps,new AbortController().signal);assert.equal(state.status,'error');assert.equal(state.best,'baseline');assert.equal(state.candidates.some(eligible),false);assert.equal(calls,kind==='tamper-before'?0:1);assert.equal(state.candidates[1]!.verification?.startedAt,undefined);if(kind==='tamper-after')assert.deepEqual(state.candidates[0]!.evidence,pass());
 });
 
@@ -127,7 +128,7 @@ test('legacy resume normalizes missing concurrency and key order, charges interr
  const saved=JSON.parse(await readFile(join(f.root,'state.json'),'utf8')) as ResearchState;delete saved.verificationBatches;for(const c of saved.candidates)delete c.verification;saved.candidates[1]!.status='working';saved.candidates[2]!.status='verifying';await writeFile(join(f.root,'state.json'),JSON.stringify(saved));await unlink(join(f.root,'quality-policy.json'));const legacySummary=await researchSummary(f.root);assert.equal(legacySummary.verification.batchWallMsSum,null);assert.equal(legacySummary.verification.candidates[0]!.verification,null);
  f.deps.decide=async ctx=>{assert.equal(ctx.remainingWorkers,4);assert.equal(ctx.round,2);assert.equal(ctx.records[2]!.status,'interrupted');assert.equal(ctx.records[3]!.status,'interrupted');return {action:'finish',reason:'Inspect only',hypotheses:[],discard:[]};};
  f.deps.work=async()=>{throw Error('must not replay spent workers');};f.deps.verify=async()=>{throw Error('must not replay old verification');};
- const resumed=await runResearch(f.root,{verificationConcurrency:1,...config},f.deps,new AbortController().signal,true);assert.equal(resumed.status,'completed');assert.equal(resumed.version,1);assert.equal(resumed.config.verificationConcurrency,undefined);assert.equal(resumed.candidates.length,4);assert.equal(resumed.spentMs>=first.spentMs,true);await savedEquals(f.root,resumed);
+ const resumed=await runCandidateLoop(f.root,{verificationConcurrency:1,...config},f.deps,scorePolicy,new AbortController().signal,true,scorePolicy.id);assert.equal(resumed.status,'completed');assert.equal(resumed.version,1);assert.equal(resumed.config.verificationConcurrency,undefined);assert.equal(resumed.candidates.length,4);assert.equal(resumed.spentMs>=first.spentMs,true);await savedEquals(f.root,resumed);
 });
 
 test('resume rejects every change in effective verification concurrency before cleanup or writes',async()=>{

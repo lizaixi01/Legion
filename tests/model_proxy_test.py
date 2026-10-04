@@ -1,4 +1,4 @@
-"""Behavior regressions for shared HWE/ProgramBench model transport (no models)."""
+"""Behavior regressions for shared model transport (no models)."""
 import contextlib, errno, http.client, importlib.util, io, json, pathlib, socket, ssl, tempfile, threading, time, unittest, urllib.error
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 spec=importlib.util.spec_from_file_location('model_proxy',ROOT/'scripts/runtime/model_proxy.py')

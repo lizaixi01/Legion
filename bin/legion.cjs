@@ -22,8 +22,7 @@ const usage=()=>console.log([
 ].join('\n'));
 
 function openDesktop(){
-  const tsc=path.join(root,'node_modules','typescript','bin','tsc');
-  const built=spawnSync(process.execPath,[tsc,'--project',root],{cwd:root,stdio:'inherit'});
+  const built=spawnSync(process.execPath,[path.join(root,'scripts','build.cjs')],{cwd:root,stdio:'inherit'});
   if(built.error){console.error(String(built.error));process.exitCode=1;return;}
   if(built.status!==0){console.error('构建失败，未启动桌面应用。');process.exitCode=built.status??1;return;}
   const child=spawn(process.execPath,[path.join(root,'desktop','launch.cjs')],{cwd:root,detached:true,stdio:'ignore',windowsHide:false});

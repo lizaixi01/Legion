@@ -10,12 +10,8 @@ try {
   $nodePath = (Get-Command node.exe -ErrorAction Stop).Source
   "$(Get-Date -Format o) Building Legion Beta from $projectRoot" | Set-Content -LiteralPath $logPath -Encoding UTF8
   $ErrorActionPreference = 'Continue'
-  & $nodePath (Join-Path $projectRoot 'node_modules\typescript\bin\tsc') --project $projectRoot 2>&1 | Out-File -LiteralPath $logPath -Append -Encoding UTF8
+  & $nodePath (Join-Path $projectRoot 'scripts\build.cjs') 2>&1 | Out-File -LiteralPath $logPath -Append -Encoding UTF8
   $buildCode = $LASTEXITCODE
-  if ($buildCode -eq 0) {
-    & $nodePath (Join-Path $PSScriptRoot 'build-renderer.cjs') 2>&1 | Out-File -LiteralPath $logPath -Append -Encoding UTF8
-    $buildCode = $LASTEXITCODE
-  }
   $ErrorActionPreference = 'Stop'
   if ($buildCode -ne 0) { throw 'Build failed. Legion Beta was not started; no older build was opened.' }
   if ($CheckOnly) { exit 0 }

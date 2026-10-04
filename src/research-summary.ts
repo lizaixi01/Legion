@@ -1,6 +1,6 @@
 import {readFile,readdir,writeFile} from 'node:fs/promises';
 import {join} from 'node:path';
-import type {ResearchState} from './research-loop.js';
+import type {ResearchState} from './management/candidate-types.js';
 
 export function sumUsage(values:unknown[]) {
  let input=0,cached=0,output=0,records=0;

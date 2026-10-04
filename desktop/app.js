@@ -45,8 +45,8 @@ async function refresh(){
    if(settingsChat!==id){settingsChat=id;projectChoice=c.project?{path:c.project,name:c.project.split(/[\\/]/).at(-1)}:null;paintProject();if(c.options){options={...c.options,delegation:c.options.delegation??{mode:'off',count:10}};if(c.options.worker)workerOptions={...c.options.worker};}paintSettings();}
    busy=c.status==='running';$('title').textContent=c.title;$('welcome').hidden=true;$('details-toggle').hidden=false;
    const activity=busy?c.live?.activity||'正在思考':null;
-   const messageKey=JSON.stringify([c.messages,activity,c.live?.progress,c.status,c.management,c.tasks,c.delivery,c.acceptance,c.benchmarkChecks,c.decisions,c.nativeGoal,c.continuousGoal,c.goalBudget]);
-   if(messageKey!==lastMessages){const expanded=new Map([...$('messages').querySelectorAll('details[data-evidence]')].map(d=>[d.dataset.evidence,d.open]));const area=$('conversation'),nearBottom=area.scrollHeight-area.scrollTop-area.clientHeight<90,initial=!lastMessages;lastMessages=messageKey;conversationView.update(c.messages,liveProgressView(c.live?.progress)+nativeGoalView(c)+managementView(c.management)+primaryTasksView(c.tasks)+deliveryView(c.delivery,c.acceptance)+benchmarkChecksView(c.benchmarkChecks)+strategyView(c.decisions,c.tasks),activity);for(const d of $('messages').querySelectorAll('details[data-evidence]'))if(expanded.has(d.dataset.evidence))d.open=expanded.get(d.dataset.evidence);if(nearBottom||initial)area.scrollTop=area.scrollHeight;}
+   const messageKey=JSON.stringify([c.messages,activity,c.live?.progress,c.status,c.management,c.tasks,c.delivery,c.acceptance,c.decisions,c.nativeGoal,c.continuousGoal,c.goalBudget]);
+   if(messageKey!==lastMessages){const expanded=new Map([...$('messages').querySelectorAll('details[data-evidence]')].map(d=>[d.dataset.evidence,d.open]));const area=$('conversation'),nearBottom=area.scrollHeight-area.scrollTop-area.clientHeight<90,initial=!lastMessages;lastMessages=messageKey;conversationView.update(c.messages,liveProgressView(c.live?.progress)+nativeGoalView(c)+managementView(c.management)+primaryTasksView(c.tasks)+deliveryView(c.delivery,c.acceptance)+strategyView(c.decisions,c.tasks),activity);for(const d of $('messages').querySelectorAll('details[data-evidence]'))if(expanded.has(d.dataset.evidence))d.open=expanded.get(d.dataset.evidence);if(nearBottom||initial)area.scrollTop=area.scrollHeight;}
    $('error').textContent=c.error||'';
   }
   updateSend();
@@ -281,11 +281,6 @@ function deliveryView(state,finalAcceptance){
  return '<section class="management-progress">'+(state.inheritedFrom?'<p>继续上次交付 · 当前产物重新验收</p>':'')+(state.previous?'<details data-evidence="delivery-previous"><summary>上次交付 · 历史结果</summary><p>'+esc(state.previous.goal)+'</p><p>'+esc(state.previous.acceptance.detail)+'</p><p>历史结果不代表当前文件已通过验收。</p></details>':'')+'<strong>'+esc(labels[verdict.status]||verdict.status)+'</strong><p>'+esc(verdict.detail)+'</p><details data-evidence="delivery-contract"><summary>交付要求</summary><ul>'+state.contract.acceptance.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul><p>文件：'+state.contract.outputs.map(esc).join('、')+'</p></details>'+state.versions.map(v=>'<details data-evidence="delivery-version-'+v.version+'"><summary>候选 '+v.version+' · '+esc(labels[v.acceptance.status]||v.acceptance.status)+'</summary><p>'+esc(v.acceptance.detail)+'</p>'+(v.review?.checks||[]).map(c=>'<p>'+esc(c.criterion)+' · '+esc(({pass:'通过',fail:'未通过',error:'检查异常',not_checked:'未检查'})[c.status]||c.status)+'</p>'+(c.detail?'<pre>'+esc(c.detail)+'</pre>':'')).join('')+(v.functional?.report?.checks||[]).map(c=>'<p>外部检查 '+esc(c.id)+' · '+esc(({pass:'通过',fail:'未通过',error:'检查异常',not_checked:'未检查'})[c.status]||c.status)+'</p>'+(c.detail?'<pre>'+esc(c.detail)+'</pre>':'')).join('')+'<p>未覆盖：'+esc(v.acceptance.uncovered.join('；')||'无记录')+'</p></details>').join('')+'</section>';
 }
 
-function benchmarkChecksView(checks){
- const labels={verified:'公开检查通过',rejected:'公开检查未通过',error:'验证异常',checking:'正在验证',interrupted:'验证已中断'};
- return (checks||[]).map(c=>'<details class="management-progress" data-evidence="hwe-'+esc(c.id)+'"><summary>HWE · '+esc(labels[c.status]||c.status)+'</summary><p>仅代表固定工具链下的公开检查结果。</p>'+(c.evidence?.metrics?'<p>iter/s：'+esc(c.evidence.metrics.fitness)+' · Fmax：'+esc(c.evidence.metrics.fmax_mhz)+' MHz · LUT4：'+esc(c.evidence.metrics.lut4)+' · 周期：'+esc(c.evidence.metrics.cycles)+'</p>':'')+'<p>'+esc(c.detail||c.evidence?.detail||'')+'</p><p>候选指纹：'+esc(c.sha256||'尚未生成')+'</p>'+(c.evidence?.limitations||[]).map(x=>'<p>范围限制：'+esc(x)+'</p>').join('')+'</details>').join('');
-}
-
 function strategyView(decisions,tasks=[]){
  if(!decisions?.length)return '';
  const labels={select:'保留候选',discard:'淘汰候选',continue:'继续实验'};
@@ -302,7 +297,7 @@ function strategyView(decisions,tasks=[]){
 function nativeGoalView(chat){
  if(!chat.continuousGoal)return '';
  const goal=chat.nativeGoal,status=goal?.status,b=chat.goalBudget;
- const budget=b?(b.error?'<p>'+esc(b.error)+'</p>':'<p>子任务调用 '+esc(b.workersUsed)+' / '+esc(b.workers)+' · HWE 验证 '+esc(b.checksUsed)+' / '+esc(b.checks)+(b.inflight?' · '+esc(b.inflight)+' 项尚未结清':'')+'（恢复后累计）</p>'):'';
+ const budget=b?(b.error?'<p>'+esc(b.error)+'</p>':'<p>子任务调用 '+esc(b.workersUsed)+' / '+esc(b.workers)+' · 检查 '+esc(b.checksUsed)+' / '+esc(b.checks)+(b.inflight?' · '+esc(b.inflight)+' 项尚未结清':'')+'（恢复后累计）</p>'):'';
  const names={active:chat.status==='running'?'持续推进中':'上次执行已中断',paused:'已暂停',blocked:'目标受阻',usageLimited:'额度受限',budgetLimited:'达到目标预算',complete:chat.acceptance?.status==='accepted'?'目标已通过声明的验收':'主 Agent 已结束目标 · 查看验收范围'};
  return '<section class="management-progress"><strong>'+esc(names[status]||(chat.status==='running'?'正在建立持续目标':'目标尚未启动'))+'</strong><p>'+esc(chat.continuousGoal.objective)+'</p><p>原截止时间：'+esc(new Date(chat.continuousGoal.deadline).toLocaleString())+'</p>'+(goal?'<p>当前主会话已用 '+esc(goal.tokensUsed)+' token · '+esc(Math.round(goal.timeUsedSeconds))+' 秒（不含独立 Worker）</p>':'')+(chat.status!=='running'&&status!=='complete'?'<p>要继续此目标，请开启“持续目标”并发送继续要求。保留原截止时间和累计额度。</p>':'')+budget+'</section>';
 }

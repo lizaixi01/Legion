@@ -15,7 +15,7 @@
     "start": "tsx src/cli.ts",
     "test": "tsx --test tests/*.test.ts",
     "typecheck": "tsc --noEmit",
-    "build": "tsc && node desktop/build-renderer.cjs",
+    "build": "node scripts/build.cjs",
     "demo": "tsx src/cli.ts demo",
     "demo:goal": "tsx src/cli.ts demo-goal",
     "team": "tsx src/team-cli.ts",
@@ -26,7 +26,6 @@
     "experiment:report": "tsx src/experiment-report.ts",
     "test:experiment-report": "tsx --test tests/experiment-report.test.ts",
     "saasbench": "tsx src/saasbench-cli.ts",
-    "research": "tsx src/research-cli.ts",
     "dist": "npm run build && electron-builder --win nsis",
     "demo:acceptance": "tsx src/acceptance-demo.ts",
     "smoke:acceptance": "tsx src/acceptance-smoke.ts",
@@ -43,7 +42,8 @@
       "buildResources": "build"
     },
     "files": [
-      "dist/**/*",
+      "dist/src/**/*",
+      "dist/desktop/**/*",
       "desktop/**/*",
       "package.json",
       "LICENSE",

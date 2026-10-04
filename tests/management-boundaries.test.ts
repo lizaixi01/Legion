@@ -6,13 +6,11 @@ import {join,resolve,relative} from 'node:path';
 import {build as inspectImportGraph} from 'esbuild';
 import {runCandidateLoop,eligible} from '../src/management/candidate-loop.js';
 import type {Metrics,QualityPolicy,ResearchConfig,ResearchDeps,Evidence} from '../src/management/candidate-types.js';
-import {hweQualityPolicy,type HweMetrics} from '../src/hwe-quality.js';
-import {createPrimaryAgentWorker} from '../src/primary-runtime.js';
+import {primaryAgentWorker as createPrimaryAgentWorker} from '../src/primary-agent.js';
+import {scorePolicy} from './fixtures/candidate-policy.js';
 import type {PrimaryCapability} from '../src/primary-capability.js';
 import {defaultChatOptions} from '../src/chat-options.js';
 import {hash} from '../src/provenance.js';
-import {runResearch} from '../src/research-loop.js';
-import {hweSettings} from '../src/hwe-runtime.js';
 
 const config:ResearchConfig={goal:'Optimize the declared objective',maxRounds:2,maxWorkers:4,concurrency:2,totalMs:60000,manager:{model:'fixture',effort:'high'},worker:{model:'fixture',effort:'high'}};
 const hypothesis=(id:string)=>({id,parent:'baseline',claim:'Measured local change',experiment:'Independent check',expected:'Improved declared metric',workerSeconds:30});
@@ -26,16 +24,16 @@ async function fixture<M extends Metrics>(baseline:M,results:Record<string,Evide
  };
  return {root,deps,counts:()=>({decisions,workCalls,stops})};
 }
-const hwe=(fitness:number):HweMetrics=>({fitness,fmax_mhz:20,lut4:100,cycles:1000});
-test('the shared loop retains HWE validity and maximum-fitness selection',async()=>{
- const f=await fixture(hwe(10),{fast:{status:'pass',checks:{},metrics:hwe(12),limitations:[]},invalid:{status:'pass',checks:{},metrics:{...hwe(100),cycles:0},limitations:[]}});
- const state=await runCandidateLoop(f.root,config,f.deps,hweQualityPolicy,new AbortController().signal);
+const score=(score:number)=>({score});
+test('the shared loop applies installed validity and maximum-score selection',async()=>{
+ const f=await fixture(score(10),{fast:{status:'pass',checks:{},metrics:score(12),limitations:[]},invalid:{status:'pass',checks:{},metrics:{...score(100),score:NaN},limitations:[]}});
+ const state=await runCandidateLoop(f.root,config,f.deps,scorePolicy,new AbortController().signal);
  assert.equal(state.status,'error');assert.equal(state.best,'fast');assert.equal(state.candidates[1]!.status,'error');
  assert.deepEqual(f.counts(),{decisions:1,workCalls:2,stops:1});
 });
 type DefectMetrics={defects:number};
 const defectPolicy:QualityPolicy<DefectMetrics>={id:'defects-min-v1',validMetrics:m=>!!m&&Number.isInteger(m.defects)&&m.defects>=0,better:(a,b)=>a.defects<b.defects};
-test('the SAME loop handles a different metric, minimization and a valid zero without HWE',async()=>{
+test('the same loop handles minimization and a valid zero',async()=>{
  const f=await fixture({defects:5},{clean:{status:'pass',checks:{functional:{passed:true}},metrics:{defects:0},limitations:[]},worse:{status:'pass',checks:{},metrics:{defects:9},limitations:[]}});
  const state=await runCandidateLoop(f.root,config,f.deps,defectPolicy,new AbortController().signal);
  assert.equal(state.status,'completed');assert.equal(state.best,'clean');assert.equal(eligible(state.candidates[0]!,defectPolicy),true);
@@ -62,13 +60,18 @@ test('resume refuses a different quality policy before cleanup or dispatch',asyn
  await assert.rejects(runCandidateLoop(f.root,config,f.deps,{...defectPolicy,id:'defects-max-v1',better:(a,b)=>a.defects>b.defects},new AbortController().signal,true),/policy changed/);
  assert.deepEqual(f.counts(),counts);assert.equal(await readFile(join(f.root,'state.json'),'utf8'),before);
 });
-test('the HWE compatibility entry resumes old state without rewriting its persisted format or replenishing calls',async()=>{
- const f=await fixture(hwe(10),{broken:{status:'error',checks:{},limitations:[]}});
- await runResearch(f.root,config,f.deps,new AbortController().signal);await unlink(join(f.root,'quality-policy.json'));
- f.deps.decide=async ctx=>{assert.equal(ctx.remainingWorkers,3);return {action:'finish',reason:'Legacy evidence inspected',hypotheses:[],discard:[]};};
- const state=await runResearch(f.root,config,f.deps,new AbortController().signal,true);
+test('generic resume preserves consumed allocations and refuses a missing policy identity',async()=>{
+ const f=await fixture({defects:5},{broken:{status:'error',checks:{},limitations:[]}});
+ await runCandidateLoop(f.root,config,f.deps,defectPolicy,new AbortController().signal);
+ const identity=await readFile(join(f.root,'quality-policy.json'),'utf8');await unlink(join(f.root,'quality-policy.json'));
+ const before=await readFile(join(f.root,'state.json'),'utf8'),counts=f.counts();
+ await assert.rejects(runCandidateLoop(f.root,config,f.deps,defectPolicy,new AbortController().signal,true),/ENOENT/);
+ assert.equal(await readFile(join(f.root,'state.json'),'utf8'),before);assert.deepEqual(f.counts(),counts);
+ await writeFile(join(f.root,'quality-policy.json'),identity);
+ f.deps.decide=async ctx=>{assert.equal(ctx.remainingWorkers,3);return {action:'finish',reason:'Recorded fault inspected',hypotheses:[],discard:[]};};
+ const state=await runCandidateLoop(f.root,config,f.deps,defectPolicy,new AbortController().signal,true);
  assert.equal(state.status,'completed');assert.equal(state.version,1);assert.equal(state.candidates.length,1);assert.deepEqual(state.config,config);
- await assert.rejects(readFile(join(f.root,'quality-policy.json')),/ENOENT/);
+ assert.equal(await readFile(join(f.root,'quality-policy.json'),'utf8'),identity);
 });
 
 async function primaryFixture(tool?:string){
@@ -79,7 +82,7 @@ async function primaryFixture(tool?:string){
 function capability(overrides:Partial<PrimaryCapability>={}):PrimaryCapability {
  return {tools:[],instructions:'',call:async()=>({}),pending:()=>false,failures:()=>[],finalize:async()=>({status:'none'}),close:async()=>{},...overrides};
 }
-test('primary runtime completes a real protocol turn with no HWE capability or assets',async()=>{
+test('default product assembly completes an offline protocol turn with only general tools',async()=>{
  const f=await primaryFixture();const run=createPrimaryAgentWorker(f.root,process.execPath,{...defaultChatOptions,delegation:{mode:'off',count:1}},join(f.root,'tasks'),async()=>{});
  const result=await run(f.request);assert.equal(result.status,'completed');
  const registered=JSON.parse(await readFile(join(f.root,'registered.json'),'utf8'));
@@ -102,14 +105,15 @@ test('duplicate capability tools fail before transport starts and still clean up
  const f=await primaryFixture();let closed=false;const run=createPrimaryAgentWorker(f.root,process.execPath,defaultChatOptions,join(f.root,'tasks'),async()=>{},undefined,undefined,()=>capability({tools:[{name:'legion_dispatch'}],close:async()=>{closed=true;}}));
  await assert.rejects(run(f.request),/Duplicate/);assert.equal(closed,true);await assert.rejects(readFile(join(f.attempt,'invocation.json')),/ENOENT/);
 });
-test('core import graphs exclude HWE and evaluation runners; HWE transport also avoids ProgramBench',async()=>{
+test('product and desktop service import graphs exclude removed domain code and evaluation runners',async()=>{
  async function graph(entry:string){
   const result=await inspectImportGraph({entryPoints:[entry],bundle:true,platform:'node',format:'esm',packages:'external',write:false,metafile:true,logLevel:'silent'});
   return Object.keys(result.metafile!.inputs).map(path=>relative(resolve('src'),resolve(path)).replaceAll('\\','/'));
  }
- for(const entry of ['src/management/candidate-loop.ts','src/primary-runtime.ts','src/primary-strategy.ts']){
-  const deps=await graph(entry);assert.deepEqual(deps.filter(path=>/^(hwe|primary-hwe|programbench|saasbench|benchmarks\/|research-)/.test(path)),[],entry);
+ const main=await readFile('desktop/main.cjs','utf8');
+ const desktopEntries=[...main.matchAll(/path\.join\(codeRoot,'dist\/(src\/[^']+\.js)'\)/g)].map(m=>'src/'+m[1]!.slice(4).replace(/\.js$/,'.ts'));
+ assert.ok(desktopEntries.includes('src/chat-service.ts'));
+ for(const entry of ['src/management/candidate-loop.ts','src/primary-agent.ts','src/primary-runtime.ts','src/primary-strategy.ts','src/chat-service.ts','src/desktop-service.ts','src/engineering-product.ts','src/chat-options.ts','src/chat-links.ts','src/account-capacity.ts','src/pool-service.ts',...desktopEntries]){
+  const deps=await graph(entry);assert.deepEqual(deps.filter(path=>/^(hwe|primary-hwe|programbench|saasbench|benchmarks\/|research-cli|research-loop)/.test(path)),[],entry);
  }
- assert.deepEqual((await graph('src/hwe-runtime.ts')).filter(path=>/^(programbench|saasbench|benchmarks\/|research-)/.test(path)),[]);
- assert.match(hweSettings('C:\\fixture','owner').proxyScript,/scripts\/runtime\/model_proxy\.py$/);
 });

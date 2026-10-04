@@ -4,7 +4,7 @@ import {sumUsage,researchSummary} from '../src/research-summary.js';
 import {mkdtemp,mkdir,writeFile} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
-import type {ResearchState} from '../src/research-loop.js';
+import type {ResearchState} from '../src/management/candidate-types.js';
 test('usage totals include cached tokens once and expose missing records',()=>{
  assert.deepEqual(sumUsage([{input_tokens:100,cached_input_tokens:80,output_tokens:20},{input_tokens:50,output_tokens:5},{error:'no usage'}]),{inputTokens:150,cachedInputTokens:80,outputTokens:25,totalTokens:175,records:2});
 });

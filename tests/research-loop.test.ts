@@ -4,16 +4,14 @@ import {mkdtemp,readFile,writeFile,mkdir} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {hash} from '../src/provenance.js';
-import {runResearch,eligible,researchContext,type ResearchConfig,type ResearchDeps,type Evidence,type Candidate} from '../src/research-loop.js';
-import {classifyHweEvidence} from '../src/hwe.js';
-import {archivedHwe,engineErrorHwe} from './fixtures/hwe-evidence.js';
+import {runFixture as runResearch,eligible,researchContext,type ResearchConfig,type ResearchDeps,type Evidence,type Candidate} from './fixtures/candidate-policy.js';
 const config:ResearchConfig={goal:'Improve measured quality',maxRounds:3,maxWorkers:4,concurrency:2,totalMs:10000,manager:{model:'test',effort:'high'},worker:{model:'test',effort:'medium'}};
 const h=(id:string,parent='baseline')=>({id,parent,claim:'A falsifiable claim '+id,experiment:'Run the same verifier',expected:'Higher fitness',workerSeconds:30});
-const evidence=(fitness:number):Evidence=>({status:'pass',checks:{formal:true},metrics:{fitness,fmax_mhz:100,lut4:1000,cycles:100},limitations:['bounded']});
-async function fixture(){const temp=await mkdtemp(join(tmpdir(),'research-')),root=join(temp,'run');let stops=0;const deps:ResearchDeps={baseline:async dir=>{await mkdir(dir);const path=join(dir,'rtl');await writeFile(path,'baseline');return {id:'baseline',round:0,hypothesis:h('baseline',''),status:'verified',snapshot:{path,sha256:hash('baseline')},evidence:evidence(100)};},decide:async()=>({action:'finish',reason:'Done',hypotheses:[],discard:[]}),work:async(h,_p,dir)=>{const path=join(dir,'rtl');await writeFile(path,h.id);return {snapshot:{path,sha256:hash(h.id)},worker:{status:'completed',usage:[],durationMs:1,report:'I claim 10000 fitness'}};},verify:async()=>evidence(110),stop:async()=>{stops++;}};return {root,deps,stops:()=>stops};}
+const evidence=(fitness:number):Evidence=>({status:'pass',checks:{formal:true},metrics:{score:fitness},limitations:['bounded']});
+async function fixture(){const temp=await mkdtemp(join(tmpdir(),'research-')),root=join(temp,'run');let stops=0;const deps:ResearchDeps={baseline:async dir=>{await mkdir(dir);const path=join(dir,'artifact');await writeFile(path,'baseline');return {id:'baseline',round:0,hypothesis:h('baseline',''),status:'verified',snapshot:{path,sha256:hash('baseline')},evidence:evidence(100)};},decide:async()=>({action:'finish',reason:'Done',hypotheses:[],discard:[]}),work:async(h,_p,dir)=>{const path=join(dir,'artifact');await writeFile(path,h.id);return {snapshot:{path,sha256:hash(h.id)},worker:{status:'completed',usage:[],durationMs:1,report:'I claim 10000 fitness'}};},verify:async()=>evidence(110),stop:async()=>{stops++;}};return {root,deps,stops:()=>stops};}
 test('research uses external quality, carries evidence to next round, and manager allocates repairs',async()=>{
  const f=await fixture();let round=0;f.deps.decide=async ctx=>{round++;if(round===1)return {action:'experiment',reason:'Compare alternatives',hypotheses:[h('fast'),h('broken')],discard:[]};if(round===2){assert.equal(ctx.best,'fast');assert.equal(ctx.records.find(c=>c.id==='broken')?.evidence?.status,'fail');return {action:'experiment',reason:'Repair counterexample',hypotheses:[h('repair','broken')],discard:[]};}return {action:'finish',reason:'No further gain justified',hypotheses:[],discard:['broken']};};
- f.deps.verify=async snapshot=>(await readFile(snapshot.path,'utf8'))==='broken'?{status:'fail',checks:{counterexample:'bad retirement'},limitations:[]}:evidence((await readFile(snapshot.path,'utf8'))==='repair'?120:110);
+ f.deps.verify=async snapshot=>(await readFile(snapshot.path,'utf8'))==='broken'?{status:'fail',checks:{counterexample:'bad output'},limitations:[]}:evidence((await readFile(snapshot.path,'utf8'))==='repair'?120:110);
  const s=await runResearch(f.root,config,f.deps,new AbortController().signal);assert.equal(s.status,'completed');assert.equal(s.best,'repair');assert.equal(s.candidates.length,3);assert.equal(f.stops(),1);assert.equal(s.candidates[1]!.discarded,true);assert.equal(JSON.parse(await readFile(join(f.root,'state.json'),'utf8')).spentMs,s.spentMs);
 });
 test('research rejects forged/nonfinite metrics and retains baseline',async()=>{const f=await fixture();f.deps.decide=async()=>({action:'experiment',reason:'Try',hypotheses:[h('bad')],discard:[]});f.deps.verify=async()=>evidence(NaN);const s=await runResearch(f.root,config,f.deps,new AbortController().signal);assert.equal(s.status,'error');assert.equal(s.best,'baseline');assert.equal(eligible(s.candidates[0]!),false);});
@@ -42,7 +40,7 @@ test('independent workers overlap but external verification is serialized',async
 });
 test('a verifier cannot change the accepted snapshot',async()=>{
  const f=await fixture();f.deps.decide=async()=>({action:'experiment',reason:'Try',hypotheses:[h('changed')],discard:[]});
- f.deps.verify=async snapshot=>{await writeFile(snapshot.path,'other design');return evidence(1000);};
+ f.deps.verify=async snapshot=>{await writeFile(snapshot.path,'other output');return evidence(1000);};
  const s=await runResearch(f.root,config,f.deps,new AbortController().signal);
  assert.equal(s.status,'error');assert.equal(s.best,'baseline');assert.match(s.candidates[0]!.verification!.error!,/snapshot changed/);assert.deepEqual(s.candidates[0]!.evidence,evidence(1000));
 });
@@ -57,18 +55,18 @@ test('resuming an unclean running checkpoint does not replenish elapsed budget',
 test('worker infrastructure failures retain the provider reason instead of a task outcome',async()=>{
  const f=await fixture();
  f.deps.decide=async()=>({action:'experiment',reason:'Try',hypotheses:[h('x')],discard:[]});
- f.deps.work=async(hyp,_p,dir)=>{const path=join(dir,'rtl');await writeFile(path,hyp.id);return {snapshot:{path,sha256:hash(hyp.id)},worker:{status:'error',usage:[],durationMs:1,detail:'usage-limit: hit usage limit'}};};
+ f.deps.work=async(hyp,_p,dir)=>{const path=join(dir,'artifact');await writeFile(path,hyp.id);return {snapshot:{path,sha256:hash(hyp.id)},worker:{status:'error',usage:[],durationMs:1,detail:'usage-limit: hit usage limit'}};};
  const s=await runResearch(f.root,config,f.deps,new AbortController().signal);
  assert.equal(s.status,'error');
  assert.match(s.candidates[0]!.evidence!.detail!,/usage-limit/);
  assert.equal(s.best,'baseline');
 });
 
-test('formal engine faults stop dispatch, retain a valid sibling, and reach Manager as undetermined on explicit resume',async()=>{
+test('verifier faults stop dispatch, retain a valid sibling, and reach Manager as undetermined on explicit resume',async()=>{
  const f=await fixture();let decisions=0,verifications=0,workers=0;const work=f.deps.work;
  f.deps.decide=async()=>{decisions++;return {action:'experiment',reason:'Compare',hypotheses:[h('valid'),h('engine-error')],discard:[]};};
  f.deps.work=async(...args)=>{workers++;return work(...args);};
- const fault=classifyHweEvidence(engineErrorHwe());
+ const fault:Evidence={status:'error',checks:{fixture:{status:'error'}},infrastructureError:true,detail:'Result undetermined: verifier unavailable',limitations:[]};
  f.deps.verify=async snapshot=>{verifications++;return (await readFile(snapshot.path,'utf8'))==='valid'?evidence(110):fault;};
  const s=await runResearch(f.root,config,f.deps,new AbortController().signal);
  assert.equal(s.status,'error');assert.equal(decisions,1);assert.equal(workers,2);assert.equal(verifications,2);
@@ -82,19 +80,16 @@ test('formal engine faults stop dispatch, retain a valid sibling, and reach Mana
 
 test('mixed confirmed FAIL and engine ERROR retain both and stop as infrastructure without another allocation',async()=>{
  const f=await fixture();let calls=0;
- const raw=archivedHwe();raw.checks.formal={...(raw.checks.formal as object),classification:{status:'fail',outcomes:[
-  {name:'reg_ch0',status:'fail',tool_statuses:['FAIL'],preunsat:false},
-  {name:'other',status:'error',tool_statuses:['ERROR'],preunsat:false}],diagnostics:[],infrastructure_error:true}};
- const mixed=classifyHweEvidence(raw);
+ const mixed:Evidence={status:'fail',checks:{assertion:{status:'fail'},verifier:{status:'error'}},infrastructureError:true,limitations:[]};
  f.deps.decide=async()=>{calls++;return {action:'experiment',reason:'Try',hypotheses:[h('mixed')],discard:[]};};f.deps.verify=async()=>mixed;
  const s=await runResearch(f.root,config,f.deps,new AbortController().signal);
  assert.equal(s.status,'error');assert.equal(calls,1);assert.equal(s.best,'baseline');
  assert.equal(s.candidates[0]!.status,'rejected');assert.equal(s.candidates[0]!.evidence!.status,'fail');
  assert.deepEqual(researchContext(s,100).records[1]!.evidence,mixed);
 });
-test('formal timeout remains undetermined and stops without spending another allocation',async()=>{
- const f=await fixture();let calls=0;const raw=engineErrorHwe();raw.checks.formal={passed:false,failed_check:'timeout',detail:'run_all.sh exceeded 2700s wall-clock'};
- f.deps.decide=async()=>{calls++;return {action:'experiment',reason:'Try',hypotheses:[h('timeout')],discard:[]};};f.deps.verify=async()=>classifyHweEvidence(raw);
+test('verifier timeout remains undetermined and stops without spending another allocation',async()=>{
+ const f=await fixture();let calls=0;const raw:Evidence={status:'timeout',checks:{fixture:{status:'timeout'}},detail:'Verifier exceeded its time limit',limitations:[]};
+ f.deps.decide=async()=>{calls++;return {action:'experiment',reason:'Try',hypotheses:[h('timeout')],discard:[]};};f.deps.verify=async()=>raw;
  const s=await runResearch(f.root,config,f.deps,new AbortController().signal);
  assert.equal(s.status,'error');assert.equal(calls,1);assert.equal(s.candidates[0]!.status,'error');assert.equal(s.candidates[0]!.evidence!.status,'timeout');assert.equal(s.best,'baseline');
 });
