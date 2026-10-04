@@ -39,4 +39,3 @@ B 相对 A 的得分差为 -3.13 个百分点，总 token 比为 1.74 倍。
 - B：D:\Projects\Proactive Agent\.runs\programbench-c23a07c8-6091-4c78-af69-37e19a5c646f
 
 各目录保留 execution.json、provenance.json、team、selection.json、grade.json 和原始评分结果。
-

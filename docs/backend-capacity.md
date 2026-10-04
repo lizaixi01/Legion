@@ -26,7 +26,7 @@
 ## 实现边界
 
 - worker-pool：统一总并发及分后端限额、排队、取消、认证/配额阻断、限流后减半及30秒冷却，无隐式重试。
-- pool-service：独立只读子Agent队列，最多1000排队任务、64同时运行；独立目录和记录。尚未替换已有工程Master的实现Worker，HWE未改动。
+- pool-service：独立只读子 Agent 队列，最多 1000 个排队任务、64 个同时运行；独立目录和记录。尚未替换已有工程 Master 的实现 Worker。
 - account-capacity：复用现有登录读取真实额度，GUI再次点击关闭。未知容量不会标成无限。
 - Command Code使用附带CLI 1.69.0和`deepseek/deepseek-v4.1-flash`/high；不支持medium。Codex为`gpt-6-sol`/medium。
 - 同一个Command Code模型目前要求使用一致的已保存effort；不支持各任务并发修改。配置不一致拒绝启动。Command Code独立工作目录不等于OS沙箱。
