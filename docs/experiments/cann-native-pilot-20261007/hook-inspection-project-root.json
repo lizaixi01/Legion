@@ -1,0 +1,99 @@
+{
+  "exe": "D:/Projects/Legion-reviewer-fix/.local/codex-runtime/node_modules/@openai/codex-win32-x64/vendor/x86_64-pc-windows-msvc/bin/codex.exe",
+  "model_turns": 0,
+  "protocol": [
+    {
+      "request": {
+        "id": 1,
+        "method": "initialize",
+        "params": {
+          "clientInfo": {
+            "name": "cann-hook-inspect",
+            "version": "1"
+          },
+          "capabilities": {
+            "experimentalApi": true
+          }
+        }
+      }
+    },
+    {
+      "response": {
+        "id": 1,
+        "result": {
+          "userAgent": "Codex Desktop/0.159.2 (Windows 10.0.26200; x86_64) dumb (cann-hook-inspect; 1)",
+          "codexHome": "C:\\Users\\HUAWEI\\.codex",
+          "platformFamily": "windows",
+          "platformOs": "windows"
+        }
+      }
+    },
+    {
+      "request": {
+        "id": 2,
+        "method": "hooks/list",
+        "params": {
+          "cwds": [
+            "D:/Projects/Legion-reviewer-fix",
+            "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007",
+            "D:/新建文件夹"
+          ]
+        }
+      }
+    },
+    {
+      "response": {
+        "method": "configWarning",
+        "params": {
+          "summary": "Codex is ignoring 1 unrecognized configuration setting. Check for typos or deprecated settings.\n  user (C:\\Users\\HUAWEI\\.codex\\config.toml): `computer_use.windows.always_allowed_app_ids` is ignored.",
+          "details": null
+        },
+        "emittedAtMs": 1791356039103
+      }
+    },
+    {
+      "response": {
+        "method": "remoteControl/status/changed",
+        "params": {
+          "status": "disabled",
+          "serverName": "LAPTOP-CECP33UA",
+          "installationId": "b3d749c9-56e4-4a79-bedf-90ef6ff37b1b",
+          "environmentId": null
+        },
+        "emittedAtMs": 1791356039103
+      }
+    },
+    {
+      "response": {
+        "id": 2,
+        "result": {
+          "data": [
+            {
+              "cwd": "D:/Projects/Legion-reviewer-fix",
+              "hooks": [],
+              "warnings": [],
+              "errors": []
+            },
+            {
+              "cwd": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007",
+              "hooks": [],
+              "warnings": [],
+              "errors": []
+            },
+            {
+              "cwd": "D:/新建文件夹",
+              "hooks": [],
+              "warnings": [],
+              "errors": []
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "stderr": [
+    "{\"timestamp\":\"2026-10-07T06:53:59.092351Z\",\"level\":\"ERROR\",\"fields\":{\"message\":\"Codex is ignoring 1 unrecognized configuration setting. Check for typos or deprecated settings.\\n  user (C:\\\\Users\\\\HUAWEI\\\\.codex\\\\config.toml): `computer_use.windows.always_allowed_app_ids` is ignored.\"},\"target\":\"codex_app_server\"}\n",
+    "{\"timestamp\":\"2026-10-07T06:53:59.160808Z\",\"level\":\"WARN\",\"fields\":{\"message\":\"ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/\"},\"target\":\"codex_skills::interface\"}\n",
+    "{\"timestamp\":\"2026-10-07T06:53:59.160893Z\",\"level\":\"WARN\",\"fields\":{\"message\":\"ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/\"},\"target\":\"codex_skills::interface\"}\n"
+  ]
+}

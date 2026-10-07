@@ -6,7 +6,7 @@ export type Backend='codex'|'commandcode';
 export type Outcome='completed'|'rate-limited'|'quota'|'auth'|'transport'|'error'|'timeout'|'cancelled';
 export interface WorkerSpec{backend:Backend;model:string;effort:string;serviceTier?:ServiceTier;command:string;prefix:string[];modPath?:string;permission?:'read-only'|'workspace-write'|'danger-full-access';schemaPath?:string;outputPath?:string}
 export interface Job{ id:string;prompt:string;workspace:string;logDir:string;timeoutMs:number;sessionId?:string;deadline?:number }
-export interface Result{status:Outcome;durationMs:number;sessionId?:string;text:string;usage:unknown;detail?:string;execution?:ProcessResult;terminalEvent?:string}
+export interface Result{status:Outcome;durationMs:number;sessionId?:string;text:string;usage:unknown;detail?:string;execution?:ProcessResult;terminalEvent?:string;finalText?:string;outputPersistence?:{path:string;status:'existing'|'recovered'|'error';detail?:string}}
 export function failureKind(code:number|null,message:string):Outcome{
  if(/usage limit|insufficient credits|quota|credit balance/i.test(message)||code===10)return 'quota';
  if(code===5||/rate.?limit|too many requests|\b429\b/i.test(message))return 'rate-limited';
@@ -28,7 +28,8 @@ export function parseOutput(backend:Backend,output:string,exitCode:number|null):
  const terminal=events.findLast(e=>e.type==='turn.completed'||e.type==='turn.failed');
  const error=events.findLast(e=>e.type==='error'||e.type==='turn.failed');
  const message=String(error?.error?.message??error?.message??'No successful terminal event');
- return {status:exitCode===0&&terminal?.type==='turn.completed'?'completed':failureKind(null,message),terminalEvent:terminal?.type,text:events.filter(e=>e.type==='item.completed'&&e.item?.type==='agent_message').map(e=>e.item.text).join('\n'),usage:terminal?.usage??null,sessionId:events.find(e=>e.type==='thread.started')?.thread_id,detail:terminal?.type==='turn.completed'?undefined:message};
+ const messages=events.filter(e=>e.type==='item.completed'&&e.item?.type==='agent_message');
+ return {status:exitCode===0&&terminal?.type==='turn.completed'?'completed':failureKind(null,message),terminalEvent:terminal?.type,text:messages.map(e=>e.item.text).join('\n'),finalText:messages.at(-1)?.item.text,usage:terminal?.usage??null,sessionId:events.find(e=>e.type==='thread.started')?.thread_id,detail:terminal?.type==='turn.completed'?undefined:message};
 }
 export async function runWorker(spec:WorkerSpec,job:Job,signal?:AbortSignal):Promise<Result>{
  if(spec.backend==='commandcode'){const config=JSON.parse(await readFile(join(process.env.USERPROFILE!,'.commandcode/config.json'),'utf8'));if(config.reasoningEffort?.[spec.model]!==spec.effort)throw Error('Command Code account effort differs from requested effort; configure it before launching the pool');}
@@ -42,6 +43,21 @@ export async function runWorker(spec:WorkerSpec,job:Job,signal?:AbortSignal):Pro
  result.execution=execution;
  if(result.status!=='completed'&&execution.detail)result.detail=[result.detail,execution.detail].filter(Boolean).join('; ');
  if(execution.status==='timeout'||execution.status==='cancelled')result.status=execution.status;
+ // CLI cancellation can happen after turn.completed but before --output-last-message
+ // is written. Preserve that exact final message without promoting process success.
+ if(spec.outputPath&&result.terminalEvent==='turn.completed'&&typeof result.finalText==='string'){
+  try{
+   await writeFile(spec.outputPath,result.finalText,{flag:'wx'});
+   result.outputPersistence={path:spec.outputPath,status:'recovered'};
+  }catch(error){
+   if((error as NodeJS.ErrnoException).code==='EEXIST')result.outputPersistence={path:spec.outputPath,status:'existing'};
+   else{
+    result.outputPersistence={path:spec.outputPath,status:'error',detail:String(error)};
+    result.detail=[result.detail,'Cannot persist final message: '+String(error)].filter(Boolean).join('; ');
+    if(result.status==='completed')result.status='error';
+   }
+  }
+ }
  await writeFile(join(job.logDir,'result.json'),JSON.stringify(result,null,2));return result;
 }
 interface Pending{spec:WorkerSpec;job:Job;signal?:AbortSignal;resolve:(r:Result)=>void}

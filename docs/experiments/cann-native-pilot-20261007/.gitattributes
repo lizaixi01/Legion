@@ -1,0 +1,5 @@
+# Preserve source-bound scaffold bytes, including original CRLF metadata.
+**/candidate/** -text whitespace=cr-at-eol
+# Frozen unified-diff context and original model Markdown contain meaningful spaces.
+**/kernel.diff -whitespace
+**/executor-report.md -whitespace

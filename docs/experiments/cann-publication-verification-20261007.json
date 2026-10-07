@@ -1,0 +1,21 @@
+{
+  "publication_date": "2026-10-07",
+  "base_commit": "e9951d05814f822c0e52e810f1f83bcf54283c04",
+  "git_staged_files": 138,
+  "git_staged_bytes": 1529274,
+  "published_artifact_hashes_verified": 131,
+  "json_files_parsed": 48,
+  "jsonl_records_parsed": 63,
+  "credential_pattern_scan": "passed",
+  "README_and_index_links": "passed",
+  "native_pilot_freeze": "passed",
+  "offline_regression": {
+    "command": "npm exec -- tsx --test tests/worker-pool.test.ts tests/process.test.ts tests/reviewer-process.test.ts tests/primary-delivery.test.ts tests/delivery-reviewer.test.ts tests/cann-delivery-evidence.test.ts tests/cann-delivery-capture.test.ts",
+    "tests": 44,
+    "pass": 44,
+    "fail": 0
+  },
+  "typecheck": "passed",
+  "new_platform_submissions": 0,
+  "new_model_calls": 0
+}

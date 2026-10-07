@@ -1,0 +1,46 @@
+{
+  "checkpoint_created_at": "2026-10-07T07:08:41.110979+00:00",
+  "scope": "Native subagent terminal usage complete; parent current-turn checkpoint only, excluding later verification and final response. Cached input and reasoning output are subsets, not additional tokens. Monetary cost unknown.",
+  "model_token_cap": null,
+  "model_token_cap_basis": "No hard model-token cap specified for this new pilot; old A/B caps belong to the frozen earlier experiment.",
+  "subagents_complete": {
+    "input_tokens": 874792,
+    "cached_input_tokens": 779520,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 18687,
+    "reasoning_output_tokens": 6430,
+    "total_tokens": 893479
+  },
+  "subagents_parallel_wall_seconds": 344.854,
+  "subagents_sum_session_seconds": 640.607,
+  "parent": {
+    "thread_id": "01a114af-01f5-7be0-9123-f6af23a4505d",
+    "turn_id": "01a11519-cb41-7092-a70f-9a1488743c08",
+    "user_request_at": "2026-10-07T06:42:54.536Z",
+    "last_measured_at": "2026-10-07T07:08:40.041Z",
+    "usage": {
+      "input_tokens": 3493933,
+      "cached_input_tokens": 3321472,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 40911,
+      "reasoning_output_tokens": 12459,
+      "total_tokens": 3534844
+    },
+    "responses": 37,
+    "method": "Sum unique response_id usage records for this exact parent thread_id and turn_id; equals native turn_token_usage. Does not include child thread records.",
+    "complete": false,
+    "original_trace": "C:\\Users\\HUAWEI\\.codex\\sessions\\2026\\10\\07\\rollout-2026-10-07T12-46-16-01a114af-01f5-7be0-9123-f6af23a4505d.jsonl",
+    "usage_record_snapshot": "D:\\Projects\\Legion-reviewer-fix\\.runs\\cann-native-pilot-20261007\\parent-usage-checkpoint.jsonl",
+    "snapshot_sha256": "233287b4535d1584af0474bd0534f0d04746a1373eabc346b1e3836d00cc36ca"
+  },
+  "combined_lower_bound_at_checkpoint": {
+    "input_tokens": 4368725,
+    "cached_input_tokens": 4100992,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 59598,
+    "reasoning_output_tokens": 18889,
+    "total_tokens": 4428323
+  },
+  "platform_submissions": 0,
+  "hook_probe_model_turns": 0
+}

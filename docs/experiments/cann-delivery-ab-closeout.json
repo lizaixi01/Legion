@@ -1,0 +1,597 @@
+{
+  "experiment_id": "cann-delivery-ab-20261007",
+  "closeout_at": "2026-10-07T06:28:48.732950+00:00",
+  "skill_status": "not_adopted",
+  "default_workflow": "Original Codex workflow plus deterministic evidence checker; do not load the experimental Skill by default.",
+  "model_calls_this_closeout": 0,
+  "platform_calls_this_closeout": 0,
+  "original_conditions_unchanged": true,
+  "original_index_unchanged": true,
+  "original_evidence_files_unchanged": 278,
+  "original_manifest": "D:/Projects/Legion-reviewer-fix/.runs/cann-delivery-closeout-20261007/original-evidence-sha256.json",
+  "uniform_first_output_regrade": [
+    {
+      "run_id": "pending-iter1-A",
+      "attempt": 1,
+      "frozen_output": "D:/Projects/Legion-reviewer-fix/.runs/cann-delivery-ab-20261007/runs/pending-iter1-A/attempt-1/frozen/delivery.json",
+      "output_sha256": "9f011c473593bba4b2c8ad9f997869e3ff69ee9e823bff27e7d3457ee3943935",
+      "grader_sha256": "2e4b46d6c5222ddd4546a30e7b08bfaeee2004ff2a7fe810d393cdf48559d558",
+      "grade": {
+        "qualified": true,
+        "issues": [],
+        "field_results": [
+          {
+            "name": "candidate_sha256",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "parent_sha256",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "submission_id",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "parent_submission_id",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "source_matches_submission",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "generator_model",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "generator_effort",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "platform_status",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "observed_case_count",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "final_passed_cases",
+            "availability": "genuinely_missing",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "cases_final",
+            "availability": "genuinely_missing",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "time_unit",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "official_total_score",
+            "availability": "genuinely_missing",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "score_higher_is_better",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "unique_target_submissions",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "faster_cases_than_parent",
+            "availability": "genuinely_missing",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "slower_cases_than_parent",
+            "availability": "genuinely_missing",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "selection_recommendation",
+            "availability": "genuinely_missing",
+            "ok": true,
+            "kind": "correct"
+          }
+        ],
+        "correct_fields": 18,
+        "field_count": 18,
+        "avoidable_missing": 0,
+        "incorrect_or_unsupported": 0,
+        "true_missing_count": 6
+      },
+      "matches_prior_posthoc_grade": true
+    },
+    {
+      "run_id": "complete-r03-A",
+      "attempt": 1,
+      "frozen_output": "D:/Projects/Legion-reviewer-fix/.runs/cann-delivery-ab-20261007/runs/complete-r03-A/attempt-1/frozen/delivery.json",
+      "output_sha256": "cdfff270fca881dd07a6a38587608201b86a10bd0d5df7515a301e9ba2b40558",
+      "grader_sha256": "2e4b46d6c5222ddd4546a30e7b08bfaeee2004ff2a7fe810d393cdf48559d558",
+      "grade": {
+        "qualified": true,
+        "issues": [],
+        "field_results": [
+          {
+            "name": "candidate_sha256",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "parent_sha256",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "submission_id",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "parent_submission_id",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "source_matches_submission",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "generator_model",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "generator_effort",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "platform_status",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "observed_case_count",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "final_passed_cases",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "cases_final",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "time_unit",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "official_total_score",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "score_higher_is_better",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "unique_target_submissions",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "faster_cases_than_parent",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "slower_cases_than_parent",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "selection_recommendation",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          }
+        ],
+        "correct_fields": 18,
+        "field_count": 18,
+        "avoidable_missing": 0,
+        "incorrect_or_unsupported": 0,
+        "true_missing_count": 0
+      },
+      "matches_prior_posthoc_grade": true
+    },
+    {
+      "run_id": "pending-iter1-B",
+      "attempt": 1,
+      "frozen_output": "D:/Projects/Legion-reviewer-fix/.runs/cann-delivery-ab-20261007/runs/pending-iter1-B/attempt-1/frozen/delivery.json",
+      "output_sha256": "6eb01915601562657b71f6f94ba24abb3e3db41098f2806ccb2034510343d86c",
+      "grader_sha256": "2e4b46d6c5222ddd4546a30e7b08bfaeee2004ff2a7fe810d393cdf48559d558",
+      "grade": {
+        "qualified": true,
+        "issues": [],
+        "field_results": [
+          {
+            "name": "candidate_sha256",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "parent_sha256",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "submission_id",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "parent_submission_id",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "source_matches_submission",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "generator_model",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "generator_effort",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "platform_status",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "observed_case_count",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "final_passed_cases",
+            "availability": "genuinely_missing",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "cases_final",
+            "availability": "genuinely_missing",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "time_unit",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "official_total_score",
+            "availability": "genuinely_missing",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "score_higher_is_better",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "unique_target_submissions",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "faster_cases_than_parent",
+            "availability": "genuinely_missing",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "slower_cases_than_parent",
+            "availability": "genuinely_missing",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "selection_recommendation",
+            "availability": "genuinely_missing",
+            "ok": true,
+            "kind": "correct"
+          }
+        ],
+        "correct_fields": 18,
+        "field_count": 18,
+        "avoidable_missing": 0,
+        "incorrect_or_unsupported": 0,
+        "true_missing_count": 6
+      },
+      "matches_prior_posthoc_grade": true
+    },
+    {
+      "run_id": "complete-r03-B",
+      "attempt": 1,
+      "frozen_output": "D:/Projects/Legion-reviewer-fix/.runs/cann-delivery-ab-20261007/runs/complete-r03-B/attempt-1/frozen/delivery.json",
+      "output_sha256": "38443f15ca8e611e208a9081ef95bb4d6a659aef46c546f89fb564e2ff50ba26",
+      "grader_sha256": "2e4b46d6c5222ddd4546a30e7b08bfaeee2004ff2a7fe810d393cdf48559d558",
+      "grade": {
+        "qualified": true,
+        "issues": [],
+        "field_results": [
+          {
+            "name": "candidate_sha256",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "parent_sha256",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "submission_id",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "parent_submission_id",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "source_matches_submission",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "generator_model",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "generator_effort",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "platform_status",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "observed_case_count",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "final_passed_cases",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "cases_final",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "time_unit",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "official_total_score",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "score_higher_is_better",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "unique_target_submissions",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "faster_cases_than_parent",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "slower_cases_than_parent",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          },
+          {
+            "name": "selection_recommendation",
+            "availability": "available",
+            "ok": true,
+            "kind": "correct"
+          }
+        ],
+        "correct_fields": 18,
+        "field_count": 18,
+        "avoidable_missing": 0,
+        "incorrect_or_unsupported": 0,
+        "true_missing_count": 0
+      },
+      "matches_prior_posthoc_grade": true
+    }
+  ],
+  "anomalous_attempt": {
+    "run_id": "complete-r03-B",
+    "attempt": 2,
+    "session_id": "01a114df-148e-7832-9c53-90b376a6aafd",
+    "protocol_membership": "formal fourth run; its one allowed repair, not an extra diagnostic",
+    "original_terminal_event": "turn.completed",
+    "original_host_status": "cancelled",
+    "content_qualified": true,
+    "content_grade_basis": "18/18 on verbatim recovered terminal JSON; posthoc, not an original saved delivery",
+    "budget_compliant": false,
+    "tokens": 543176,
+    "token_limit": 500000,
+    "overage": 43176,
+    "delivery_completed": false,
+    "first_delivery_still_available": true,
+    "original_delivery_path_missing": true,
+    "forensic_recovery_is_protocol_delivery": false,
+    "raw_trace": "D:/Projects/Legion-reviewer-fix/.runs/cann-delivery-ab-20261007/runs/complete-r03-B/attempt-2/stdout.jsonl",
+    "recovery_record": "D:/Projects/Legion-reviewer-fix/.runs/cann-delivery-ab-20261007/runs/complete-r03-B/attempt-2/forensic-recovery.json"
+  },
+  "conditions_sha256": "8a743c9b4a5d5879070ec6862c8c691652017df60dba3b3a85e0277de1b9c20f",
+  "original_results_index_sha256": "b6372a816b11f8da4fa20827a1ebb975b2b88c0af2ecf3f7f58fa3209e8baf04",
+  "skill_sha256": "42d59969f449748ac6ee279cc0c448f0e4227922f75df1374a8172d9b2099241",
+  "code_changes": [
+    {
+      "path": "src/worker-pool.ts",
+      "sha256": "a135629105ffbe2a5a0f626dabae55fd34d20eecca9fdb0610959e093a8ef97b"
+    },
+    {
+      "path": "scripts/reviewer/cann-delivery-ab.mjs",
+      "sha256": "199d4120e643c049601c5f36e20ee2d31552fcdd0345b0a936e3f653ac40de84"
+    },
+    {
+      "path": "scripts/reviewer/cann-delivery-status.ts",
+      "sha256": "05cf9d157388a515337a9b72870b7c9495854f30e90648ebfdef87645630745a"
+    },
+    {
+      "path": "tests/cann-delivery-evidence.test.ts",
+      "sha256": "bbe5959672c91c73c31483fe934f82c8d7be189e8842c25341229477c6c7e14c"
+    },
+    {
+      "path": "scripts/reviewer/delivery-evidence/README.md",
+      "sha256": "52546694a21b70645946d4e7c9323912516325045ca27d7975561ef7c82dc519"
+    }
+  ],
+  "code_diff": {
+    "path": "D:/Projects/Legion-reviewer-fix/.runs/cann-delivery-closeout-20261007/code-changes.patch",
+    "sha256": "e41b1ce2ac75af48b7d1d506ae647d19eae4236787ff1ae63de2d5250d16da69"
+  },
+  "regression": {
+    "kind": "offline synthetic Node processes; no model runtime",
+    "normal_completion": "passed; CLI output bytes preserved, completed status, usage and diagnostics retained",
+    "over_budget_return": "passed for both clean process completion and post-terminal cancellation; exact final output saved, budget false at 543176, no followup or next planned model call",
+    "tests_passed": 44,
+    "tests_failed": 0,
+    "tap_path": "D:/Projects/Legion-reviewer-fix/.runs/cann-delivery-closeout-20261007/regression.tap",
+    "tap_sha256": "e01af31d6fe451fff64caea26d8c775b7ac879575204986f88d3aa2133f8d3e1",
+    "typecheck": "passed",
+    "typecheck_log": "D:/Projects/Legion-reviewer-fix/.runs/cann-delivery-closeout-20261007/typecheck.log",
+    "runner_syntax_check": "passed",
+    "token_limit_unchanged": 500000,
+    "time_limit_ms_unchanged": 600000,
+    "max_feedback_rounds_unchanged": 1,
+    "code_patch_reverse_check": "passed with git apply --check --reverse; no patch was applied",
+    "git_diff_check": "passed",
+    "original_cann_source_integrity": {
+      "unchanged": true,
+      "source_file_count": 36,
+      "changed": []
+    }
+  },
+  "historical_report_before_addendum": {
+    "path": "D:/Projects/Legion-reviewer-fix/.runs/cann-delivery-closeout-20261007/before/docs/experiments/cann-delivery-ab-report.md",
+    "sha256": "9e6ea34a516621d2738d47ce825e62b075bb25e858a85c6a6bc5c1cd46c12bf7"
+  }
+}

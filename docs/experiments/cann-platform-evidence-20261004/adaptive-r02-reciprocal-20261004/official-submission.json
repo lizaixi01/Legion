@@ -1,0 +1,237 @@
+{
+  "_id": "6ac25b2d694b590c3ce66b3c",
+  "user_id": "6ac11636694b590c3c4baffb",
+  "problem_id": "6a9a9a99bf41025d6013eb85",
+  "create_time": "2026-10-04T13:57:01.513Z",
+  "status": "Pass",
+  "valid": true,
+  "result": [
+    {
+      "testcase_id": "6a9a9a99bf41025d6013eb8a",
+      "time": 5.73,
+      "precision_ratio": 1,
+      "testcase_status": "Pass",
+      "score": 0,
+      "type": "default",
+      "best_time": 1.26
+    },
+    {
+      "testcase_id": "6a9a9a99bf41025d6013eb8e",
+      "time": 12.43,
+      "precision_ratio": 1,
+      "testcase_status": "Pass",
+      "score": 0,
+      "type": "default",
+      "best_time": 1.85
+    },
+    {
+      "testcase_id": "6a9a9a99bf41025d6013eb92",
+      "time": 7,
+      "precision_ratio": 1,
+      "testcase_status": "Pass",
+      "score": 0,
+      "type": "default",
+      "best_time": 2.47
+    },
+    {
+      "testcase_id": "6a9a9a99bf41025d6013eb96",
+      "time": 33.66,
+      "precision_ratio": 1,
+      "testcase_status": "Pass",
+      "score": 0,
+      "type": "default",
+      "best_time": 4.12
+    },
+    {
+      "testcase_id": "6a9a9a99bf41025d6013eb9a",
+      "time": 21.57,
+      "precision_ratio": 1,
+      "testcase_status": "Pass",
+      "score": 0,
+      "type": "default",
+      "best_time": 5.2
+    },
+    {
+      "testcase_id": "6a9a9a99bf41025d6013eb9e",
+      "time": 51.32,
+      "precision_ratio": 1,
+      "testcase_status": "Pass",
+      "score": 0,
+      "type": "default",
+      "best_time": 9.48
+    },
+    {
+      "testcase_id": "6a9a9a99bf41025d6013eba2",
+      "time": 78.31,
+      "precision_ratio": 1,
+      "testcase_status": "Pass",
+      "score": 0,
+      "type": "default",
+      "best_time": 10.99
+    },
+    {
+      "testcase_id": "6a9a9a99bf41025d6013eba6",
+      "time": 229.94,
+      "precision_ratio": 1,
+      "testcase_status": "Pass",
+      "score": 0,
+      "type": "default",
+      "best_time": 30.16
+    },
+    {
+      "testcase_id": "6a9a9a99bf41025d6013ebaa",
+      "time": 125.95,
+      "precision_ratio": 1,
+      "testcase_status": "Pass",
+      "score": 0,
+      "type": "default",
+      "best_time": 67.79
+    },
+    {
+      "testcase_id": "6a9a9a99bf41025d6013ebae",
+      "time": 206.81,
+      "precision_ratio": 1,
+      "testcase_status": "Pass",
+      "score": 0,
+      "type": "default",
+      "best_time": 46.63
+    },
+    {
+      "testcase_id": "6a9a9a99bf41025d6013ebb2",
+      "time": 231.85,
+      "precision_ratio": 1,
+      "testcase_status": "Pass",
+      "score": 0,
+      "type": "default",
+      "best_time": 126.8
+    },
+    {
+      "testcase_id": "6a9a9a99bf41025d6013ebb6",
+      "time": 185.64,
+      "precision_ratio": 1,
+      "testcase_status": "Pass",
+      "score": 0,
+      "type": "default",
+      "best_time": 75.93
+    },
+    {
+      "testcase_id": "6a9a9a99bf41025d6013ebba",
+      "time": 735.25,
+      "precision_ratio": 1,
+      "testcase_status": "Pass",
+      "score": 0,
+      "type": "default",
+      "best_time": 392.72
+    },
+    {
+      "testcase_id": "6a9a9a99bf41025d6013ebbe",
+      "time": 63391.36,
+      "precision_ratio": 1,
+      "testcase_status": "Pass",
+      "score": 0,
+      "type": "default",
+      "best_time": 3588.84
+    },
+    {
+      "testcase_id": "6a9a9a99bf41025d6013ebc2",
+      "time": 12574.07,
+      "precision_ratio": 1,
+      "testcase_status": "Pass",
+      "score": 0,
+      "type": "default",
+      "best_time": 7948.23
+    }
+  ],
+  "theory_score": 0,
+  "ID": 591332,
+  "__v": 0,
+  "problem": {
+    "_id": "6a9a9a99bf41025d6013eb85",
+    "name": "addrmsnormbias",
+    "title": "AddRmsNormBias",
+    "contest_id": "6a9a9295bf41025d601255a3"
+  },
+  "contest": {
+    "_id": "6a9a9295bf41025d601255a3",
+    "name": "op_challenge_xinan_prelim",
+    "title": "2026年CANN挑战赛_西南赛区（初赛）",
+    "group_id": "69c8ffcea2bcbfa3591f481e",
+    "ongoing": false,
+    "start_time": "2026-09-04T16:00:00.000Z",
+    "end_time": "2026-10-17T10:00:00.000Z"
+  },
+  "group": {
+    "_id": "69c8ffcea2bcbfa3591f481e",
+    "name": "public",
+    "title": "公共小组"
+  },
+  "user": {
+    "_id": "6ac11636694b590c3c4baffb",
+    "ID": 8747,
+    "nickname": "lizaixi01"
+  },
+  "can_view_code": true,
+  "files": [
+    {
+      "path": "CMakeLists.txt",
+      "key": "CMakeLists.txt",
+      "label": "CMakeLists.txt",
+      "content": "cmake_minimum_required(VERSION 3.16)\n\nfind_package(ASC REQUIRED)\n\nproject(add_rms_norm_bias_custom LANGUAGES ASC CXX)\n\nset(CMAKE_CXX_STANDARD 14)\n\nif(DEFINED NPU_ARCH)\n    set(SOC_ARCH ${NPU_ARCH})\nelse()\n    set(SOC_ARCH \"dav-2201\")\nendif()\n\nadd_executable(add_rms_norm_bias_custom main.asc)\n\ntarget_link_libraries(add_rms_norm_bias_custom PRIVATE\n    tiling_api\n    register\n    platform\n    unified_dlog\n    dl\n    m\n    graph_base\n)\n\ntarget_include_directories(add_rms_norm_bias_custom PRIVATE\n    ${CMAKE_CURRENT_SOURCE_DIR}\n)\n\ntarget_compile_options(add_rms_norm_bias_custom PRIVATE\n    $<$<COMPILE_LANGUAGE:ASC>:--npu-arch=${SOC_ARCH}>\n)\n",
+      "editable": false
+    },
+    {
+      "path": "data_utils.h",
+      "key": "data_utils.h",
+      "label": "data_utils.h",
+      "content": "// ============================================================================\n// data_utils.h - File I/O utilities for Ascend C Kernel direct invocation\n// ============================================================================\n\n#ifndef DATA_UTILS_H\n#define DATA_UTILS_H\n\n#include <fcntl.h>\n#include <sys/stat.h>\n#include <unistd.h>\n#include <cerrno>\n#include <fstream>\n\ninline bool ReadFile(const std::string &filePath, size_t bufferSize, void *buffer, size_t bufferLen)\n{\n    if (buffer == nullptr) {\n        return false;\n    }\n    if (bufferSize > bufferLen) {\n        return false;\n    }\n\n    std::ifstream file(filePath, std::ios::binary);\n    if (!file.is_open()) {\n        return false;\n    }\n\n    file.seekg(0, std::ios::end);\n    auto pos = file.tellg();\n    if (pos < 0) {\n        file.close();\n        return false;\n    }\n    size_t fileSize = static_cast<size_t>(pos);\n    file.seekg(0, std::ios::beg);\n\n    if (fileSize != bufferSize) {\n        file.close();\n        return false;\n    }\n\n    file.read(static_cast<char *>(buffer), bufferSize);\n    if (!file) {\n        file.close();\n        return false;\n    }\n\n    file.close();\n    return true;\n}\n\ninline bool WriteFile(const std::string &filePath, const void *buffer, size_t size)\n{\n    if (buffer == nullptr && size > 0) {\n        return false;\n    }\n\n    int fd = open(filePath.c_str(), O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);\n    if (fd < 0) {\n        return false;\n    }\n\n    size_t totalWritten = 0;\n    while (totalWritten < size) {\n        ssize_t w = write(fd, static_cast<const char *>(buffer) + totalWritten, size - totalWritten);\n        if (w < 0) {\n            if (errno == EINTR) continue;\n            close(fd);\n            return false;\n        }\n        if (w == 0) {\n            close(fd);\n            return false;\n        }\n        totalWritten += static_cast<size_t>(w);\n    }\n    if (close(fd) != 0) {\n        return false;\n    }\n\n    return true;\n}\n\n#endif\n",
+      "editable": false
+    },
+    {
+      "path": "kernel.asc",
+      "key": "kernel.asc",
+      "label": "kernel.asc",
+      "content": "#include <cstdint>\n#include <limits>\n#include \"kernel_operator.h\"\n\n// Candidate v2 for the supplied CANN 9.0 / dav-2201 direct-launch scaffold.\n// Numerical target: supplied AddRmsNormBias.py (FP32 throughout, one final cast).\n// This file is included by main.asc. It intentionally defines no main / guard.\n// Status: source-reviewed; not compiled or executed on an Ascend NPU here.\n\nnamespace add_rms_norm_bias_v1 {\n\nconstexpr uint32_t kTileLimit = 2048;\nconstexpr uint32_t kCacheLimit = 8192;\nconstexpr uint32_t kNativeCacheLimit = 16384;\nconstexpr uint32_t kMaxDim = 32768;\n\ntemplate <typename T>\n__aicore__ inline void ToFloat(const AscendC::LocalTensor<float>& dst,\n                              const AscendC::LocalTensor<T>& src,\n                              uint32_t count)\n{\n    AscendC::Cast(dst, src, AscendC::RoundMode::CAST_NONE, count);\n}\n\ntemplate <>\n__aicore__ inline void ToFloat<float>(const AscendC::LocalTensor<float>& dst,\n                                     const AscendC::LocalTensor<float>& src,\n                                     uint32_t count)\n{\n    // UB-to-UB DataCopy requires a multiple of 32 bytes. Both allocations\n    // include this padding; padding is never counted in the row reduction.\n    AscendC::DataCopy(dst, src, (count + 7U) / 8U * 8U);\n}\n\ntemplate <typename T>\n__aicore__ inline void FromFloat(const AscendC::LocalTensor<T>& dst,\n                                const AscendC::LocalTensor<float>& src,\n                                uint32_t count)\n{\n    AscendC::Cast(dst, src, AscendC::RoundMode::CAST_RINT, count);\n}\n\ntemplate <>\n__aicore__ inline void FromFloat<float>(const AscendC::LocalTensor<float>& dst,\n                                       const AscendC::LocalTensor<float>& src,\n                                       uint32_t count)\n{\n    // Do not use Cast<float, float>: its rounding modes round to integers.\n    AscendC::DataCopy(dst, src, (count + 7U) / 8U * 8U);\n}\n\ntemplate <typename T>\nclass Kernel {\npublic:\n    __aicore__ inline Kernel() {}\n\n    __aicore__ inline void Init(GM_ADDR x, GM_ADDR residual, GM_ADDR gamma,\n                               GM_ADDR bias, GM_ADDR output, int64_t rows,\n                               uint32_t dim, float dimFloat, uint32_t rowGroup, float epsilon)\n    {\n        rows_ = rows;\n        dim_ = dim;\n        dimFloat_ = dimFloat;\n        epsilon_ = epsilon;\n        paddedDim_ = (dim + 15U) / 16U * 16U;\n        tile_ = (dim + 63U) / 64U * 64U;\n        if (tile_ > kTileLimit) {\n            tile_ = kTileLimit;\n        }\n        tileCount_ = (dim + tile_ - 1U) / tile_;\n        partialCount_ = (tileCount_ + 7U) / 8U * 8U;\n\n        // Whole row groups are assigned to a core. Core boundaries therefore\n        // fall on a 32-byte output boundary, even for an odd hidden dimension.\n        const int64_t groups = (rows + rowGroup - 1) / rowGroup;\n        const int64_t cores = static_cast<int64_t>(AscendC::GetBlockNum());\n        const int64_t core = static_cast<int64_t>(AscendC::GetBlockIdx());\n        const int64_t base = groups / cores;\n        const int64_t remainder = groups % cores;\n        const int64_t firstGroup = core * base + (core < remainder ? core : remainder);\n        const int64_t ownedGroups = base + (core < remainder ? 1 : 0);\n        firstRow_ = firstGroup * rowGroup;\n        endRow_ = (firstGroup + ownedGroups) * rowGroup;\n        if (endRow_ > rows_) {\n            endRow_ = rows_;\n        }\n\n        xGm_.SetGlobalBuffer(reinterpret_cast<__gm__ T*>(x));\n        residualGm_.SetGlobalBuffer(reinterpret_cast<__gm__ T*>(residual));\n        gammaGm_.SetGlobalBuffer(reinterpret_cast<__gm__ T*>(gamma));\n        biasGm_.SetGlobalBuffer(reinterpret_cast<__gm__ T*>(bias));\n        outputGm_.SetGlobalBuffer(reinterpret_cast<__gm__ T*>(output));\n\n        const uint32_t typeBytes = static_cast<uint32_t>(sizeof(T));\n        pipe_.InitBuffer(inputQueue_, 1, 2U * tile_ * typeBytes);\n        pipe_.InitBuffer(outputQueue_, 1, tile_ * typeBytes);\n        pipe_.InitBuffer(yBuffer_, paddedDim_ * sizeof(float));\n        pipe_.InitBuffer(tempBuffer_, 2U * tile_ * sizeof(float));\n        pipe_.InitBuffer(rmsBuffer_, tile_ * sizeof(float));\n        pipe_.InitBuffer(partialBuffer_, partialCount_ * sizeof(float));\n        pipe_.InitBuffer(statBuffer_, 32);\n        // High-dimensional ReduceSum needs at most ceil(32 / 8) * 8 floats\n        // for a tile of 2048 FP32 values. 256 bytes includes spare capacity.\n        pipe_.InitBuffer(reduceBuffer_, 256);\n        cacheWeights_ = dim_ <= kCacheLimit;\n        cacheNativeWeights_ = sizeof(T) == 2 && dim_ > kCacheLimit &&\n                              dim_ <= kNativeCacheLimit && (endRow_ - firstRow_) >= 2;\n        if (cacheWeights_) {\n            pipe_.InitBuffer(weightBuffer_, 2U * paddedDim_ * sizeof(float));\n        } else if (cacheNativeWeights_) {\n            pipe_.InitBuffer(weightBuffer_, 2U * paddedDim_ * typeBytes);\n        }\n\n        y_ = yBuffer_.Get<float>();\n        temp0_ = tempBuffer_.Get<float>();\n        temp1_ = temp0_[tile_];\n        rmsVector_ = rmsBuffer_.Get<float>();\n        partials_ = partialBuffer_.Get<float>();\n        stats_ = statBuffer_.Get<float>();\n        reduceWork_ = reduceBuffer_.Get<float>();\n        if (cacheWeights_) {\n            gammaCache_ = weightBuffer_.Get<float>();\n            biasCache_ = gammaCache_[paddedDim_];\n        } else if (cacheNativeWeights_) {\n            nativeGammaCache_ = weightBuffer_.Get<T>();\n            nativeBiasCache_ = nativeGammaCache_[paddedDim_];\n        }\n    }\n\n    __aicore__ inline void Process()\n    {\n        if (firstRow_ >= endRow_) {\n            return;\n        }\n        if (cacheWeights_) {\n            CacheWeights();\n        } else if (cacheNativeWeights_) {\n            CacheNativeWeights();\n        }\n        for (int64_t row = firstRow_; row < endRow_; ++row) {\n            const int64_t rowOffset = row * static_cast<int64_t>(dim_);\n            ComputeRowSum(rowOffset);\n            ComputeRms();\n            WriteRow(rowOffset);\n        }\n    }\n\nprivate:\n    __aicore__ inline uint32_t ValidCount(uint32_t offset) const\n    {\n        const uint32_t remaining = dim_ - offset;\n        return remaining < tile_ ? remaining : tile_;\n    }\n\n    __aicore__ inline AscendC::LocalTensor<T> LoadPair(\n        AscendC::GlobalTensor<T>& first, AscendC::GlobalTensor<T>& second,\n        int64_t offset, uint32_t count)\n    {\n        AscendC::LocalTensor<T> packed = inputQueue_.AllocTensor<T>();\n        const uint32_t bytes = count * static_cast<uint32_t>(sizeof(T));\n        const uint32_t paddedBytes = (bytes + 31U) / 32U * 32U;\n        AscendC::DataCopyExtParams copyParams{1, bytes, 0, 0, 0};\n        AscendC::DataCopyPadExtParams<T> padParams{\n            true, 0,\n            static_cast<uint8_t>((paddedBytes - bytes) / sizeof(T)),\n            static_cast<T>(0.0f)};\n        AscendC::DataCopyPad(packed, first[offset], copyParams, padParams);\n        AscendC::DataCopyPad(packed[tile_], second[offset], copyParams, padParams);\n        inputQueue_.EnQue<T>(packed);\n        return inputQueue_.DeQue<T>();\n    }\n\n    __aicore__ inline void CacheWeights()\n    {\n        for (uint32_t offset = 0; offset < dim_; offset += tile_) {\n            const uint32_t count = ValidCount(offset);\n            AscendC::LocalTensor<T> packed = LoadPair(gammaGm_, biasGm_, offset, count);\n            ToFloat<T>(gammaCache_[offset], packed, count);\n            ToFloat<T>(biasCache_[offset], packed[tile_], count);\n            AscendC::PipeBarrier<PIPE_V>();\n            inputQueue_.FreeTensor(packed);\n        }\n    }\n\n    __aicore__ inline void CacheNativeWeights()\n    {\n        for (uint32_t offset = 0; offset < dim_; offset += tile_) {\n            const uint32_t count = ValidCount(offset);\n            const uint32_t typeBytes = static_cast<uint32_t>(sizeof(T));\n            // Copy complete 32-byte blocks, including LoadPair's zero padding.\n            // The padded count fits both the source tile and paddedDim_.\n            const uint32_t copyCount = (count * typeBytes + 31U) / 32U * 32U / typeBytes;\n            AscendC::LocalTensor<T> packed = LoadPair(gammaGm_, biasGm_, offset, count);\n            AscendC::DataCopy(nativeGammaCache_[offset], packed, copyCount);\n            AscendC::DataCopy(nativeBiasCache_[offset], packed[tile_], copyCount);\n            AscendC::PipeBarrier<PIPE_V>();\n            inputQueue_.FreeTensor(packed);\n        }\n    }\n\n    __aicore__ inline void ComputeRowSum(int64_t rowOffset)\n    {\n        AscendC::Duplicate(partials_, 0.0f, partialCount_);\n        AscendC::PipeBarrier<PIPE_V>();\n        for (uint32_t index = 0; index < tileCount_; ++index) {\n            const uint32_t offset = index * tile_;\n            const uint32_t count = ValidCount(offset);\n            AscendC::LocalTensor<T> packed = LoadPair(\n                xGm_, residualGm_, rowOffset + offset, count);\n            ToFloat<T>(temp0_, packed, count);\n            ToFloat<T>(temp1_, packed[tile_], count);\n            AscendC::PipeBarrier<PIPE_V>();\n            AscendC::Add(y_[offset], temp0_, temp1_, count);\n            AscendC::PipeBarrier<PIPE_V>();\n            inputQueue_.FreeTensor(packed);\n\n            const uint32_t reduceCount = (count + 63U) / 64U * 64U;\n            // Zero the square-buffer padding. Inputs are never read beyond\n            // their valid extent; padding contributes zero to the reduction.\n            if (reduceCount != count) {\n                AscendC::Duplicate(temp0_, 0.0f, reduceCount);\n                AscendC::PipeBarrier<PIPE_V>();\n            }\n            AscendC::Mul(temp0_, y_[offset], y_[offset], count);\n            AscendC::PipeBarrier<PIPE_V>();\n            AscendC::ReduceSum<float>(\n                partials_[index], temp0_, reduceWork_, 64,\n                static_cast<int32_t>(reduceCount / 64U), 8);\n            AscendC::PipeBarrier<PIPE_V>();\n        }\n    }\n\n    __aicore__ inline void ComputeRms()\n    {\n        AscendC::ReduceSum<float>(stats_, partials_, reduceWork_,\n                                  static_cast<int32_t>(tileCount_));\n        AscendC::Duplicate(rmsVector_, dimFloat_, 8);\n        AscendC::PipeBarrier<PIPE_V>();\n        // Keep the reference ordering: sum / D, then + epsilon, then sqrt.\n        AscendC::Div(stats_, stats_, rmsVector_, 1);\n        AscendC::PipeBarrier<PIPE_V>();\n        AscendC::Adds(stats_, stats_, epsilon_, 1);\n        AscendC::PipeBarrier<PIPE_V>();\n        AscendC::Sqrt(stats_, stats_, 1);\n        AscendC::PipeBarrier<PIPE_V>();\n        AscendC::Duplicate(rmsVector_, 1.0f, 8);\n        AscendC::PipeBarrier<PIPE_V>();\n        AscendC::Div(rmsVector_, rmsVector_, stats_, 1);\n        const auto event = pipe_.FetchEventID(AscendC::HardEvent::V_S);\n        AscendC::SetFlag<AscendC::HardEvent::V_S>(event);\n        AscendC::WaitFlag<AscendC::HardEvent::V_S>(event);\n        rms_ = stats_.GetValue(0);\n        inverse_ = rmsVector_.GetValue(0);\n        const auto rmsBits = stats_.ReinterpretCast<uint32_t>();\n        const auto inverseBits = rmsVector_.ReinterpretCast<uint32_t>();\n        const uint32_t rawRmsBits = rmsBits.GetValue(0);\n        const uint32_t rawInverseBits = inverseBits.GetValue(0);\n        rmsBits_ = rawRmsBits & 0x7fffffffU;\n        useReciprocal_ = rawRmsBits >= 0x00800000U && rawRmsBits < 0x7f800000U &&\n                         rawInverseBits >= 0x00800000U && rawInverseBits < 0x7f800000U;\n        if (!useReciprocal_ && rmsBits_ < 0x7f800000U) {\n            AscendC::Duplicate(rmsVector_, rms_, tile_);\n            AscendC::PipeBarrier<PIPE_V>();\n        }\n    }\n\n    __aicore__ inline void WriteRow(int64_t rowOffset)\n    {\n        for (uint32_t offset = 0; offset < dim_; offset += tile_) {\n            const uint32_t count = ValidCount(offset);\n            AscendC::LocalTensor<float> gamma = temp0_;\n            AscendC::LocalTensor<float> bias = temp1_;\n            if (cacheWeights_) {\n                gamma = gammaCache_[offset];\n                bias = biasCache_[offset];\n            } else if (cacheNativeWeights_) {\n                ToFloat<T>(temp0_, nativeGammaCache_[offset], count);\n                ToFloat<T>(temp1_, nativeBiasCache_[offset], count);\n                AscendC::PipeBarrier<PIPE_V>();\n            } else {\n                AscendC::LocalTensor<T> packed = LoadPair(\n                    gammaGm_, biasGm_, offset, count);\n                ToFloat<T>(temp0_, packed, count);\n                ToFloat<T>(temp1_, packed[tile_], count);\n                AscendC::PipeBarrier<PIPE_V>();\n                inputQueue_.FreeTensor(packed);\n                gamma = temp0_;\n                bias = temp1_;\n            }\n\n            if (rmsBits_ > 0x7f800000U) {\n                // A NaN in the residual sum contaminates the complete row.\n                AscendC::Duplicate(y_[offset], rms_, count);\n            } else if (rmsBits_ == 0x7f800000U) {\n                // finite / +Inf -> signed zero; +/-Inf / +Inf -> NaN.\n                AscendC::Muls(y_[offset], y_[offset], 0.0f, count);\n            } else if (useReciprocal_) {\n                AscendC::Muls(y_[offset], y_[offset], inverse_, count);\n            } else {\n                AscendC::Div(y_[offset], y_[offset], rmsVector_, count);\n            }\n            AscendC::PipeBarrier<PIPE_V>();\n            AscendC::Mul(y_[offset], y_[offset], gamma, count);\n            AscendC::PipeBarrier<PIPE_V>();\n            AscendC::Add(y_[offset], y_[offset], bias, count);\n            AscendC::PipeBarrier<PIPE_V>();\n\n            AscendC::LocalTensor<T> out = outputQueue_.AllocTensor<T>();\n            FromFloat<T>(out, y_[offset], count);\n            outputQueue_.EnQue<T>(out);\n            out = outputQueue_.DeQue<T>();\n            AscendC::DataCopyExtParams copyParams{\n                1, count * static_cast<uint32_t>(sizeof(T)), 0, 0, 0};\n            AscendC::DataCopyPad(outputGm_[rowOffset + offset], out, copyParams);\n            outputQueue_.FreeTensor(out);\n        }\n    }\n\n    AscendC::TPipe pipe_;\n    AscendC::TQue<AscendC::TPosition::VECIN, 1> inputQueue_;\n    AscendC::TQue<AscendC::TPosition::VECOUT, 1> outputQueue_;\n    AscendC::TBuf<AscendC::TPosition::VECCALC> yBuffer_, tempBuffer_, rmsBuffer_;\n    AscendC::TBuf<AscendC::TPosition::VECCALC> partialBuffer_, statBuffer_, reduceBuffer_;\n    AscendC::TBuf<AscendC::TPosition::VECCALC> weightBuffer_;\n    AscendC::GlobalTensor<T> xGm_, residualGm_, gammaGm_, biasGm_, outputGm_;\n    AscendC::LocalTensor<float> y_, temp0_, temp1_, rmsVector_;\n    AscendC::LocalTensor<float> partials_, stats_, reduceWork_, gammaCache_, biasCache_;\n    int64_t rows_, firstRow_, endRow_;\n    uint32_t dim_, paddedDim_, tile_, tileCount_, partialCount_, rmsBits_;\n    float epsilon_, rms_, inverse_, dimFloat_;\n    AscendC::LocalTensor<T> nativeGammaCache_, nativeBiasCache_;\n    bool cacheWeights_, cacheNativeWeights_, useReciprocal_;\n};\n\ntemplate <typename T>\n__global__ __vector__ void DeviceKernel(\n    GM_ADDR x, GM_ADDR residual, GM_ADDR gamma, GM_ADDR bias, GM_ADDR output,\n    int64_t rows, uint32_t dim, float dimFloat, uint32_t rowGroup, float epsilon)\n{\n    Kernel<T> kernel;\n    kernel.Init(x, residual, gamma, bias, output, rows, dim, dimFloat, rowGroup, epsilon);\n    kernel.Process();\n}\n\ninline uint32_t Gcd(uint32_t a, uint32_t b)\n{\n    while (b != 0) {\n        const uint32_t remainder = a % b;\n        a = b;\n        b = remainder;\n    }\n    return a;\n}\n\ninline bool SameShape(const TensorInfo& lhs, const TensorInfo& rhs)\n{\n    if (lhs.numDims != rhs.numDims || lhs.dtype != rhs.dtype ||\n        lhs.shape == nullptr || rhs.shape == nullptr) {\n        return false;\n    }\n    for (int64_t i = 0; i < lhs.numDims; ++i) {\n        if (lhs.shape[i] != rhs.shape[i]) {\n            return false;\n        }\n    }\n    return true;\n}\n\n} // namespace add_rms_norm_bias_v1\n\nextern \"C\" void run_kernel(\n    GM_ADDR x, const TensorGroupInfo& info_x,\n    GM_ADDR residual, const TensorGroupInfo& info_residual,\n    GM_ADDR gamma, const TensorGroupInfo& info_gamma,\n    GM_ADDR bias, const TensorGroupInfo& info_bias,\n    GM_ADDR output, const TensorGroupInfo& info_output,\n    int64_t availableCoreNum, aclrtStream stream, float epsilon)\n{\n    using namespace add_rms_norm_bias_v1;\n    if (info_x.numTensors != 1 || info_residual.numTensors != 1 ||\n        info_gamma.numTensors != 1 || info_bias.numTensors != 1 ||\n        info_output.numTensors != 1 || info_x.tensors == nullptr ||\n        info_residual.tensors == nullptr || info_gamma.tensors == nullptr ||\n        info_bias.tensors == nullptr || info_output.tensors == nullptr ||\n        availableCoreNum <= 0) {\n        return;\n    }\n    const TensorInfo& xi = info_x.tensors[0];\n    const TensorInfo& gi = info_gamma.tensors[0];\n    const TensorInfo& bi = info_bias.tensors[0];\n    if (xi.shape == nullptr || xi.numDims < 2 || xi.numDims > 4 ||\n        xi.dtype < 0 || xi.dtype > 2 ||\n        !SameShape(xi, info_residual.tensors[0]) ||\n        !SameShape(xi, info_output.tensors[0]) ||\n        gi.shape == nullptr || bi.shape == nullptr ||\n        gi.numDims != 1 || bi.numDims != 1 ||\n        gi.dtype != xi.dtype || bi.dtype != xi.dtype) {\n        return;\n    }\n    const int64_t dim64 = xi.shape[xi.numDims - 1];\n    // D<64 is accepted as well, because the statement/examples include it.\n    if (dim64 <= 0 || dim64 > kMaxDim || gi.shape[0] != dim64 || bi.shape[0] != dim64) {\n        return;\n    }\n    int64_t rows = 1;\n    for (int64_t i = 0; i + 1 < xi.numDims; ++i) {\n        if (xi.shape[i] <= 0 ||\n            rows > std::numeric_limits<int64_t>::max() / xi.shape[i]) {\n            return;\n        }\n        rows *= xi.shape[i];\n    }\n    const uint32_t dim = static_cast<uint32_t>(dim64);\n    // Convert on the host: aicore rejects a dynamic uint32_t-to-float cast.\n    const float dimFloat = static_cast<float>(dim);\n    const uint32_t typeBytes = xi.dtype == 0 ? 4U : 2U;\n    if (rows > std::numeric_limits<int64_t>::max() / (dim64 * typeBytes)) {\n        return;\n    }\n    const uint32_t rowGroup = 32U / Gcd(dim * typeBytes, 32U);\n    const int64_t groups = (rows + rowGroup - 1) / rowGroup;\n    const uint32_t blocks = static_cast<uint32_t>(\n        groups < availableCoreNum ? groups : availableCoreNum);\n    if (xi.dtype == 0) {\n        DeviceKernel<float><<<blocks, nullptr, stream>>>(\n            x, residual, gamma, bias, output, rows, dim, dimFloat, rowGroup, epsilon);\n    } else if (xi.dtype == 1) {\n        DeviceKernel<half><<<blocks, nullptr, stream>>>(\n            x, residual, gamma, bias, output, rows, dim, dimFloat, rowGroup, epsilon);\n    } else {\n        DeviceKernel<bfloat16_t><<<blocks, nullptr, stream>>>(\n            x, residual, gamma, bias, output, rows, dim, dimFloat, rowGroup, epsilon);\n    }\n}\n",
+      "editable": false
+    },
+    {
+      "path": "main.asc",
+      "key": "main.asc",
+      "label": "main.asc",
+      "content": "// Local test main — runs the first test case\n// Usage: ./add_rms_norm_bias_custom\n\n#include <cstdint>\n#include <cstdio>\n#include <cstdlib>\n#include <cmath>\n#include \"acl/acl.h\"\n\n#ifndef TENSOR_GROUP_INFO_DEFINED\n#define TENSOR_GROUP_INFO_DEFINED\n// Dtype enum for TensorInfo.dtype:\n// 0=float32 1=float16 2=bfloat16 3=int8 4=int16 5=int32 6=int64\n// 7=uint8 8=uint16 9=uint32 10=uint64 11=bool\nstruct TensorInfo {\n    const int64_t* shape;\n    int64_t numDims;\n    int32_t dtype;\n};\nstruct TensorGroupInfo {\n    const TensorInfo* tensors;\n    int64_t numTensors;\n};\n#endif\n\n#include <vector>\n#include \"data_utils.h\"\n\n#define ACL_CHECK(expr) do { aclError _ret = (expr); if (_ret != 0) { fprintf(stderr, \"[ERROR] %s failed at %s:%d, ret=%d\\n\", #expr, __FILE__, __LINE__, _ret); return 1; } } while(0)\n#define FILE_CHECK(expr) do { if (!(expr)) { fprintf(stderr, \"[ERROR] File I/O failed at %s:%d\\n\", __FILE__, __LINE__); return 1; } } while(0)\n\n#include \"kernel.asc\"\n\nint main()\n{\n    int32_t deviceId = 0;\n    int64_t availableCoreNum = 0;\n    aclrtStream stream = nullptr;\n\n    ACL_CHECK(aclInit(nullptr));\n    ACL_CHECK(aclrtSetDevice(deviceId));\n    ACL_CHECK(aclrtGetDeviceInfo(deviceId, ACL_DEV_ATTR_VECTOR_CORE_NUM, &availableCoreNum));\n    if (availableCoreNum <= 0) {\n        return 1;\n    }\n    ACL_CHECK(aclrtCreateStream(&stream));\n\n    int64_t x_0_shape[] = {1, 64};\n    TensorInfo x_tensors[] = {{x_0_shape, 2, 1}};\n    TensorGroupInfo info_x = {x_tensors, 1};\n    int64_t residual_0_shape[] = {1, 64};\n    TensorInfo residual_tensors[] = {{residual_0_shape, 2, 1}};\n    TensorGroupInfo info_residual = {residual_tensors, 1};\n    int64_t gamma_0_shape[] = {64};\n    TensorInfo gamma_tensors[] = {{gamma_0_shape, 1, 1}};\n    TensorGroupInfo info_gamma = {gamma_tensors, 1};\n    int64_t bias_0_shape[] = {64};\n    TensorInfo bias_tensors[] = {{bias_0_shape, 1, 1}};\n    TensorGroupInfo info_bias = {bias_tensors, 1};\n    int64_t output_0_shape[] = {1, 64};\n    TensorInfo output_tensors[] = {{output_0_shape, 2, 1}};\n    TensorGroupInfo info_output = {output_tensors, 1};\n\n    float epsilon = 1e-05f;\n\n    uint8_t *inputHost_x = nullptr, *inputDevice_x = nullptr;\n    uint8_t *inputHost_residual = nullptr, *inputDevice_residual = nullptr;\n    uint8_t *inputHost_gamma = nullptr, *inputDevice_gamma = nullptr;\n    uint8_t *inputHost_bias = nullptr, *inputDevice_bias = nullptr;\n\n    uint8_t *outputHost_output = nullptr, *outputDevice_output = nullptr;\n\n    ACL_CHECK(aclrtMallocHost((void **)&inputHost_x, 128));\n    ACL_CHECK(aclrtMalloc((void **)&inputDevice_x, 128, ACL_MEM_MALLOC_HUGE_FIRST));\n    FILE_CHECK(ReadFile(\"./input/x.bin\", 128, inputHost_x, 128));\n    ACL_CHECK(aclrtMemcpy(inputDevice_x, 128, inputHost_x, 128, ACL_MEMCPY_HOST_TO_DEVICE));\n    ACL_CHECK(aclrtMallocHost((void **)&inputHost_residual, 128));\n    ACL_CHECK(aclrtMalloc((void **)&inputDevice_residual, 128, ACL_MEM_MALLOC_HUGE_FIRST));\n    FILE_CHECK(ReadFile(\"./input/residual.bin\", 128, inputHost_residual, 128));\n    ACL_CHECK(aclrtMemcpy(inputDevice_residual, 128, inputHost_residual, 128, ACL_MEMCPY_HOST_TO_DEVICE));\n    ACL_CHECK(aclrtMallocHost((void **)&inputHost_gamma, 128));\n    ACL_CHECK(aclrtMalloc((void **)&inputDevice_gamma, 128, ACL_MEM_MALLOC_HUGE_FIRST));\n    FILE_CHECK(ReadFile(\"./input/gamma.bin\", 128, inputHost_gamma, 128));\n    ACL_CHECK(aclrtMemcpy(inputDevice_gamma, 128, inputHost_gamma, 128, ACL_MEMCPY_HOST_TO_DEVICE));\n    ACL_CHECK(aclrtMallocHost((void **)&inputHost_bias, 128));\n    ACL_CHECK(aclrtMalloc((void **)&inputDevice_bias, 128, ACL_MEM_MALLOC_HUGE_FIRST));\n    FILE_CHECK(ReadFile(\"./input/bias.bin\", 128, inputHost_bias, 128));\n    ACL_CHECK(aclrtMemcpy(inputDevice_bias, 128, inputHost_bias, 128, ACL_MEMCPY_HOST_TO_DEVICE));\n\n    ACL_CHECK(aclrtMallocHost((void **)&outputHost_output, 128));\n    ACL_CHECK(aclrtMalloc((void **)&outputDevice_output, 128, ACL_MEM_MALLOC_HUGE_FIRST));\n\n    run_kernel((GM_ADDR)inputDevice_x, info_x, (GM_ADDR)inputDevice_residual, info_residual, (GM_ADDR)inputDevice_gamma, info_gamma, (GM_ADDR)inputDevice_bias, info_bias, (GM_ADDR)outputDevice_output, info_output, availableCoreNum, stream, epsilon);\n    auto sync_ret_ = aclrtSynchronizeStreamWithTimeout(stream, 3000);\n    if (sync_ret_ != 0) { fprintf(stderr, \"[ERROR] aclrtSynchronizeStreamWithTimeout failed, ret=%d\\n\", sync_ret_); return 1; }\n\n    ACL_CHECK(aclrtMemcpy(outputHost_output, 128, outputDevice_output, 128, ACL_MEMCPY_DEVICE_TO_HOST));\n    FILE_CHECK(WriteFile(\"./output/output.bin\", outputHost_output, 128));\n\n    if (inputDevice_x) aclrtFree(inputDevice_x);\n    if (inputHost_x) aclrtFreeHost(inputHost_x);\n    if (inputDevice_residual) aclrtFree(inputDevice_residual);\n    if (inputHost_residual) aclrtFreeHost(inputHost_residual);\n    if (inputDevice_gamma) aclrtFree(inputDevice_gamma);\n    if (inputHost_gamma) aclrtFreeHost(inputHost_gamma);\n    if (inputDevice_bias) aclrtFree(inputDevice_bias);\n    if (inputHost_bias) aclrtFreeHost(inputHost_bias);\n    if (outputDevice_output) aclrtFree(outputDevice_output);\n    if (outputHost_output) aclrtFreeHost(outputHost_output);\n\n    aclrtDestroyStream(stream);\n    aclrtResetDevice(deviceId);\n    aclFinalize();\n    return 0;\n}\n",
+      "editable": false
+    },
+    {
+      "path": "run.sh",
+      "key": "run.sh",
+      "label": "run.sh",
+      "content": "#!/bin/bash\nset -euo pipefail\n\nSCRIPT_DIR=\"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")\" && pwd)\"\ncd \"${SCRIPT_DIR}\"\n\nOP_NAME=\"add_rms_norm_bias_custom\"\n\nif [ -z \"${ASCEND_HOME_PATH:-}\" ]; then\n    echo \"ERROR: ASCEND_HOME_PATH is not set. Please run:\"\n    echo \"  source /usr/local/Ascend/ascend-toolkit/set_env.sh\"\n    echo \"or set ASCEND_HOME_PATH to your CANN toolkit path.\"\n    exit 1\nfi\n\necho \"=== [1/4] Set CANN env ===\"\nsource \"${ASCEND_HOME_PATH}/set_env.sh\"\n\necho \"=== [2/4] Build ===\"\nrm -rf build\nmkdir -p build\ncd build\ncmake ..\nmake -j4\ncd ..\n\necho \"=== [3/4] Gen test data ===\"\ncd build\npython3 ../scripts/gen_data.py\n\necho \"=== [4/4] Run + Verify ===\"\nrm -f input/*.bin\ncp input/case0/* input/ 2>/dev/null || true\ncp output/golden_case0/* output/ 2>/dev/null || true\nfind output -name '*.bin' ! -name 'golden_*' -delete 2>/dev/null || true\nif timeout 120 \"./${OP_NAME}\"; then\n    if python3 ../scripts/verify_result.py 0; then\n        echo \"=== PASSED ===\"\n    else\n        echo \"=== FAILED ===\"\n        exit 1\n    fi\nelse\n    echo \"=== FAILED (kernel exited non-zero or timed out) ===\"\n    exit 1\nfi\n",
+      "editable": false
+    },
+    {
+      "path": "scripts/AddRmsNormBias.py",
+      "key": "scripts/AddRmsNormBias.py",
+      "label": "scripts/AddRmsNormBias.py",
+      "content": "#!/usr/bin/python3\n# -*- coding:utf-8 -*-\n\"\"\"\nAddRmsNormBias算子golden实现\n以 numpy 组合实现 (add + rms_norm + bias_add) 的结果为 golden\n\"\"\"\nimport numpy as np\nfrom ml_dtypes import bfloat16\n\n\ndef _is_bf16(dtype):\n    name = str(dtype)\n    return 'bfloat16' in name or 'bf16' in name\n\n\ndef impl(x, residual, gamma, bias, epsilon=1e-5):\n    \"\"\"AddRmsNormBias: output = RMSNorm(x + residual, gamma, eps) + bias\n\n    参数名与顺序与 JSON 的 input_desc + attr_desc 一致：\n    x, residual, gamma, bias 为 numpy 数组，epsilon 为属性默认值。\n    返回与 x 同 shape 同 dtype 的 numpy 数组。\n    \"\"\"\n    orig_dtype = x.dtype\n\n    # 统一转 float32 计算（bf16/fp16 精度不足，内部用 FP32）\n    x_f = x.astype(np.float32)\n    r_f = residual.astype(np.float32)\n    g_f = gamma.astype(np.float32)\n    b_f = bias.astype(np.float32)\n\n    # Step 1: 残差加法\n    y = x_f + r_f\n    # Step 2: RMS 归一化（沿最后一维）\n    rms = np.sqrt(np.mean(y * y, axis=-1, keepdims=True) + epsilon)\n    out = y / rms * g_f\n    # Step 3: 偏置加法\n    out = out + b_f\n\n    # 转回原始 dtype（与 JSON output_desc 一致）\n    if _is_bf16(orig_dtype):\n        return out.astype(bfloat16)\n    if orig_dtype == np.float16:\n        return out.astype(np.float16)\n    return out.astype(np.float32)\n\n\nif __name__ == \"__main__\":\n    # 与 JSON npu_cases 对应的 15 个测试用例（用 numpy 生成）\n    cases = [\n        # (id, x_shape, D, dtype, x_range, r_range, g_range, b_range, eps)\n        (1,  [2, 3, 4, 8],      8,     np.float32, [-1, 1], [-1, 1],    [0.9, 1.1], [-0.1, 0.1], 1e-5),\n    ]\n\n    for cid, xs, D, dt, xr, rr, gr, br, eps in cases:\n        x = np.random.uniform(xr[0], xr[1], xs).astype(dt)\n        r = np.random.uniform(rr[0], rr[1], xs).astype(dt)\n        g = np.random.uniform(gr[0], gr[1], [D]).astype(dt)\n        b = np.random.uniform(br[0], br[1], [D]).astype(dt)\n        y = impl(x, r, g, b, eps)\n        print(f\"Case {cid:02d}: shape={y.shape}, dtype={y.dtype}\")\n\n    print(\"All tests passed!\")\n",
+      "editable": false
+    },
+    {
+      "path": "scripts/gen_data.py",
+      "key": "scripts/gen_data.py",
+      "label": "scripts/gen_data.py",
+      "content": "import numpy as np\nimport os\nimport sys\n\ntry:\n    from ml_dtypes import bfloat16\nexcept ImportError:\n    bfloat16 = None\n\nsys.path.insert(0, os.path.dirname(__file__))\nfrom AddRmsNormBias import impl\n\nos.makedirs(\"input\", exist_ok=True)\nos.makedirs(\"output\", exist_ok=True)\n\n\n# --- Case 0 ---\nnp.random.seed(42 + 0)\nos.makedirs(\"input/case0\", exist_ok=True)\nx = np.random.uniform(low=-2, high=2, size=(1, 64)).astype(np.float16)\nx.tofile(\"input/case0/x.bin\")\nresidual = np.random.uniform(low=-2, high=2, size=(1, 64)).astype(np.float16)\nresidual.tofile(\"input/case0/residual.bin\")\ngamma = np.random.uniform(low=0.8, high=1.2, size=(64)).astype(np.float16)\ngamma.tofile(\"input/case0/gamma.bin\")\nbias = np.random.uniform(low=-0.3, high=0.3, size=(64)).astype(np.float16)\nbias.tofile(\"input/case0/bias.bin\")\n\nepsilon = 1e-05\n\nos.makedirs(\"output/golden_case0\", exist_ok=True)\ngolden = impl(x, residual, gamma, bias, epsilon=epsilon)\nif golden is not None:\n    golden.tofile(\"output/golden_case0/golden_output.bin\")\n\nprint(f\"Generated test data and golden output for 1 cases.\")\n",
+      "editable": false
+    },
+    {
+      "path": "scripts/verify_result.py",
+      "key": "scripts/verify_result.py",
+      "label": "scripts/verify_result.py",
+      "content": "import numpy as np\nimport sys\nimport os\n\ntry:\n    from ml_dtypes import bfloat16\nexcept ImportError:\n    bfloat16 = None\n\n# Per-case output specs: 1 cases\n# Each spec: (name, dtype, rtol, atol, tol)\n# tol = max fraction of elements allowed to mismatch (0.0 = strict)\ncase_output_specs = {\n    0: [\n        (\"output\", np.float16, 0.001, 0.001, 0.001),\n    ],\n}\n\nif bfloat16 is None:\n    for _cid, _specs in case_output_specs.items():\n        for _name, _dtype, _rtol, _atol, _tol in _specs:\n            if _dtype is None:\n                print(f\"ERROR: bfloat16 dtype required for case {_cid} output '{_name}' but ml_dtypes is not installed.\")\n                print(\"Install with: pip install ml_dtypes\")\n                sys.exit(1)\n\ndef verify_result(output_path, golden_path, dtype, rtol, atol, tol=0.0):\n    output = np.fromfile(output_path, dtype=dtype)\n    golden = np.fromfile(golden_path, dtype=dtype)\n    total_size = golden.size\n\n    if output.size != golden.size:\n        if output.size < golden.size:\n            golden = golden[:output.size]\n            print(f\"WARNING: output {output.size} < golden {total_size} elements, truncated golden to match\")\n        else:\n            print(f\"FAILED: output has {output.size} elements, golden has {total_size} — size mismatch\")\n            return False\n\n    missing = total_size - output.size\n\n    if np.issubdtype(dtype, np.integer) or np.issubdtype(dtype, np.bool_):\n        if missing == 0 and np.array_equal(output, golden):\n            print(f\"PASSED: {os.path.basename(output_path)} vs {os.path.basename(golden_path)}\")\n            return True\n        else:\n            diff = np.abs(output.astype(np.int64) - golden.astype(np.int64))\n            errors = np.sum(output != golden) + missing\n            error_rate = errors / total_size if total_size > 0 else 0.0\n            if error_rate <= tol:\n                print(f\"PASSED (tol={tol}): {os.path.basename(output_path)} vs {os.path.basename(golden_path)}\")\n                print(f\"  Mismatched: {errors}/{total_size} ({error_rate*100:.2f}%)\")\n                return True\n            print(f\"FAILED: {os.path.basename(output_path)} vs {os.path.basename(golden_path)}\")\n            print(f\"  Mismatched: {errors}/{total_size} ({error_rate*100:.2f}%), tol={tol}\")\n            print(f\"  Max diff: {np.max(diff) if diff.size > 0 else 0.0}\")\n            return False\n\n    cmp_output = output.astype(np.float32) if dtype == bfloat16 else output\n    cmp_golden = golden.astype(np.float32) if dtype == bfloat16 else golden\n    isclose = np.isclose(cmp_output, cmp_golden, rtol=rtol, atol=atol, equal_nan=True)\n    errors = np.sum(~isclose) + missing\n    error_rate = errors / total_size if total_size > 0 else 0.0\n    diff = np.abs(cmp_output - cmp_golden)\n    if error_rate <= tol:\n        print(f\"PASSED: {os.path.basename(output_path)} vs {os.path.basename(golden_path)}\")\n        if errors > 0:\n            print(f\"  Mismatched: {errors}/{total_size} ({error_rate*100:.2f}%), tol={tol}\")\n        print(f\"  Max diff: {np.max(diff) if diff.size > 0 else 0.0}\")\n        return True\n    else:\n        print(f\"FAILED: {os.path.basename(output_path)} vs {os.path.basename(golden_path)}\")\n        print(f\"  Mismatched: {errors}/{total_size} ({error_rate*100:.2f}%), tol={tol}\")\n        print(f\"  Max diff: {np.max(diff) if diff.size > 0 else 0.0}\")\n        return False\n\nif __name__ == \"__main__\":\n    try:\n        case_id = int(sys.argv[1]) if len(sys.argv) > 1 else 0\n    except ValueError:\n        print(f\"Invalid case_id: {sys.argv[1] if len(sys.argv) > 1 else '(none)'}\")\n        sys.exit(1)\n    if case_id not in case_output_specs:\n        print(f\"Unknown case_id {case_id}. Available: {sorted(case_output_specs.keys())}\")\n        sys.exit(1)\n\n    output_dir = \"output\"\n    all_pass = True\n    specs = case_output_specs[case_id]\n    if not specs:\n        print(f\"Case {case_id}: No outputs to verify (all optional) — PASS\")\n        sys.exit(0)\n    for name, dtype, rtol, atol, tol in specs:\n        output_path = os.path.join(output_dir, name + \".bin\")\n        golden_path = os.path.join(output_dir, \"golden_\" + name + \".bin\")\n        if not os.path.exists(output_path):\n            print(f\"FAILED: output {name}.bin not found\")\n            all_pass = False\n            continue\n        if not os.path.exists(golden_path):\n            print(f\"FAILED: golden_{name}.bin not found\")\n            all_pass = False\n            continue\n        if not verify_result(output_path, golden_path, dtype, rtol, atol, tol):\n            all_pass = False\n    sys.exit(0 if all_pass else 1)\n",
+      "editable": false
+    }
+  ],
+  "tiling_h": "",
+  "tiling_key_h": "",
+  "tiling_key_cpp": "",
+  "host_cpp": "",
+  "kernel_cpp": ""
+}

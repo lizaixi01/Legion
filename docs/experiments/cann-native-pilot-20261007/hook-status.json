@@ -1,0 +1,14 @@
+{
+  "status": "not_triggered_explicit_fallback",
+  "configured_event": "PostToolUse",
+  "checked_runtime": "codex-cli 0.159.2",
+  "native_executor_runtime": "0.162.0-alpha.2",
+  "hooks_list_entries": 0,
+  "project_config_layer_disabled_reason": null,
+  "automatic_trigger_verified": false,
+  "cause": "Hooks API returned no handlers despite a discovered project layer. Exact loader cause not established; current native sessions started from a different cwd. No claim that trust rejection was observed.",
+  "fallback_script": "scripts/reviewer/cann-candidate-check.py",
+  "fallback_result": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\checks\\explicit-20261007T065635088174Z.json",
+  "model_turns_used_for_hook_probe": 0,
+  "config_mutation": "Temporary root hooks.json removed; scoped draft retained at pilot/.codex/hooks.json; no user/global config changed."
+}

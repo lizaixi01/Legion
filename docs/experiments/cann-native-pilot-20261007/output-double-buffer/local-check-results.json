@@ -1,0 +1,930 @@
+{
+  "provenance": "Parsed stdout from existing native tool outputs; no model rerun",
+  "tool_exit_codes": [
+    {
+      "ordinal": 17,
+      "exit_code": 0
+    },
+    {
+      "ordinal": 24,
+      "exit_code": 0
+    },
+    {
+      "ordinal": 24,
+      "exit_code": 0
+    },
+    {
+      "ordinal": 24,
+      "exit_code": 0
+    },
+    {
+      "ordinal": 41,
+      "exit_code": 0
+    },
+    {
+      "ordinal": 55,
+      "exit_code": 0
+    },
+    {
+      "ordinal": 64,
+      "exit_code": 0
+    }
+  ],
+  "json_results": [
+    {
+      "ordinal": 55,
+      "timestamp": "2026-10-07T06:53:54.503Z",
+      "exit_code": 0,
+      "result": {
+        "status": "pass",
+        "dimension_dtype_row_regimes": 294912,
+        "enabled_regimes": 264192,
+        "max_total_bytes": 180576,
+        "all_initbuffer_allocations_accounted": true,
+        "all_allocations_32byte_aligned": true,
+        "source_ceiling_bytes": 180576,
+        "ceiling_is_physical_device_capacity": false,
+        "summary": [
+          {
+            "dtype": "float",
+            "owned_rows": 0,
+            "input_prefetch_dim_intervals": [
+              [
+                2049,
+                28672
+              ]
+            ],
+            "output_double_dim_intervals": [
+              [
+                2049,
+                26624
+              ],
+              [
+                28673,
+                30720
+              ]
+            ],
+            "enabled_dimensions": 26624,
+            "max_enabled_total_bytes": 180576
+          },
+          {
+            "dtype": "float",
+            "owned_rows": 1,
+            "input_prefetch_dim_intervals": [
+              [
+                2049,
+                28672
+              ]
+            ],
+            "output_double_dim_intervals": [
+              [
+                2049,
+                26624
+              ],
+              [
+                28673,
+                30720
+              ]
+            ],
+            "enabled_dimensions": 26624,
+            "max_enabled_total_bytes": 180576
+          },
+          {
+            "dtype": "float",
+            "owned_rows": 2,
+            "input_prefetch_dim_intervals": [
+              [
+                2049,
+                28672
+              ]
+            ],
+            "output_double_dim_intervals": [
+              [
+                2049,
+                26624
+              ],
+              [
+                28673,
+                30720
+              ]
+            ],
+            "enabled_dimensions": 26624,
+            "max_enabled_total_bytes": 180576
+          },
+          {
+            "dtype": "half",
+            "owned_rows": 0,
+            "input_prefetch_dim_intervals": [
+              [
+                2049,
+                32768
+              ]
+            ],
+            "output_double_dim_intervals": [
+              [
+                2049,
+                32768
+              ]
+            ],
+            "enabled_dimensions": 30720,
+            "max_enabled_total_bytes": 180576
+          },
+          {
+            "dtype": "half",
+            "owned_rows": 1,
+            "input_prefetch_dim_intervals": [
+              [
+                2049,
+                32768
+              ]
+            ],
+            "output_double_dim_intervals": [
+              [
+                2049,
+                32768
+              ]
+            ],
+            "enabled_dimensions": 30720,
+            "max_enabled_total_bytes": 180576
+          },
+          {
+            "dtype": "half",
+            "owned_rows": 2,
+            "input_prefetch_dim_intervals": [
+              [
+                2049,
+                32768
+              ]
+            ],
+            "output_double_dim_intervals": [
+              [
+                2049,
+                32768
+              ]
+            ],
+            "enabled_dimensions": 30720,
+            "max_enabled_total_bytes": 180576
+          },
+          {
+            "dtype": "bfloat16_t",
+            "owned_rows": 0,
+            "input_prefetch_dim_intervals": [
+              [
+                2049,
+                32768
+              ]
+            ],
+            "output_double_dim_intervals": [
+              [
+                2049,
+                32768
+              ]
+            ],
+            "enabled_dimensions": 30720,
+            "max_enabled_total_bytes": 180576
+          },
+          {
+            "dtype": "bfloat16_t",
+            "owned_rows": 1,
+            "input_prefetch_dim_intervals": [
+              [
+                2049,
+                32768
+              ]
+            ],
+            "output_double_dim_intervals": [
+              [
+                2049,
+                32768
+              ]
+            ],
+            "enabled_dimensions": 30720,
+            "max_enabled_total_bytes": 180576
+          },
+          {
+            "dtype": "bfloat16_t",
+            "owned_rows": 2,
+            "input_prefetch_dim_intervals": [
+              [
+                2049,
+                32768
+              ]
+            ],
+            "output_double_dim_intervals": [
+              [
+                2049,
+                32768
+              ]
+            ],
+            "enabled_dimensions": 30720,
+            "max_enabled_total_bytes": 180576
+          }
+        ],
+        "selected_boundaries": [
+          {
+            "dtype": "float",
+            "rows": 1,
+            "dim": 2048,
+            "input_prefetch": false,
+            "output_double": false,
+            "before": 74048,
+            "after": 74048
+          },
+          {
+            "dtype": "float",
+            "rows": 1,
+            "dim": 2049,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 90624,
+            "after": 98816
+          },
+          {
+            "dtype": "float",
+            "rows": 1,
+            "dim": 8192,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 164160,
+            "after": 172352
+          },
+          {
+            "dtype": "float",
+            "rows": 1,
+            "dim": 8193,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 98688,
+            "after": 106880
+          },
+          {
+            "dtype": "float",
+            "rows": 1,
+            "dim": 16384,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 131392,
+            "after": 139584
+          },
+          {
+            "dtype": "float",
+            "rows": 1,
+            "dim": 16385,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 131488,
+            "after": 139680
+          },
+          {
+            "dtype": "float",
+            "rows": 1,
+            "dim": 26624,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 172384,
+            "after": 180576
+          },
+          {
+            "dtype": "float",
+            "rows": 1,
+            "dim": 26625,
+            "input_prefetch": true,
+            "output_double": false,
+            "before": 172448,
+            "after": 172448
+          },
+          {
+            "dtype": "float",
+            "rows": 1,
+            "dim": 28672,
+            "input_prefetch": true,
+            "output_double": false,
+            "before": 180576,
+            "after": 180576
+          },
+          {
+            "dtype": "float",
+            "rows": 1,
+            "dim": 28673,
+            "input_prefetch": false,
+            "output_double": true,
+            "before": 164256,
+            "after": 172448
+          },
+          {
+            "dtype": "float",
+            "rows": 1,
+            "dim": 29696,
+            "input_prefetch": false,
+            "output_double": true,
+            "before": 168288,
+            "after": 176480
+          },
+          {
+            "dtype": "float",
+            "rows": 1,
+            "dim": 29697,
+            "input_prefetch": false,
+            "output_double": true,
+            "before": 168352,
+            "after": 176544
+          },
+          {
+            "dtype": "float",
+            "rows": 1,
+            "dim": 32768,
+            "input_prefetch": false,
+            "output_double": false,
+            "before": 180576,
+            "after": 180576
+          },
+          {
+            "dtype": "float",
+            "rows": 2,
+            "dim": 2048,
+            "input_prefetch": false,
+            "output_double": false,
+            "before": 74048,
+            "after": 74048
+          },
+          {
+            "dtype": "float",
+            "rows": 2,
+            "dim": 2049,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 90624,
+            "after": 98816
+          },
+          {
+            "dtype": "float",
+            "rows": 2,
+            "dim": 8192,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 164160,
+            "after": 172352
+          },
+          {
+            "dtype": "float",
+            "rows": 2,
+            "dim": 8193,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 98688,
+            "after": 106880
+          },
+          {
+            "dtype": "float",
+            "rows": 2,
+            "dim": 16384,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 131392,
+            "after": 139584
+          },
+          {
+            "dtype": "float",
+            "rows": 2,
+            "dim": 16385,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 131488,
+            "after": 139680
+          },
+          {
+            "dtype": "float",
+            "rows": 2,
+            "dim": 26624,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 172384,
+            "after": 180576
+          },
+          {
+            "dtype": "float",
+            "rows": 2,
+            "dim": 26625,
+            "input_prefetch": true,
+            "output_double": false,
+            "before": 172448,
+            "after": 172448
+          },
+          {
+            "dtype": "float",
+            "rows": 2,
+            "dim": 28672,
+            "input_prefetch": true,
+            "output_double": false,
+            "before": 180576,
+            "after": 180576
+          },
+          {
+            "dtype": "float",
+            "rows": 2,
+            "dim": 28673,
+            "input_prefetch": false,
+            "output_double": true,
+            "before": 164256,
+            "after": 172448
+          },
+          {
+            "dtype": "float",
+            "rows": 2,
+            "dim": 29696,
+            "input_prefetch": false,
+            "output_double": true,
+            "before": 168288,
+            "after": 176480
+          },
+          {
+            "dtype": "float",
+            "rows": 2,
+            "dim": 29697,
+            "input_prefetch": false,
+            "output_double": true,
+            "before": 168352,
+            "after": 176544
+          },
+          {
+            "dtype": "float",
+            "rows": 2,
+            "dim": 32768,
+            "input_prefetch": false,
+            "output_double": false,
+            "before": 180576,
+            "after": 180576
+          },
+          {
+            "dtype": "half",
+            "rows": 1,
+            "dim": 2048,
+            "input_prefetch": false,
+            "output_double": false,
+            "before": 61760,
+            "after": 61760
+          },
+          {
+            "dtype": "half",
+            "rows": 1,
+            "dim": 2049,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 70144,
+            "after": 74240
+          },
+          {
+            "dtype": "half",
+            "rows": 1,
+            "dim": 8192,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 143680,
+            "after": 147776
+          },
+          {
+            "dtype": "half",
+            "rows": 1,
+            "dim": 8193,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 78208,
+            "after": 82304
+          },
+          {
+            "dtype": "half",
+            "rows": 1,
+            "dim": 16384,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 110912,
+            "after": 115008
+          },
+          {
+            "dtype": "half",
+            "rows": 1,
+            "dim": 16385,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 111008,
+            "after": 115104
+          },
+          {
+            "dtype": "half",
+            "rows": 1,
+            "dim": 26624,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 151904,
+            "after": 156000
+          },
+          {
+            "dtype": "half",
+            "rows": 1,
+            "dim": 26625,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 151968,
+            "after": 156064
+          },
+          {
+            "dtype": "half",
+            "rows": 1,
+            "dim": 28672,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 160096,
+            "after": 164192
+          },
+          {
+            "dtype": "half",
+            "rows": 1,
+            "dim": 28673,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 160160,
+            "after": 164256
+          },
+          {
+            "dtype": "half",
+            "rows": 1,
+            "dim": 29696,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 164192,
+            "after": 168288
+          },
+          {
+            "dtype": "half",
+            "rows": 1,
+            "dim": 29697,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 164256,
+            "after": 168352
+          },
+          {
+            "dtype": "half",
+            "rows": 1,
+            "dim": 32768,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 176480,
+            "after": 180576
+          },
+          {
+            "dtype": "half",
+            "rows": 2,
+            "dim": 2048,
+            "input_prefetch": false,
+            "output_double": false,
+            "before": 61760,
+            "after": 61760
+          },
+          {
+            "dtype": "half",
+            "rows": 2,
+            "dim": 2049,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 70144,
+            "after": 74240
+          },
+          {
+            "dtype": "half",
+            "rows": 2,
+            "dim": 8192,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 143680,
+            "after": 147776
+          },
+          {
+            "dtype": "half",
+            "rows": 2,
+            "dim": 8193,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 111040,
+            "after": 115136
+          },
+          {
+            "dtype": "half",
+            "rows": 2,
+            "dim": 16384,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 176448,
+            "after": 180544
+          },
+          {
+            "dtype": "half",
+            "rows": 2,
+            "dim": 16385,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 111008,
+            "after": 115104
+          },
+          {
+            "dtype": "half",
+            "rows": 2,
+            "dim": 26624,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 151904,
+            "after": 156000
+          },
+          {
+            "dtype": "half",
+            "rows": 2,
+            "dim": 26625,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 151968,
+            "after": 156064
+          },
+          {
+            "dtype": "half",
+            "rows": 2,
+            "dim": 28672,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 160096,
+            "after": 164192
+          },
+          {
+            "dtype": "half",
+            "rows": 2,
+            "dim": 28673,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 160160,
+            "after": 164256
+          },
+          {
+            "dtype": "half",
+            "rows": 2,
+            "dim": 29696,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 164192,
+            "after": 168288
+          },
+          {
+            "dtype": "half",
+            "rows": 2,
+            "dim": 29697,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 164256,
+            "after": 168352
+          },
+          {
+            "dtype": "half",
+            "rows": 2,
+            "dim": 32768,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 176480,
+            "after": 180576
+          },
+          {
+            "dtype": "bfloat16_t",
+            "rows": 1,
+            "dim": 2048,
+            "input_prefetch": false,
+            "output_double": false,
+            "before": 61760,
+            "after": 61760
+          },
+          {
+            "dtype": "bfloat16_t",
+            "rows": 1,
+            "dim": 2049,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 70144,
+            "after": 74240
+          },
+          {
+            "dtype": "bfloat16_t",
+            "rows": 1,
+            "dim": 8192,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 143680,
+            "after": 147776
+          },
+          {
+            "dtype": "bfloat16_t",
+            "rows": 1,
+            "dim": 8193,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 78208,
+            "after": 82304
+          },
+          {
+            "dtype": "bfloat16_t",
+            "rows": 1,
+            "dim": 16384,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 110912,
+            "after": 115008
+          },
+          {
+            "dtype": "bfloat16_t",
+            "rows": 1,
+            "dim": 16385,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 111008,
+            "after": 115104
+          },
+          {
+            "dtype": "bfloat16_t",
+            "rows": 1,
+            "dim": 26624,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 151904,
+            "after": 156000
+          },
+          {
+            "dtype": "bfloat16_t",
+            "rows": 1,
+            "dim": 26625,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 151968,
+            "after": 156064
+          },
+          {
+            "dtype": "bfloat16_t",
+            "rows": 1,
+            "dim": 28672,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 160096,
+            "after": 164192
+          },
+          {
+            "dtype": "bfloat16_t",
+            "rows": 1,
+            "dim": 28673,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 160160,
+            "after": 164256
+          },
+          {
+            "dtype": "bfloat16_t",
+            "rows": 1,
+            "dim": 29696,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 164192,
+            "after": 168288
+          },
+          {
+            "dtype": "bfloat16_t",
+            "rows": 1,
+            "dim": 29697,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 164256,
+            "after": 168352
+          },
+          {
+            "dtype": "bfloat16_t",
+            "rows": 1,
+            "dim": 32768,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 176480,
+            "after": 180576
+          },
+          {
+            "dtype": "bfloat16_t",
+            "rows": 2,
+            "dim": 2048,
+            "input_prefetch": false,
+            "output_double": false,
+            "before": 61760,
+            "after": 61760
+          },
+          {
+            "dtype": "bfloat16_t",
+            "rows": 2,
+            "dim": 2049,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 70144,
+            "after": 74240
+          },
+          {
+            "dtype": "bfloat16_t",
+            "rows": 2,
+            "dim": 8192,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 143680,
+            "after": 147776
+          },
+          {
+            "dtype": "bfloat16_t",
+            "rows": 2,
+            "dim": 8193,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 111040,
+            "after": 115136
+          },
+          {
+            "dtype": "bfloat16_t",
+            "rows": 2,
+            "dim": 16384,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 176448,
+            "after": 180544
+          },
+          {
+            "dtype": "bfloat16_t",
+            "rows": 2,
+            "dim": 16385,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 111008,
+            "after": 115104
+          },
+          {
+            "dtype": "bfloat16_t",
+            "rows": 2,
+            "dim": 26624,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 151904,
+            "after": 156000
+          },
+          {
+            "dtype": "bfloat16_t",
+            "rows": 2,
+            "dim": 26625,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 151968,
+            "after": 156064
+          },
+          {
+            "dtype": "bfloat16_t",
+            "rows": 2,
+            "dim": 28672,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 160096,
+            "after": 164192
+          },
+          {
+            "dtype": "bfloat16_t",
+            "rows": 2,
+            "dim": 28673,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 160160,
+            "after": 164256
+          },
+          {
+            "dtype": "bfloat16_t",
+            "rows": 2,
+            "dim": 29696,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 164192,
+            "after": 168288
+          },
+          {
+            "dtype": "bfloat16_t",
+            "rows": 2,
+            "dim": 29697,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 164256,
+            "after": 168352
+          },
+          {
+            "dtype": "bfloat16_t",
+            "rows": 2,
+            "dim": 32768,
+            "input_prefetch": true,
+            "output_double": true,
+            "before": 176480,
+            "after": 180576
+          }
+        ]
+      }
+    }
+  ]
+}

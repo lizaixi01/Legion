@@ -1,0 +1,32 @@
+{
+  "error": null,
+  "model_turns": 0,
+  "hooks": null,
+  "layers": [
+    {
+      "name": {
+        "type": "project",
+        "dotCodexFolder": "D:\\Projects\\Legion-reviewer-fix\\.codex"
+      },
+      "version": "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "disabledReason": null
+    },
+    {
+      "name": {
+        "type": "user",
+        "file": "C:\\Users\\HUAWEI\\.codex\\config.toml",
+        "profile": null
+      },
+      "version": "sha256:f9f435fc1f15f0909ea4b309002ed0db7c5adc25b54fdaf0b3eede9b2186391a",
+      "disabledReason": null
+    },
+    {
+      "name": {
+        "type": "system",
+        "file": "C:\\ProgramData\\OpenAI\\Codex\\config.toml"
+      },
+      "version": "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "disabledReason": null
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+--- r03/kernel.asc
++++ output-double-buffer/kernel.asc
+@@ -102,8 +102,14 @@
+             partialCount_ * sizeof(float) + 32U + 256U + weightBytes;
+         prefetchInput_ = tileCount_ > 1 &&
+                          singleUbBytes + 2U * tile_ * typeBytes <= 180576U;
++        // Preserve the r03 input decision; account for its physical buffers.
++        const uint32_t currentUbBytes = singleUbBytes +
++            (prefetchInput_ ? 2U * tile_ * typeBytes : 0U);
++        // 180576 is a historical source-allocation bound, not device capacity.
++        const bool doubleBufferOutput = tileCount_ > 1 &&
++            currentUbBytes + tile_ * typeBytes <= 180576U;
+         pipe_.InitBuffer(inputQueue_, prefetchInput_ ? 2 : 1, 2U * tile_ * typeBytes);
+-        pipe_.InitBuffer(outputQueue_, 1, tile_ * typeBytes);
++        pipe_.InitBuffer(outputQueue_, doubleBufferOutput ? 2 : 1, tile_ * typeBytes);
+         pipe_.InitBuffer(yBuffer_, paddedDim_ * sizeof(float));
+         pipe_.InitBuffer(tempBuffer_, 2U * tile_ * sizeof(float));
+         pipe_.InitBuffer(rmsBuffer_, tile_ * sizeof(float));

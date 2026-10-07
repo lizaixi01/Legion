@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-10-07T07:01:55.622926+00:00",
+  "pilot_actual_submissions": 0,
+  "historical_cumulative": {
+    "initial_authorized_submissions": 1,
+    "cumulative_authorized_submissions": 5,
+    "consumed_submissions": 4,
+    "remaining_submissions": 1,
+    "extension_count": 1
+  },
+  "historical_state": "D:\\Projects\\CANN-AddRmsNormBias\\results\\experiments\\sequential-adaptive-20261004\\state.json",
+  "ledger": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\ledger.json",
+  "ledger_attempted_submissions": 4,
+  "old_ledger_deadline": "2026-10-04T09:55:18.684056+00:00",
+  "new_candidate_request_ids": [],
+  "decision": "Keep both candidates pending. Historical remaining allowance is one; this pilot first completes local work and has no candidate-bound request or new finite deadline. Do not extend or consume the old budget here."
+}

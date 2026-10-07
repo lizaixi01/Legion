@@ -15,4 +15,5 @@ release/
 .commandcode/
 .engineering/
 experiments/
+!docs/experiments/
 __pycache__/

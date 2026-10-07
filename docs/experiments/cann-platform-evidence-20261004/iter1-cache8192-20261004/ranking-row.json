@@ -1,0 +1,143 @@
+{
+  "evidence_kind": "exact_matching_row_excerpt",
+  "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\iter1-cache8192-20261004\\observations\\ranking-000014-page-004.json",
+  "source_sha256": "0f124b14c7b924a30b792566c1814d05e41c180380323b4f1043f8ae84f21857",
+  "submission_id": "6ac234bf694b590c3cce5152",
+  "row": {
+    "rank": 349,
+    "user_id": "6ac11636694b590c3c4baffb",
+    "user": {
+      "_id": "6ac11636694b590c3c4baffb",
+      "nickname": "lizaixi01",
+      "ID": 8747
+    },
+    "submitter": {
+      "_id": "6ac11636694b590c3c4baffb",
+      "nickname": "lizaixi01",
+      "ID": 8747
+    },
+    "team": {
+      "_id": "6ac11e56694b590c3c50c740",
+      "ID": 3191,
+      "team_id": "2106395530558771201",
+      "team_name": "Zaixi"
+    },
+    "submission_id": "6ac234bf694b590c3cce5152",
+    "submission": {
+      "_id": "6ac234bf694b590c3cce5152",
+      "ID": 588547,
+      "status": "Pass",
+      "create_time": "2026-10-04T11:13:03.745Z"
+    },
+    "status": "Pass",
+    "create_time": "2026-10-04T11:13:03.745Z",
+    "score": 26.64,
+    "result": [
+      {
+        "testcase_id": "6a9a9a99bf41025d6013eb8a",
+        "time": 5.46,
+        "precision_ratio": 1,
+        "testcase_status": "Pass",
+        "score": 0
+      },
+      {
+        "testcase_id": "6a9a9a99bf41025d6013eb8e",
+        "time": 11.74,
+        "precision_ratio": 1,
+        "testcase_status": "Pass",
+        "score": 0
+      },
+      {
+        "testcase_id": "6a9a9a99bf41025d6013eb92",
+        "time": 6.7,
+        "precision_ratio": 1,
+        "testcase_status": "Pass",
+        "score": 0
+      },
+      {
+        "testcase_id": "6a9a9a99bf41025d6013eb96",
+        "time": 31.78,
+        "precision_ratio": 1,
+        "testcase_status": "Pass",
+        "score": 0
+      },
+      {
+        "testcase_id": "6a9a9a99bf41025d6013eb9a",
+        "time": 20.52,
+        "precision_ratio": 1,
+        "testcase_status": "Pass",
+        "score": 0
+      },
+      {
+        "testcase_id": "6a9a9a99bf41025d6013eb9e",
+        "time": 48.89,
+        "precision_ratio": 1,
+        "testcase_status": "Pass",
+        "score": 0
+      },
+      {
+        "testcase_id": "6a9a9a99bf41025d6013eba2",
+        "time": 75.4,
+        "precision_ratio": 1,
+        "testcase_status": "Pass",
+        "score": 0
+      },
+      {
+        "testcase_id": "6a9a9a99bf41025d6013eba6",
+        "time": 216.42,
+        "precision_ratio": 1,
+        "testcase_status": "Pass",
+        "score": 0
+      },
+      {
+        "testcase_id": "6a9a9a99bf41025d6013ebaa",
+        "time": 116.4,
+        "precision_ratio": 1,
+        "testcase_status": "Pass",
+        "score": 0
+      },
+      {
+        "testcase_id": "6a9a9a99bf41025d6013ebae",
+        "time": 189.04,
+        "precision_ratio": 1,
+        "testcase_status": "Pass",
+        "score": 0
+      },
+      {
+        "testcase_id": "6a9a9a99bf41025d6013ebb2",
+        "time": 228.5,
+        "precision_ratio": 1,
+        "testcase_status": "Pass",
+        "score": 0
+      },
+      {
+        "testcase_id": "6a9a9a99bf41025d6013ebb6",
+        "time": 175.31,
+        "precision_ratio": 1,
+        "testcase_status": "Pass",
+        "score": 0
+      },
+      {
+        "testcase_id": "6a9a9a99bf41025d6013ebba",
+        "time": 721.16,
+        "precision_ratio": 1,
+        "testcase_status": "Pass",
+        "score": 0
+      },
+      {
+        "testcase_id": "6a9a9a99bf41025d6013ebbe",
+        "time": 56444.7,
+        "precision_ratio": 1,
+        "testcase_status": "Pass",
+        "score": 0
+      },
+      {
+        "testcase_id": "6a9a9a99bf41025d6013ebc2",
+        "time": 12842.92,
+        "precision_ratio": 1,
+        "testcase_status": "Pass",
+        "score": 0
+      }
+    ]
+  }
+}

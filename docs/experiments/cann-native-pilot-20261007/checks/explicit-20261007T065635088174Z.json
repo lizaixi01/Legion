@@ -1,0 +1,122 @@
+{
+  "checked_at": "2026-10-07T06:56:35.088174+00:00",
+  "origin": "explicit",
+  "passed": true,
+  "baseline_unchanged": true,
+  "candidates_distinct": true,
+  "checks": [
+    {
+      "candidate": "output-double-buffer",
+      "passed": true,
+      "changed_files": [
+        "kernel.asc"
+      ],
+      "unexpected_files": [],
+      "kernel_sha256": "3e045351d864b301183ab896cd53b91108e44fc795e70246f5b036928050312e",
+      "inventory": [
+        {
+          "path": ".cannjudge-project.json",
+          "bytes": 1391,
+          "sha256": "56490a9bb24c8cdce6f50f7c05d137e70a9dea8bb33bf8762a0b40f38330db07"
+        },
+        {
+          "path": "CMakeLists.txt",
+          "bytes": 645,
+          "sha256": "f111399c08fc725aa484f96ad7f99dc2eed769e2d694b2135f7cf4cce81851e9"
+        },
+        {
+          "path": "data_utils.h",
+          "bytes": 1962,
+          "sha256": "1bdaae93c09b65e2615691a39bfd611122c09668d90e21809c52516f443bfd84"
+        },
+        {
+          "path": "kernel.asc",
+          "bytes": 19582,
+          "sha256": "3e045351d864b301183ab896cd53b91108e44fc795e70246f5b036928050312e"
+        },
+        {
+          "path": "main.asc",
+          "bytes": 5226,
+          "sha256": "edd8d27bf3b346dcbfae40025cfad4a790010e5b5800ac434f1c1b9a45763418"
+        },
+        {
+          "path": "run.sh",
+          "bytes": 1109,
+          "sha256": "6285cd1a901a619d0056209907bf2bcc34a7fa2d430ab41cf90f453196f20c56"
+        },
+        {
+          "path": "scripts/AddRmsNormBias.py",
+          "bytes": 2066,
+          "sha256": "e6bb5635644678b8044a5c76660d618e2b08d42d90c18de95145d39c038508a8"
+        },
+        {
+          "path": "scripts/gen_data.py",
+          "bytes": 1074,
+          "sha256": "017d0f28983ff6ef072316a2f0b87bfb1f4ad6b58ffbe2bb0156628faf744681"
+        },
+        {
+          "path": "scripts/verify_result.py",
+          "bytes": 4586,
+          "sha256": "08e312f94cbfbf986161040f46cf1fb2f67f3bede5edf31454cb827061b911ac"
+        }
+      ]
+    },
+    {
+      "candidate": "weight-prefetch",
+      "passed": true,
+      "changed_files": [
+        "kernel.asc"
+      ],
+      "unexpected_files": [],
+      "kernel_sha256": "5e14d05892324619412bf50352b851cf5cea8a0d9e09a7e3a94b944f0de8e01b",
+      "inventory": [
+        {
+          "path": ".cannjudge-project.json",
+          "bytes": 1391,
+          "sha256": "56490a9bb24c8cdce6f50f7c05d137e70a9dea8bb33bf8762a0b40f38330db07"
+        },
+        {
+          "path": "CMakeLists.txt",
+          "bytes": 645,
+          "sha256": "f111399c08fc725aa484f96ad7f99dc2eed769e2d694b2135f7cf4cce81851e9"
+        },
+        {
+          "path": "data_utils.h",
+          "bytes": 1962,
+          "sha256": "1bdaae93c09b65e2615691a39bfd611122c09668d90e21809c52516f443bfd84"
+        },
+        {
+          "path": "kernel.asc",
+          "bytes": 19729,
+          "sha256": "5e14d05892324619412bf50352b851cf5cea8a0d9e09a7e3a94b944f0de8e01b"
+        },
+        {
+          "path": "main.asc",
+          "bytes": 5226,
+          "sha256": "edd8d27bf3b346dcbfae40025cfad4a790010e5b5800ac434f1c1b9a45763418"
+        },
+        {
+          "path": "run.sh",
+          "bytes": 1109,
+          "sha256": "6285cd1a901a619d0056209907bf2bcc34a7fa2d430ab41cf90f453196f20c56"
+        },
+        {
+          "path": "scripts/AddRmsNormBias.py",
+          "bytes": 2066,
+          "sha256": "e6bb5635644678b8044a5c76660d618e2b08d42d90c18de95145d39c038508a8"
+        },
+        {
+          "path": "scripts/gen_data.py",
+          "bytes": 1074,
+          "sha256": "017d0f28983ff6ef072316a2f0b87bfb1f4ad6b58ffbe2bb0156628faf744681"
+        },
+        {
+          "path": "scripts/verify_result.py",
+          "bytes": 4586,
+          "sha256": "08e312f94cbfbf986161040f46cf1fb2f67f3bede5edf31454cb827061b911ac"
+        }
+      ]
+    }
+  ],
+  "scope": "Existing manifest/path/SHA checks and scaffold isolation only; not CANN compilation, numerical correctness or performance."
+}

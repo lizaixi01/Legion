@@ -1,0 +1,20 @@
+{
+  "pilot_id": "cann-native-pilot-20261007",
+  "prepared_at": "2026-10-07T06:49:39.327536+00:00",
+  "baseline": "D:\\Projects\\CANN-AddRmsNormBias\\results\\experiments\\sequential-adaptive-20261004\\round-03\\candidate",
+  "baseline_sha256": "5a21645996e97e351c91aa66cb7169893a1c5401a52ea61ffc6923c7ae1f8d53",
+  "baseline_submission_id": "6ac2635c694b590c3cebe1d8",
+  "baseline_score": 28.87,
+  "evaluator": "D:/Projects/CANN-AddRmsNormBias/evaluate.py",
+  "skill": "D:/Projects/Legion-reviewer-fix/.agents/skills/cann-single-hypothesis/SKILL.md",
+  "candidates": [
+    "output-double-buffer",
+    "weight-prefetch"
+  ],
+  "executor": "native Codex collaboration subagents",
+  "model_effort": "inherit parent; verify from native session evidence",
+  "scope": "Each executor may modify only its own kernel.asc; one primary hypothesis each; no platform calls",
+  "platform_calls_allowed_in_pilot": 0,
+  "platform_status": "pending: first finish local candidates; no current candidate-bound run request/deadline confirmed",
+  "stopping_rule": "One candidate per executor. Freeze after local review; no optimization retry loop. No user-specified model-token cap; record native usage and elapsed time."
+}

@@ -1,0 +1,32 @@
+--- r03/kernel.asc
++++ weight-prefetch/kernel.asc
+@@ -280,6 +280,10 @@
+ 
+     __aicore__ inline void WriteRow(int64_t rowOffset)
+     {
++        const bool prefetchWeights = prefetchInput_ && !cacheWeights_ && !cacheNativeWeights_;
++        if (prefetchWeights) {
++            EnqueuePair(gammaGm_, biasGm_, 0, ValidCount(0));
++        }
+         for (uint32_t offset = 0; offset < dim_; offset += tile_) {
+             const uint32_t count = ValidCount(offset);
+             AscendC::LocalTensor<float> gamma = temp0_;
+@@ -292,8 +296,16 @@
+                 ToFloat<T>(temp1_, nativeBiasCache_[offset], count);
+                 AscendC::PipeBarrier<PIPE_V>();
+             } else {
+-                AscendC::LocalTensor<T> packed = LoadPair(
+-                    gammaGm_, biasGm_, offset, count);
++                AscendC::LocalTensor<T> packed;
++                if (prefetchWeights) {
++                    packed = inputQueue_.DeQue<T>();
++                    const uint32_t nextOffset = offset + tile_;
++                    if (nextOffset < dim_) {
++                        EnqueuePair(gammaGm_, biasGm_, nextOffset, ValidCount(nextOffset));
++                    }
++                } else {
++                    packed = LoadPair(gammaGm_, biasGm_, offset, count);
++                }
+                 ToFloat<T>(temp0_, packed, count);
+                 ToFloat<T>(temp1_, packed[tile_], count);
+                 AscendC::PipeBarrier<PIPE_V>();

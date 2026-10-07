@@ -1,0 +1,70 @@
+{
+  "status": "round_03_completed_stopped_per_user_scope",
+  "search_complete": false,
+  "requested_first_round_complete": true,
+  "decision": "replace incumbent",
+  "hypothesis_status": "official_score_higher_stable_speedup_and_overlap_causality_unproven",
+  "completed_new_experiments": 3,
+  "max_new_real_experiments": 4,
+  "new_candidates": 3,
+  "workers_dispatched": 3,
+  "new_real_submissions": 3,
+  "budget": {
+    "initial_authorized_submissions": 1,
+    "cumulative_authorized_submissions": 5,
+    "consumed_submissions": 4,
+    "remaining_submissions": 1,
+    "extension_count": 1
+  },
+  "incumbent": "input-prefetch-r03",
+  "incumbent_score": 28.87,
+  "current_round_report": "round-03/report.md",
+  "next_action": "Stopped. No further candidate/POST without a new user instruction; final authorized shot preserved.",
+  "stop_reason": "User requested exactly one pipeline experiment and stop; budget4/5 consumed.",
+  "pending_workers": 0,
+  "pending_requests": 0,
+  "deadline_policy": "Every new run gets its own fixed finite deadline; cumulative budget persists across runs.",
+  "incumbent_rule": "Real source-verified complete Pass15/15 and higher official total score only; inspect all15 timings; minute score changes are inconclusive evidence of benefit.",
+  "multi_agent_assessment": "A single modest result does not justify switching to multi-agent.",
+  "delivery_review": {
+    "status": "unverified",
+    "attempts": 1,
+    "detail": "reviewer_infrastructure_failure",
+    "candidate_status": "Source-mapped official Pass15/15 score28.87",
+    "real_submission_budget_used_by_delivery_reviews": 0,
+    "overall_delivery_acceptance_claimed": false,
+    "infrastructure_changed": false
+  },
+  "current_round_workers": 1,
+  "current_round_real_POSTs": 1,
+  "incumbent_submission_id": "6ac2635c694b590c3cebe1d8",
+  "incumbent_kernel_sha256": "5a21645996e97e351c91aa66cb7169893a1c5401a52ea61ffc6923c7ae1f8d53",
+  "round_history": [
+    {
+      "round": 1,
+      "name": "native16k-r01",
+      "score": 26.89,
+      "passed_cases": 15,
+      "decision": "replace incumbent",
+      "report": "round-01/report.md"
+    },
+    {
+      "round": 2,
+      "name": "reciprocal-r02",
+      "score": 25.94,
+      "passed_cases": 15,
+      "decision": "keep incumbent",
+      "hypothesis": "rejected;14/15 regressions; no reciprocal variants",
+      "report": "round-02/report.md"
+    },
+    {
+      "round": 3,
+      "name": "input-prefetch-r03",
+      "score": 28.87,
+      "passed_cases": 15,
+      "decision": "replace incumbent",
+      "report": "round-03/report.md"
+    }
+  ],
+  "updated_at": "2026-10-04T14:41:15.672178+00:00"
+}

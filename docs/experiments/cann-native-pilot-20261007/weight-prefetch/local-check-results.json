@@ -1,0 +1,401 @@
+{
+  "provenance": "Parsed stdout from existing native tool outputs; no model rerun",
+  "tool_exit_codes": [
+    {
+      "ordinal": 17,
+      "exit_code": 0
+    },
+    {
+      "ordinal": 39,
+      "exit_code": 0
+    },
+    {
+      "ordinal": 48,
+      "exit_code": 0
+    },
+    {
+      "ordinal": 55,
+      "exit_code": 0
+    },
+    {
+      "ordinal": 73,
+      "exit_code": 0
+    },
+    {
+      "ordinal": 82,
+      "exit_code": 0
+    }
+  ],
+  "json_results": [
+    {
+      "ordinal": 39,
+      "timestamp": "2026-10-07T06:51:29.650Z",
+      "exit_code": 0,
+      "result": {
+        "baseline_sha256": "5a21645996e97e351c91aa66cb7169893a1c5401a52ea61ffc6923c7ae1f8d53",
+        "candidate_sha256": "5a21645996e97e351c91aa66cb7169893a1c5401a52ea61ffc6923c7ae1f8d53",
+        "byte_identical": true,
+        "bytes": 19166,
+        "crlf": 0,
+        "lf": 446,
+        "file_manifest_before": [
+          {
+            "path": ".cannjudge-project.json",
+            "sha256": "56490a9bb24c8cdce6f50f7c05d137e70a9dea8bb33bf8762a0b40f38330db07"
+          },
+          {
+            "path": "CMakeLists.txt",
+            "sha256": "f111399c08fc725aa484f96ad7f99dc2eed769e2d694b2135f7cf4cce81851e9"
+          },
+          {
+            "path": "data_utils.h",
+            "sha256": "1bdaae93c09b65e2615691a39bfd611122c09668d90e21809c52516f443bfd84"
+          },
+          {
+            "path": "kernel.asc",
+            "sha256": "5a21645996e97e351c91aa66cb7169893a1c5401a52ea61ffc6923c7ae1f8d53"
+          },
+          {
+            "path": "main.asc",
+            "sha256": "edd8d27bf3b346dcbfae40025cfad4a790010e5b5800ac434f1c1b9a45763418"
+          },
+          {
+            "path": "run.sh",
+            "sha256": "6285cd1a901a619d0056209907bf2bcc34a7fa2d430ab41cf90f453196f20c56"
+          },
+          {
+            "path": "scripts/AddRmsNormBias.py",
+            "sha256": "e6bb5635644678b8044a5c76660d618e2b08d42d90c18de95145d39c038508a8"
+          },
+          {
+            "path": "scripts/gen_data.py",
+            "sha256": "017d0f28983ff6ef072316a2f0b87bfb1f4ad6b58ffbe2bb0156628faf744681"
+          },
+          {
+            "path": "scripts/verify_result.py",
+            "sha256": "08e312f94cbfbf986161040f46cf1fb2f67f3bede5edf31454cb827061b911ac"
+          }
+        ]
+      }
+    },
+    {
+      "ordinal": 55,
+      "timestamp": "2026-10-07T06:52:54.316Z",
+      "exit_code": 0,
+      "result": {
+        "source_checks": "PASS",
+        "baseline_sha256": "5a21645996e97e351c91aa66cb7169893a1c5401a52ea61ffc6923c7ae1f8d53",
+        "candidate_sha256": "5e14d05892324619412bf50352b851cf5cea8a0d9e09a7e3a94b944f0de8e01b",
+        "candidate_bytes": 19729,
+        "only_WriteRow_changed": true,
+        "cached_branch_byte_identical": true,
+        "conversion_free_math_exception_output_suffix_byte_identical": true,
+        "all_allocation_statements_byte_identical": true,
+        "all_outside_WriteRow_byte_identical": true,
+        "dequeue_before_next_enqueue_before_conversion": true,
+        "scaffold_byte_identical": [
+          ".cannjudge-project.json",
+          "CMakeLists.txt",
+          "data_utils.h",
+          "main.asc",
+          "run.sh",
+          "scripts/AddRmsNormBias.py",
+          "scripts/gen_data.py",
+          "scripts/verify_result.py"
+        ]
+      }
+    },
+    {
+      "ordinal": 73,
+      "timestamp": "2026-10-07T06:54:26.072Z",
+      "exit_code": 0,
+      "result": {
+        "model_checks": "PASS",
+        "model_limit": "Source-derived allocation and event-order model; not an Ascend compiler, hardware synchronization, correctness, or performance test.",
+        "dimensions": "every integer 1..32768",
+        "widths": [
+          2,
+          4
+        ],
+        "owned_rows_classes": [
+          1,
+          2
+        ],
+        "configuration_count": 131072,
+        "modeled_row_count": 196608,
+        "modeled_pair_loads": 3248128,
+        "native_cache_copy_tiles_checked": 53248,
+        "peak_live_input_buffers": 2,
+        "peak_enqueued_entries": 1,
+        "peak_source_allocation_bytes": 180576,
+        "queue_empty_after_each_stream_and_row": true,
+        "GM_valid_extents_and_32byte_UB_padding_checked": true,
+        "weight_prefetch_dimension_intervals": {
+          "2-byte/owned_rows=1": [
+            [
+              8193,
+              32768
+            ]
+          ],
+          "2-byte/owned_rows=2": [
+            [
+              16385,
+              32768
+            ]
+          ],
+          "4-byte/owned_rows=1": [
+            [
+              8193,
+              28672
+            ]
+          ],
+          "4-byte/owned_rows=2": [
+            [
+              8193,
+              28672
+            ]
+          ]
+        },
+        "boundary_cases": [
+          {
+            "bytes_per_element": 2,
+            "owned_rows_class": 1,
+            "dim": 8192,
+            "physical_input_buffers": 2,
+            "weight_prefetch": false,
+            "allocation_bytes": 143680
+          },
+          {
+            "bytes_per_element": 2,
+            "owned_rows_class": 1,
+            "dim": 8193,
+            "physical_input_buffers": 2,
+            "weight_prefetch": true,
+            "allocation_bytes": 78208
+          },
+          {
+            "bytes_per_element": 2,
+            "owned_rows_class": 1,
+            "dim": 16384,
+            "physical_input_buffers": 2,
+            "weight_prefetch": true,
+            "allocation_bytes": 110912
+          },
+          {
+            "bytes_per_element": 2,
+            "owned_rows_class": 1,
+            "dim": 16385,
+            "physical_input_buffers": 2,
+            "weight_prefetch": true,
+            "allocation_bytes": 111008
+          },
+          {
+            "bytes_per_element": 2,
+            "owned_rows_class": 1,
+            "dim": 28672,
+            "physical_input_buffers": 2,
+            "weight_prefetch": true,
+            "allocation_bytes": 160096
+          },
+          {
+            "bytes_per_element": 2,
+            "owned_rows_class": 1,
+            "dim": 28673,
+            "physical_input_buffers": 2,
+            "weight_prefetch": true,
+            "allocation_bytes": 160160
+          },
+          {
+            "bytes_per_element": 2,
+            "owned_rows_class": 1,
+            "dim": 32768,
+            "physical_input_buffers": 2,
+            "weight_prefetch": true,
+            "allocation_bytes": 176480
+          },
+          {
+            "bytes_per_element": 2,
+            "owned_rows_class": 2,
+            "dim": 8192,
+            "physical_input_buffers": 2,
+            "weight_prefetch": false,
+            "allocation_bytes": 143680
+          },
+          {
+            "bytes_per_element": 2,
+            "owned_rows_class": 2,
+            "dim": 8193,
+            "physical_input_buffers": 2,
+            "weight_prefetch": false,
+            "allocation_bytes": 111040
+          },
+          {
+            "bytes_per_element": 2,
+            "owned_rows_class": 2,
+            "dim": 16384,
+            "physical_input_buffers": 2,
+            "weight_prefetch": false,
+            "allocation_bytes": 176448
+          },
+          {
+            "bytes_per_element": 2,
+            "owned_rows_class": 2,
+            "dim": 16385,
+            "physical_input_buffers": 2,
+            "weight_prefetch": true,
+            "allocation_bytes": 111008
+          },
+          {
+            "bytes_per_element": 2,
+            "owned_rows_class": 2,
+            "dim": 28672,
+            "physical_input_buffers": 2,
+            "weight_prefetch": true,
+            "allocation_bytes": 160096
+          },
+          {
+            "bytes_per_element": 2,
+            "owned_rows_class": 2,
+            "dim": 28673,
+            "physical_input_buffers": 2,
+            "weight_prefetch": true,
+            "allocation_bytes": 160160
+          },
+          {
+            "bytes_per_element": 2,
+            "owned_rows_class": 2,
+            "dim": 32768,
+            "physical_input_buffers": 2,
+            "weight_prefetch": true,
+            "allocation_bytes": 176480
+          },
+          {
+            "bytes_per_element": 4,
+            "owned_rows_class": 1,
+            "dim": 8192,
+            "physical_input_buffers": 2,
+            "weight_prefetch": false,
+            "allocation_bytes": 164160
+          },
+          {
+            "bytes_per_element": 4,
+            "owned_rows_class": 1,
+            "dim": 8193,
+            "physical_input_buffers": 2,
+            "weight_prefetch": true,
+            "allocation_bytes": 98688
+          },
+          {
+            "bytes_per_element": 4,
+            "owned_rows_class": 1,
+            "dim": 16384,
+            "physical_input_buffers": 2,
+            "weight_prefetch": true,
+            "allocation_bytes": 131392
+          },
+          {
+            "bytes_per_element": 4,
+            "owned_rows_class": 1,
+            "dim": 16385,
+            "physical_input_buffers": 2,
+            "weight_prefetch": true,
+            "allocation_bytes": 131488
+          },
+          {
+            "bytes_per_element": 4,
+            "owned_rows_class": 1,
+            "dim": 28672,
+            "physical_input_buffers": 2,
+            "weight_prefetch": true,
+            "allocation_bytes": 180576
+          },
+          {
+            "bytes_per_element": 4,
+            "owned_rows_class": 1,
+            "dim": 28673,
+            "physical_input_buffers": 1,
+            "weight_prefetch": false,
+            "allocation_bytes": 164256
+          },
+          {
+            "bytes_per_element": 4,
+            "owned_rows_class": 1,
+            "dim": 32768,
+            "physical_input_buffers": 1,
+            "weight_prefetch": false,
+            "allocation_bytes": 180576
+          },
+          {
+            "bytes_per_element": 4,
+            "owned_rows_class": 2,
+            "dim": 8192,
+            "physical_input_buffers": 2,
+            "weight_prefetch": false,
+            "allocation_bytes": 164160
+          },
+          {
+            "bytes_per_element": 4,
+            "owned_rows_class": 2,
+            "dim": 8193,
+            "physical_input_buffers": 2,
+            "weight_prefetch": true,
+            "allocation_bytes": 98688
+          },
+          {
+            "bytes_per_element": 4,
+            "owned_rows_class": 2,
+            "dim": 16384,
+            "physical_input_buffers": 2,
+            "weight_prefetch": true,
+            "allocation_bytes": 131392
+          },
+          {
+            "bytes_per_element": 4,
+            "owned_rows_class": 2,
+            "dim": 16385,
+            "physical_input_buffers": 2,
+            "weight_prefetch": true,
+            "allocation_bytes": 131488
+          },
+          {
+            "bytes_per_element": 4,
+            "owned_rows_class": 2,
+            "dim": 28672,
+            "physical_input_buffers": 2,
+            "weight_prefetch": true,
+            "allocation_bytes": 180576
+          },
+          {
+            "bytes_per_element": 4,
+            "owned_rows_class": 2,
+            "dim": 28673,
+            "physical_input_buffers": 1,
+            "weight_prefetch": false,
+            "allocation_bytes": 164256
+          },
+          {
+            "bytes_per_element": 4,
+            "owned_rows_class": 2,
+            "dim": 32768,
+            "physical_input_buffers": 1,
+            "weight_prefetch": false,
+            "allocation_bytes": 180576
+          }
+        ],
+        "elapsed_seconds": 15.488
+      }
+    },
+    {
+      "ordinal": 82,
+      "timestamp": "2026-10-07T06:55:03.253Z",
+      "exit_code": 0,
+      "result": {
+        "final_sha256": "5e14d05892324619412bf50352b851cf5cea8a0d9e09a7e3a94b944f0de8e01b",
+        "files_in_candidate": 9,
+        "finished_at": "2026-10-07T06:55:03.127660+00:00",
+        "elapsed_seconds_since_first_baseline_read_completed": 248.455,
+        "modified_function_start_line": 281
+      }
+    }
+  ]
+}

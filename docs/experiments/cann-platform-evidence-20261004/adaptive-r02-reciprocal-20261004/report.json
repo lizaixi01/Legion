@@ -1,0 +1,270 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "platform",
+  "queried_at": "2026-10-04T13:58:28.294880+00:00",
+  "submission_id": "6ac25b2d694b590c3ce66b3c",
+  "problem_id": "6a9a9a99bf41025d6013eb85",
+  "status": "Pass",
+  "valid": true,
+  "outcome": "passed",
+  "source": {
+    "candidate_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\experiments\\sequential-adaptive-20261004\\round-02\\candidate",
+    "snapshot_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r02-reciprocal-20261004\\snapshot",
+    "kernel_sha256": "873f99517edbe3832707fde8253aa7b3b9d2256f56e2ab16e0917bd0e8f2faac",
+    "tree_sha256": "7eb4e3c1d779c30031e9e6c939fe845cccd6902d5083c1016a23de50050892c9",
+    "files": [
+      {
+        "path": ".cannjudge-project.json",
+        "bytes": 1391,
+        "sha256": "56490a9bb24c8cdce6f50f7c05d137e70a9dea8bb33bf8762a0b40f38330db07"
+      },
+      {
+        "path": "CMakeLists.txt",
+        "bytes": 645,
+        "sha256": "f111399c08fc725aa484f96ad7f99dc2eed769e2d694b2135f7cf4cce81851e9"
+      },
+      {
+        "path": "data_utils.h",
+        "bytes": 1962,
+        "sha256": "1bdaae93c09b65e2615691a39bfd611122c09668d90e21809c52516f443bfd84"
+      },
+      {
+        "path": "kernel.asc",
+        "bytes": 18733,
+        "sha256": "873f99517edbe3832707fde8253aa7b3b9d2256f56e2ab16e0917bd0e8f2faac"
+      },
+      {
+        "path": "main.asc",
+        "bytes": 5226,
+        "sha256": "edd8d27bf3b346dcbfae40025cfad4a790010e5b5800ac434f1c1b9a45763418"
+      },
+      {
+        "path": "run.sh",
+        "bytes": 1109,
+        "sha256": "6285cd1a901a619d0056209907bf2bcc34a7fa2d430ab41cf90f453196f20c56"
+      },
+      {
+        "path": "scripts/AddRmsNormBias.py",
+        "bytes": 2066,
+        "sha256": "e6bb5635644678b8044a5c76660d618e2b08d42d90c18de95145d39c038508a8"
+      },
+      {
+        "path": "scripts/gen_data.py",
+        "bytes": 1074,
+        "sha256": "017d0f28983ff6ef072316a2f0b87bfb1f4ad6b58ffbe2bb0156628faf744681"
+      },
+      {
+        "path": "scripts/verify_result.py",
+        "bytes": 4586,
+        "sha256": "08e312f94cbfbf986161040f46cf1fb2f67f3bede5edf31454cb827061b911ac"
+      }
+    ]
+  },
+  "platform_source_verified": true,
+  "expected_cases": 15,
+  "observed_cases": 15,
+  "passed_cases": 15,
+  "case_set_complete": true,
+  "cases": [
+    {
+      "index": 1,
+      "testcase_id": "6a9a9a99bf41025d6013eb8a",
+      "status": "Pass",
+      "correct": true,
+      "precision_ratio": 1,
+      "time_raw": 5.73,
+      "time_unit": "us",
+      "best_time_raw": 1.26,
+      "official_case_score": 0,
+      "message": null
+    },
+    {
+      "index": 2,
+      "testcase_id": "6a9a9a99bf41025d6013eb8e",
+      "status": "Pass",
+      "correct": true,
+      "precision_ratio": 1,
+      "time_raw": 12.43,
+      "time_unit": "us",
+      "best_time_raw": 1.85,
+      "official_case_score": 0,
+      "message": null
+    },
+    {
+      "index": 3,
+      "testcase_id": "6a9a9a99bf41025d6013eb92",
+      "status": "Pass",
+      "correct": true,
+      "precision_ratio": 1,
+      "time_raw": 7,
+      "time_unit": "us",
+      "best_time_raw": 2.47,
+      "official_case_score": 0,
+      "message": null
+    },
+    {
+      "index": 4,
+      "testcase_id": "6a9a9a99bf41025d6013eb96",
+      "status": "Pass",
+      "correct": true,
+      "precision_ratio": 1,
+      "time_raw": 33.66,
+      "time_unit": "us",
+      "best_time_raw": 4.12,
+      "official_case_score": 0,
+      "message": null
+    },
+    {
+      "index": 5,
+      "testcase_id": "6a9a9a99bf41025d6013eb9a",
+      "status": "Pass",
+      "correct": true,
+      "precision_ratio": 1,
+      "time_raw": 21.57,
+      "time_unit": "us",
+      "best_time_raw": 5.2,
+      "official_case_score": 0,
+      "message": null
+    },
+    {
+      "index": 6,
+      "testcase_id": "6a9a9a99bf41025d6013eb9e",
+      "status": "Pass",
+      "correct": true,
+      "precision_ratio": 1,
+      "time_raw": 51.32,
+      "time_unit": "us",
+      "best_time_raw": 9.48,
+      "official_case_score": 0,
+      "message": null
+    },
+    {
+      "index": 7,
+      "testcase_id": "6a9a9a99bf41025d6013eba2",
+      "status": "Pass",
+      "correct": true,
+      "precision_ratio": 1,
+      "time_raw": 78.31,
+      "time_unit": "us",
+      "best_time_raw": 10.99,
+      "official_case_score": 0,
+      "message": null
+    },
+    {
+      "index": 8,
+      "testcase_id": "6a9a9a99bf41025d6013eba6",
+      "status": "Pass",
+      "correct": true,
+      "precision_ratio": 1,
+      "time_raw": 229.94,
+      "time_unit": "us",
+      "best_time_raw": 30.16,
+      "official_case_score": 0,
+      "message": null
+    },
+    {
+      "index": 9,
+      "testcase_id": "6a9a9a99bf41025d6013ebaa",
+      "status": "Pass",
+      "correct": true,
+      "precision_ratio": 1,
+      "time_raw": 125.95,
+      "time_unit": "us",
+      "best_time_raw": 67.79,
+      "official_case_score": 0,
+      "message": null
+    },
+    {
+      "index": 10,
+      "testcase_id": "6a9a9a99bf41025d6013ebae",
+      "status": "Pass",
+      "correct": true,
+      "precision_ratio": 1,
+      "time_raw": 206.81,
+      "time_unit": "us",
+      "best_time_raw": 46.63,
+      "official_case_score": 0,
+      "message": null
+    },
+    {
+      "index": 11,
+      "testcase_id": "6a9a9a99bf41025d6013ebb2",
+      "status": "Pass",
+      "correct": true,
+      "precision_ratio": 1,
+      "time_raw": 231.85,
+      "time_unit": "us",
+      "best_time_raw": 126.8,
+      "official_case_score": 0,
+      "message": null
+    },
+    {
+      "index": 12,
+      "testcase_id": "6a9a9a99bf41025d6013ebb6",
+      "status": "Pass",
+      "correct": true,
+      "precision_ratio": 1,
+      "time_raw": 185.64,
+      "time_unit": "us",
+      "best_time_raw": 75.93,
+      "official_case_score": 0,
+      "message": null
+    },
+    {
+      "index": 13,
+      "testcase_id": "6a9a9a99bf41025d6013ebba",
+      "status": "Pass",
+      "correct": true,
+      "precision_ratio": 1,
+      "time_raw": 735.25,
+      "time_unit": "us",
+      "best_time_raw": 392.72,
+      "official_case_score": 0,
+      "message": null
+    },
+    {
+      "index": 14,
+      "testcase_id": "6a9a9a99bf41025d6013ebbe",
+      "status": "Pass",
+      "correct": true,
+      "precision_ratio": 1,
+      "time_raw": 63391.36,
+      "time_unit": "us",
+      "best_time_raw": 3588.84,
+      "official_case_score": 0,
+      "message": null
+    },
+    {
+      "index": 15,
+      "testcase_id": "6a9a9a99bf41025d6013ebc2",
+      "status": "Pass",
+      "correct": true,
+      "precision_ratio": 1,
+      "time_raw": 12574.07,
+      "time_unit": "us",
+      "best_time_raw": 7948.23,
+      "official_case_score": 0,
+      "message": null
+    }
+  ],
+  "official_total_score": 25.94,
+  "score_evidence": {
+    "field": "ranking.rows[].score",
+    "submission_id": "6ac25b2d694b590c3ce66b3c"
+  },
+  "time_unit": "us",
+  "time_unit_evidence": {
+    "url": "https://cannjudge.cn/js/ui/shared.js",
+    "function": "testcaseTimeLabel",
+    "sha256": "67be1324f8a86ee6aacb09ed656839aaebe512c5e2bdaf39adbc87e372476792",
+    "saved_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r02-reciprocal-20261004\\observations\\time-unit-000009.js",
+    "basis": "raw value renders as μs; values >=1000 divide by 1000 to render ms"
+  },
+  "missing_evidence": [],
+  "failure_categories": [],
+  "message": null,
+  "raw_response": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r02-reciprocal-20261004\\observations\\submission-000009.json",
+  "optional_evidence_errors": [],
+  "ranking_response": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r02-reciprocal-20261004\\observations\\ranking-000009-page-004.json",
+  "evaluator_sha256": "cf5aa654d6e894bf311b76637949cb4188404a917403dc5bd0d775515a8edd76"
+}

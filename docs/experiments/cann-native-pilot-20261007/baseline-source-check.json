@@ -1,0 +1,10 @@
+{
+  "checked_at": "2026-10-07T06:59:56.657837+00:00",
+  "report": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r03-input-prefetch-20261004\\reports\\000014.json",
+  "raw_submission": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r03-input-prefetch-20261004\\observations\\submission-000007.json",
+  "submission_id": "6ac2635c694b590c3cebe1d8",
+  "local_kernel_matches_uploaded_utf8": true,
+  "kernel_sha256": "5a21645996e97e351c91aa66cb7169893a1c5401a52ea61ffc6923c7ae1f8d53",
+  "passed_cases": 15,
+  "official_score": 28.87
+}

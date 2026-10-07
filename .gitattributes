@@ -1,0 +1,11 @@
+# Preserve the exact bytes of frozen CANN evidence and candidate snapshots.
+docs/experiments/cann* -text
+docs/experiments/cann*/** -text
+.agents/skills/cann-single-hypothesis/** -text
+scripts/reviewer/cann-candidate-check.py -text
+scripts/reviewer/cann-delivery-ab.mjs -text
+scripts/reviewer/cann-delivery-ab.py -text
+scripts/reviewer/cann-delivery-status.ts -text
+scripts/reviewer/cann-evidence-check.py -text
+scripts/reviewer/delivery-evidence/** -text
+tests/cann-delivery-evidence.test.ts -text

@@ -34,6 +34,8 @@ npm run desktop
 
 [查看完整报告与失败记录](docs/research/experiment-summary.md) · [摘要数据与来源哈希](docs/research/results-20261004.json)
 
+[CANN 实验结果与证据（2026-10-07）](docs/experiments/cann-results.md)：AddRmsNormBias 的已验证候选从 26.06 分到 28.87 分，五个历史版本均通过 15/15。另收录交付 A/B 审计和两个尚待真机验证的候选；分数变化不等于 Agent 效率或稳定性能提升。
+
 ## 当前边界
 
 已支持任务委派、并发队列、显式持续目标与工程任务恢复。外部项目通过自己的说明、文件和命令使用 Legion。

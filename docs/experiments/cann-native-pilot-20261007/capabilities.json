@@ -1,0 +1,47 @@
+{
+  "checked_at": "2026-10-07T07:01:55.393451+00:00",
+  "pinned_cli": {
+    "path": "D:\\Projects\\Legion-reviewer-fix\\.local\\codex-runtime\\node_modules\\@openai\\codex-win32-x64\\vendor\\x86_64-pc-windows-msvc\\bin\\codex.exe",
+    "version": "codex-cli 0.159.2",
+    "feature_lines": [
+      "hooks                                    stable             true",
+      "multi_agent                              stable             true",
+      "multi_agent_v2                           stable             false",
+      "skill_search                             stable             true"
+    ]
+  },
+  "path_cli": {
+    "path": "C:\\Users\\HUAWEI\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE",
+    "version": "codex-cli 0.154.0"
+  },
+  "native_desktop_executors": {
+    "version": "0.162.0-alpha.2",
+    "multi_agent_version": "v2",
+    "model": "gpt-6-astra",
+    "effort": "max",
+    "evidence": "runs.jsonl and original native session metadata; not inferred from CLI config"
+  },
+  "tools": {
+    "bisheng": null,
+    "ccec": null,
+    "ascendc": null,
+    "cmake": null,
+    "npu-smi": null,
+    "bash": "C:\\Users\\HUAWEI\\AppData\\Local\\Microsoft\\WindowsApps\\bash.EXE"
+  },
+  "ascend_environment": {
+    "ASCEND_HOME_PATH": null,
+    "ASCEND_TOOLKIT_HOME": null
+  },
+  "skill": {
+    "path": "D:\\Projects\\Legion-reviewer-fix\\.agents\\skills\\cann-single-hypothesis\\SKILL.md",
+    "sha256": "7d240b00c7bc21cf9714306f5303a6ad2d849ce494dda416a66cef329070c130",
+    "entry": "Project .agents/skills; explicitly read by both native subagents",
+    "quick_validate": "Skill is valid!"
+  },
+  "official_references": [
+    "https://learn.chatgpt.com/docs/hooks",
+    "https://learn.chatgpt.com/docs/agent-configuration/subagents",
+    "https://learn.chatgpt.com/docs/build-skills"
+  ]
+}

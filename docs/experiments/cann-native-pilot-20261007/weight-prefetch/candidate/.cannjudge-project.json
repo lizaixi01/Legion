@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "problem_id": "6a9a9a99bf41025d6013eb85",
+  "code_template": "npu_kernel_dev",
+  "files": [
+    {
+      "path": "CMakeLists.txt",
+      "editable": false,
+      "sha256": "f111399c08fc725aa484f96ad7f99dc2eed769e2d694b2135f7cf4cce81851e9"
+    },
+    {
+      "path": "data_utils.h",
+      "editable": false,
+      "sha256": "1bdaae93c09b65e2615691a39bfd611122c09668d90e21809c52516f443bfd84"
+    },
+    {
+      "path": "kernel.asc",
+      "editable": true,
+      "sha256": "777ce251adafe5751f173f8352fa7b77696c6e6b523358a40f9ae6005afda3ba"
+    },
+    {
+      "path": "main.asc",
+      "editable": false,
+      "sha256": "edd8d27bf3b346dcbfae40025cfad4a790010e5b5800ac434f1c1b9a45763418"
+    },
+    {
+      "path": "run.sh",
+      "editable": false,
+      "sha256": "6285cd1a901a619d0056209907bf2bcc34a7fa2d430ab41cf90f453196f20c56"
+    },
+    {
+      "path": "scripts/AddRmsNormBias.py",
+      "editable": false,
+      "sha256": "e6bb5635644678b8044a5c76660d618e2b08d42d90c18de95145d39c038508a8"
+    },
+    {
+      "path": "scripts/gen_data.py",
+      "editable": false,
+      "sha256": "017d0f28983ff6ef072316a2f0b87bfb1f4ad6b58ffbe2bb0156628faf744681"
+    },
+    {
+      "path": "scripts/verify_result.py",
+      "editable": false,
+      "sha256": "08e312f94cbfbf986161040f46cf1fb2f67f3bede5edf31454cb827061b911ac"
+    }
+  ]
+}

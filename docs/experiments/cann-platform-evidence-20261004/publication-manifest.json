@@ -1,0 +1,932 @@
+{
+  "schema_version": 1,
+  "published_at_date": "2026-10-07",
+  "copied_files_verified": true,
+  "native_pilot_freeze_verified": true,
+  "files": [
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/v2-baseline/snapshot/.cannjudge-project.json",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\v2-baseline\\snapshot\\.cannjudge-project.json",
+      "bytes": 1391,
+      "sha256": "56490a9bb24c8cdce6f50f7c05d137e70a9dea8bb33bf8762a0b40f38330db07",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/v2-baseline/snapshot/CMakeLists.txt",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\v2-baseline\\snapshot\\CMakeLists.txt",
+      "bytes": 645,
+      "sha256": "f111399c08fc725aa484f96ad7f99dc2eed769e2d694b2135f7cf4cce81851e9",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/v2-baseline/snapshot/data_utils.h",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\v2-baseline\\snapshot\\data_utils.h",
+      "bytes": 1962,
+      "sha256": "1bdaae93c09b65e2615691a39bfd611122c09668d90e21809c52516f443bfd84",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/v2-baseline/snapshot/kernel.asc",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\v2-baseline\\snapshot\\kernel.asc",
+      "bytes": 16206,
+      "sha256": "b53ee76504400d3f23f9205c182b217117b0960319538efcb8322a5ec49f2b5c",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/v2-baseline/snapshot/main.asc",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\v2-baseline\\snapshot\\main.asc",
+      "bytes": 5226,
+      "sha256": "edd8d27bf3b346dcbfae40025cfad4a790010e5b5800ac434f1c1b9a45763418",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/v2-baseline/snapshot/run.sh",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\v2-baseline\\snapshot\\run.sh",
+      "bytes": 1109,
+      "sha256": "6285cd1a901a619d0056209907bf2bcc34a7fa2d430ab41cf90f453196f20c56",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/v2-baseline/snapshot/scripts/AddRmsNormBias.py",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\v2-baseline\\snapshot\\scripts\\AddRmsNormBias.py",
+      "bytes": 2066,
+      "sha256": "e6bb5635644678b8044a5c76660d618e2b08d42d90c18de95145d39c038508a8",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/v2-baseline/snapshot/scripts/gen_data.py",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\v2-baseline\\snapshot\\scripts\\gen_data.py",
+      "bytes": 1074,
+      "sha256": "017d0f28983ff6ef072316a2f0b87bfb1f4ad6b58ffbe2bb0156628faf744681",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/v2-baseline/snapshot/scripts/verify_result.py",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\v2-baseline\\snapshot\\scripts\\verify_result.py",
+      "bytes": 4586,
+      "sha256": "08e312f94cbfbf986161040f46cf1fb2f67f3bede5edf31454cb827061b911ac",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/v2-baseline/report.json",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\v2-baseline\\baseline.json",
+      "bytes": 7561,
+      "sha256": "5c3d1cad4ecf02e87ec044dd34c59e2edf2fdbc159d86f3c796c447898967bbf",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/v2-baseline/official-submission.json",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\v2-baseline\\observations\\submission-000002.json",
+      "bytes": 39446,
+      "sha256": "5ab3c7918103bf00de0b5cec1078206164c76739eb96863ce86914a57a027680",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/v2-baseline/ranking-row.json",
+      "sha256": "68eb0d80c1c8eb1871cde059ea8e243f9d93e4a2771341df4618ae4e79377137",
+      "kind": "exact_matching_row_excerpt",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\v2-baseline\\observations\\ranking-000002-page-004.json",
+      "source_sha256": "f6ab397faf6e8faf24e89dfd787e963147ce5ea96f0771a59adb32f5e2e8a98b"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/v2-baseline/time-unit.js",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\v2-baseline\\observations\\time-unit-000002.js",
+      "bytes": 58901,
+      "sha256": "67be1324f8a86ee6aacb09ed656839aaebe512c5e2bdaf39adbc87e372476792",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/iter1-cache8192-20261004/snapshot/.cannjudge-project.json",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\iter1-cache8192-20261004\\snapshot\\.cannjudge-project.json",
+      "bytes": 1391,
+      "sha256": "56490a9bb24c8cdce6f50f7c05d137e70a9dea8bb33bf8762a0b40f38330db07",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/iter1-cache8192-20261004/snapshot/CMakeLists.txt",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\iter1-cache8192-20261004\\snapshot\\CMakeLists.txt",
+      "bytes": 645,
+      "sha256": "f111399c08fc725aa484f96ad7f99dc2eed769e2d694b2135f7cf4cce81851e9",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/iter1-cache8192-20261004/snapshot/data_utils.h",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\iter1-cache8192-20261004\\snapshot\\data_utils.h",
+      "bytes": 1962,
+      "sha256": "1bdaae93c09b65e2615691a39bfd611122c09668d90e21809c52516f443bfd84",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/iter1-cache8192-20261004/snapshot/kernel.asc",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\iter1-cache8192-20261004\\snapshot\\kernel.asc",
+      "bytes": 16206,
+      "sha256": "c32ba10c924fd622ca60369a278cfbb4ae68857551c5ee1042a34aed7882b467",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/iter1-cache8192-20261004/snapshot/main.asc",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\iter1-cache8192-20261004\\snapshot\\main.asc",
+      "bytes": 5226,
+      "sha256": "edd8d27bf3b346dcbfae40025cfad4a790010e5b5800ac434f1c1b9a45763418",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/iter1-cache8192-20261004/snapshot/run.sh",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\iter1-cache8192-20261004\\snapshot\\run.sh",
+      "bytes": 1109,
+      "sha256": "6285cd1a901a619d0056209907bf2bcc34a7fa2d430ab41cf90f453196f20c56",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/iter1-cache8192-20261004/snapshot/scripts/AddRmsNormBias.py",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\iter1-cache8192-20261004\\snapshot\\scripts\\AddRmsNormBias.py",
+      "bytes": 2066,
+      "sha256": "e6bb5635644678b8044a5c76660d618e2b08d42d90c18de95145d39c038508a8",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/iter1-cache8192-20261004/snapshot/scripts/gen_data.py",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\iter1-cache8192-20261004\\snapshot\\scripts\\gen_data.py",
+      "bytes": 1074,
+      "sha256": "017d0f28983ff6ef072316a2f0b87bfb1f4ad6b58ffbe2bb0156628faf744681",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/iter1-cache8192-20261004/snapshot/scripts/verify_result.py",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\iter1-cache8192-20261004\\snapshot\\scripts\\verify_result.py",
+      "bytes": 4586,
+      "sha256": "08e312f94cbfbf986161040f46cf1fb2f67f3bede5edf31454cb827061b911ac",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/iter1-cache8192-20261004/report.json",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\iter1-cache8192-20261004\\reports\\000028.json",
+      "bytes": 7712,
+      "sha256": "d3f0caa366bfbf70f1a621a49119e4cb00b8b4b4ab2ad9bf8524969044236482",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/iter1-cache8192-20261004/official-submission.json",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\iter1-cache8192-20261004\\observations\\submission-000014.json",
+      "bytes": 39442,
+      "sha256": "3323ac3352f45df0275f576f1346c8a1306483dd0b5ca8a614ceec488ac0c753",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/iter1-cache8192-20261004/ranking-row.json",
+      "sha256": "e08b3d5b126940a5d0103e8d6ead6acf2925b6283aa16b2756c423ce57e9216d",
+      "kind": "exact_matching_row_excerpt",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\iter1-cache8192-20261004\\observations\\ranking-000014-page-004.json",
+      "source_sha256": "0f124b14c7b924a30b792566c1814d05e41c180380323b4f1043f8ae84f21857"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/iter1-cache8192-20261004/time-unit.js",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\iter1-cache8192-20261004\\observations\\time-unit-000014.js",
+      "bytes": 58901,
+      "sha256": "67be1324f8a86ee6aacb09ed656839aaebe512c5e2bdaf39adbc87e372476792",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/iter1-cache8192-20261004/submission-receipt.json",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\iter1-cache8192-20261004\\submission-receipt.json",
+      "bytes": 102,
+      "sha256": "40d487a5a8905bc8b17ef07bc03c086153939b7c312720e47d8393a13f70cd10",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r01-nativecache-20261004/snapshot/.cannjudge-project.json",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r01-nativecache-20261004\\snapshot\\.cannjudge-project.json",
+      "bytes": 1391,
+      "sha256": "56490a9bb24c8cdce6f50f7c05d137e70a9dea8bb33bf8762a0b40f38330db07",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r01-nativecache-20261004/snapshot/CMakeLists.txt",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r01-nativecache-20261004\\snapshot\\CMakeLists.txt",
+      "bytes": 645,
+      "sha256": "f111399c08fc725aa484f96ad7f99dc2eed769e2d694b2135f7cf4cce81851e9",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r01-nativecache-20261004/snapshot/data_utils.h",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r01-nativecache-20261004\\snapshot\\data_utils.h",
+      "bytes": 1962,
+      "sha256": "1bdaae93c09b65e2615691a39bfd611122c09668d90e21809c52516f443bfd84",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r01-nativecache-20261004/snapshot/kernel.asc",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r01-nativecache-20261004\\snapshot\\kernel.asc",
+      "bytes": 17928,
+      "sha256": "6864d67889f37b845a76e8b4ae066a595384ce213a9ba1a5675051db4bb939dc",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r01-nativecache-20261004/snapshot/main.asc",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r01-nativecache-20261004\\snapshot\\main.asc",
+      "bytes": 5226,
+      "sha256": "edd8d27bf3b346dcbfae40025cfad4a790010e5b5800ac434f1c1b9a45763418",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r01-nativecache-20261004/snapshot/run.sh",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r01-nativecache-20261004\\snapshot\\run.sh",
+      "bytes": 1109,
+      "sha256": "6285cd1a901a619d0056209907bf2bcc34a7fa2d430ab41cf90f453196f20c56",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r01-nativecache-20261004/snapshot/scripts/AddRmsNormBias.py",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r01-nativecache-20261004\\snapshot\\scripts\\AddRmsNormBias.py",
+      "bytes": 2066,
+      "sha256": "e6bb5635644678b8044a5c76660d618e2b08d42d90c18de95145d39c038508a8",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r01-nativecache-20261004/snapshot/scripts/gen_data.py",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r01-nativecache-20261004\\snapshot\\scripts\\gen_data.py",
+      "bytes": 1074,
+      "sha256": "017d0f28983ff6ef072316a2f0b87bfb1f4ad6b58ffbe2bb0156628faf744681",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r01-nativecache-20261004/snapshot/scripts/verify_result.py",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r01-nativecache-20261004\\snapshot\\scripts\\verify_result.py",
+      "bytes": 4586,
+      "sha256": "08e312f94cbfbf986161040f46cf1fb2f67f3bede5edf31454cb827061b911ac",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r01-nativecache-20261004/report.json",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r01-nativecache-20261004\\reports\\000018.json",
+      "bytes": 7796,
+      "sha256": "aa8a590000275efddf89e4c5e79f80cd386f6d5483e03c5161cc69c4446c458e",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r01-nativecache-20261004/official-submission.json",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r01-nativecache-20261004\\observations\\submission-000009.json",
+      "bytes": 41199,
+      "sha256": "08e067e991ff04fb213d9dd65cf69137b97d44b935e594f5664237daa6f710b4",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r01-nativecache-20261004/ranking-row.json",
+      "sha256": "995ac6dc7ceb1f78c73e1a64c0491ea6cc991ea9f6b64ac329e939210f3849d4",
+      "kind": "exact_matching_row_excerpt",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r01-nativecache-20261004\\observations\\ranking-000009-page-004.json",
+      "source_sha256": "e616dd7b691f6a6f1bb1b7dbb8ded2a6e733c73db53f69738d15d8338c865c0c"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r01-nativecache-20261004/time-unit.js",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r01-nativecache-20261004\\observations\\time-unit-000009.js",
+      "bytes": 58901,
+      "sha256": "67be1324f8a86ee6aacb09ed656839aaebe512c5e2bdaf39adbc87e372476792",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r01-nativecache-20261004/submission-receipt.json",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r01-nativecache-20261004\\submission-receipt.json",
+      "bytes": 102,
+      "sha256": "8eb4e36df27b2c82f6aad3a6a63fe47765250c165ccff83c4f7930b8478fe0cd",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r02-reciprocal-20261004/snapshot/.cannjudge-project.json",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r02-reciprocal-20261004\\snapshot\\.cannjudge-project.json",
+      "bytes": 1391,
+      "sha256": "56490a9bb24c8cdce6f50f7c05d137e70a9dea8bb33bf8762a0b40f38330db07",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r02-reciprocal-20261004/snapshot/CMakeLists.txt",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r02-reciprocal-20261004\\snapshot\\CMakeLists.txt",
+      "bytes": 645,
+      "sha256": "f111399c08fc725aa484f96ad7f99dc2eed769e2d694b2135f7cf4cce81851e9",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r02-reciprocal-20261004/snapshot/data_utils.h",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r02-reciprocal-20261004\\snapshot\\data_utils.h",
+      "bytes": 1962,
+      "sha256": "1bdaae93c09b65e2615691a39bfd611122c09668d90e21809c52516f443bfd84",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r02-reciprocal-20261004/snapshot/kernel.asc",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r02-reciprocal-20261004\\snapshot\\kernel.asc",
+      "bytes": 18733,
+      "sha256": "873f99517edbe3832707fde8253aa7b3b9d2256f56e2ab16e0917bd0e8f2faac",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r02-reciprocal-20261004/snapshot/main.asc",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r02-reciprocal-20261004\\snapshot\\main.asc",
+      "bytes": 5226,
+      "sha256": "edd8d27bf3b346dcbfae40025cfad4a790010e5b5800ac434f1c1b9a45763418",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r02-reciprocal-20261004/snapshot/run.sh",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r02-reciprocal-20261004\\snapshot\\run.sh",
+      "bytes": 1109,
+      "sha256": "6285cd1a901a619d0056209907bf2bcc34a7fa2d430ab41cf90f453196f20c56",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r02-reciprocal-20261004/snapshot/scripts/AddRmsNormBias.py",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r02-reciprocal-20261004\\snapshot\\scripts\\AddRmsNormBias.py",
+      "bytes": 2066,
+      "sha256": "e6bb5635644678b8044a5c76660d618e2b08d42d90c18de95145d39c038508a8",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r02-reciprocal-20261004/snapshot/scripts/gen_data.py",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r02-reciprocal-20261004\\snapshot\\scripts\\gen_data.py",
+      "bytes": 1074,
+      "sha256": "017d0f28983ff6ef072316a2f0b87bfb1f4ad6b58ffbe2bb0156628faf744681",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r02-reciprocal-20261004/snapshot/scripts/verify_result.py",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r02-reciprocal-20261004\\snapshot\\scripts\\verify_result.py",
+      "bytes": 4586,
+      "sha256": "08e312f94cbfbf986161040f46cf1fb2f67f3bede5edf31454cb827061b911ac",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r02-reciprocal-20261004/report.json",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r02-reciprocal-20261004\\reports\\000018.json",
+      "bytes": 7791,
+      "sha256": "30f988a5e80a38d19ae8ca99dffe8a3db325875651ff7e42c8eb66358cf74bd2",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r02-reciprocal-20261004/official-submission.json",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r02-reciprocal-20261004\\observations\\submission-000009.json",
+      "bytes": 42017,
+      "sha256": "73aeee15aba4c9bbbd44a6f96a98738aa7468a3270ddfb05d26edc37cba5fabe",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r02-reciprocal-20261004/ranking-row.json",
+      "sha256": "c7e106627f60114d5246660fe788c8f3d8dd250d0b5618ac8a1e896eedd57a21",
+      "kind": "exact_matching_row_excerpt",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r02-reciprocal-20261004\\observations\\ranking-000009-page-004.json",
+      "source_sha256": "a519079239a9687ef11eed831635fc3e4b5d57cd167b60862c3a5e768a551e70"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r02-reciprocal-20261004/time-unit.js",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r02-reciprocal-20261004\\observations\\time-unit-000009.js",
+      "bytes": 58901,
+      "sha256": "67be1324f8a86ee6aacb09ed656839aaebe512c5e2bdaf39adbc87e372476792",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r02-reciprocal-20261004/submission-receipt.json",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r02-reciprocal-20261004\\submission-receipt.json",
+      "bytes": 102,
+      "sha256": "2d27eeacc7c3bd6e49c443ddeb1906fb3058451fc46cc2121882ac9f9df0adee",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r03-input-prefetch-20261004/snapshot/.cannjudge-project.json",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r03-input-prefetch-20261004\\snapshot\\.cannjudge-project.json",
+      "bytes": 1391,
+      "sha256": "56490a9bb24c8cdce6f50f7c05d137e70a9dea8bb33bf8762a0b40f38330db07",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r03-input-prefetch-20261004/snapshot/CMakeLists.txt",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r03-input-prefetch-20261004\\snapshot\\CMakeLists.txt",
+      "bytes": 645,
+      "sha256": "f111399c08fc725aa484f96ad7f99dc2eed769e2d694b2135f7cf4cce81851e9",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r03-input-prefetch-20261004/snapshot/data_utils.h",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r03-input-prefetch-20261004\\snapshot\\data_utils.h",
+      "bytes": 1962,
+      "sha256": "1bdaae93c09b65e2615691a39bfd611122c09668d90e21809c52516f443bfd84",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r03-input-prefetch-20261004/snapshot/kernel.asc",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r03-input-prefetch-20261004\\snapshot\\kernel.asc",
+      "bytes": 19166,
+      "sha256": "5a21645996e97e351c91aa66cb7169893a1c5401a52ea61ffc6923c7ae1f8d53",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r03-input-prefetch-20261004/snapshot/main.asc",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r03-input-prefetch-20261004\\snapshot\\main.asc",
+      "bytes": 5226,
+      "sha256": "edd8d27bf3b346dcbfae40025cfad4a790010e5b5800ac434f1c1b9a45763418",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r03-input-prefetch-20261004/snapshot/run.sh",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r03-input-prefetch-20261004\\snapshot\\run.sh",
+      "bytes": 1109,
+      "sha256": "6285cd1a901a619d0056209907bf2bcc34a7fa2d430ab41cf90f453196f20c56",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r03-input-prefetch-20261004/snapshot/scripts/AddRmsNormBias.py",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r03-input-prefetch-20261004\\snapshot\\scripts\\AddRmsNormBias.py",
+      "bytes": 2066,
+      "sha256": "e6bb5635644678b8044a5c76660d618e2b08d42d90c18de95145d39c038508a8",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r03-input-prefetch-20261004/snapshot/scripts/gen_data.py",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r03-input-prefetch-20261004\\snapshot\\scripts\\gen_data.py",
+      "bytes": 1074,
+      "sha256": "017d0f28983ff6ef072316a2f0b87bfb1f4ad6b58ffbe2bb0156628faf744681",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r03-input-prefetch-20261004/snapshot/scripts/verify_result.py",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r03-input-prefetch-20261004\\snapshot\\scripts\\verify_result.py",
+      "bytes": 4586,
+      "sha256": "08e312f94cbfbf986161040f46cf1fb2f67f3bede5edf31454cb827061b911ac",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r03-input-prefetch-20261004/report.json",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r03-input-prefetch-20261004\\reports\\000014.json",
+      "bytes": 7808,
+      "sha256": "39bde2af804782a1d5fd234d58bd3cdcf14bfe9c7ae86cbda35096b32212c584",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r03-input-prefetch-20261004/official-submission.json",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r03-input-prefetch-20261004\\observations\\submission-000007.json",
+      "bytes": 42463,
+      "sha256": "66f8fca5cc51f0fffc4ff6683a73ea039f6230c4adb286512b99da50b25cc727",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r03-input-prefetch-20261004/ranking-row.json",
+      "sha256": "d329b993a611d06a73f90f45d35342f5a500763198e5bfdf83b113d297cf9a80",
+      "kind": "exact_matching_row_excerpt",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r03-input-prefetch-20261004\\observations\\ranking-000007-page-004.json",
+      "source_sha256": "5f031b14827dfeff28897251eb7ac6b7e5dfcea31e5eaeb9ef20aa6e242bbdd0"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r03-input-prefetch-20261004/time-unit.js",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r03-input-prefetch-20261004\\observations\\time-unit-000007.js",
+      "bytes": 58901,
+      "sha256": "67be1324f8a86ee6aacb09ed656839aaebe512c5e2bdaf39adbc87e372476792",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/adaptive-r03-input-prefetch-20261004/submission-receipt.json",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\evaluator\\runs\\adaptive-r03-input-prefetch-20261004\\submission-receipt.json",
+      "bytes": 102,
+      "sha256": "c035441676f6c65514c6807e6d55f9dfcf43c05468fb467a32bd96cd52a89fe5",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/incumbent.json",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\experiments\\incumbent.json",
+      "bytes": 1657,
+      "sha256": "21f4a3fcf445ca39a050c3c985245c3f43a62afe7bc8c983d1422c6b4a3cafe0",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-platform-evidence-20261004/search-state.json",
+      "source_path": "D:\\Projects\\CANN-AddRmsNormBias\\results\\experiments\\sequential-adaptive-20261004\\state.json",
+      "bytes": 2708,
+      "sha256": "e296198ca200ae6ace5e8f1f5e114a906309a97fdf78568bd1f8c86ce5e845b1",
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": ".agents/skills/cann-single-hypothesis/SKILL.md",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\.agents\\skills\\cann-single-hypothesis\\SKILL.md",
+      "sha256": "7d240b00c7bc21cf9714306f5303a6ad2d849ce494dda416a66cef329070c130",
+      "bytes": 1196,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-baseline-audit.md",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-baseline-audit.md",
+      "sha256": "ce9443fb0bd91da571aa78f17828fd2ef819ff5470f3e9fd265c4eac8e33401f",
+      "bytes": 33007,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-delivery-ab-closeout.json",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-delivery-ab-closeout.json",
+      "sha256": "e810870053cf4a7481992dbf4fcc6c861cf9470f73cba47406828fa15fef0413",
+      "bytes": 18930,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-delivery-ab-closeout.md",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-delivery-ab-closeout.md",
+      "sha256": "bdc068fc96e9682d90aed9b3f828a4b9bc0e9dc6c3c4faeba2c628f6d34f36be",
+      "bytes": 8030,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-delivery-ab-conditions.json",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-delivery-ab-conditions.json",
+      "sha256": "8a743c9b4a5d5879070ec6862c8c691652017df60dba3b3a85e0277de1b9c20f",
+      "bytes": 4567,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-delivery-ab-report.md",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-delivery-ab-report.md",
+      "sha256": "c25f28a9edc6582ec70f5861421da466a80ffe8cac1153d7c1f58b7c4d5c2a33",
+      "bytes": 23734,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-delivery-ab-results.jsonl",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-delivery-ab-results.jsonl",
+      "sha256": "b6372a816b11f8da4fa20827a1ebb975b2b88c0af2ecf3f7f58fa3209e8baf04",
+      "bytes": 39610,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/.codex/hooks.json",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\.codex\\hooks.json",
+      "sha256": "ec45253748f2806d8c5a9100c4b108780c081cc1a003abe31056f7127cd27349",
+      "bytes": 957,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/.gitattributes",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\.gitattributes",
+      "sha256": "5c2018e58d86bd577764b509eeb8e7923d16f540376b904c486de4d97dc26a6b",
+      "bytes": 268,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/baseline-inventory.json",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\baseline-inventory.json",
+      "sha256": "fa7756c5a5eeb8da1e880e9d601527e185ac746511cd27725d043741d7043aae",
+      "bytes": 1316,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/baseline-source-check.json",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\baseline-source-check.json",
+      "sha256": "2628ca3b069d6a311abcc73e5d99a8344084334144ba4f7c7a5099dc018c48f1",
+      "bytes": 588,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/capabilities.json",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\capabilities.json",
+      "sha256": "46cf6cee9b51c598108aaef2b435fd36f87542b9e484b6157ee74efe79f51191",
+      "bytes": 1849,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/checker-regression.json",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\checker-regression.json",
+      "sha256": "454d28f86b88fe02425d7e0342a952c862f02254794acfa358d7ab31a739ed6f",
+      "bytes": 10464,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/checks/explicit-20261007T065635088174Z.json",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\checks\\explicit-20261007T065635088174Z.json",
+      "sha256": "58a40d3d2000514c210b51a05001829707dd5478040dd4868ac00ad103da8118",
+      "bytes": 4066,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/conditions.json",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\conditions.json",
+      "sha256": "4de7f66a1ad24a6fb2d6efaf6d9dbcf79becfedc1b988eafb5675245b914be97",
+      "bytes": 1222,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/freeze.json",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\freeze.json",
+      "sha256": "f29ea398b477ac5f94aca76fa393ecebd2c46c3f69b035fe561f78aa014ac2f5",
+      "bytes": 7371,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/hook-config-layers.json",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\hook-config-layers.json",
+      "sha256": "4f031b43c7ee0a668927c864bb90f8dc0825a041555d5df625d30d71b25284dd",
+      "bytes": 875,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/hook-inspection-project-root.json",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\hook-inspection-project-root.json",
+      "sha256": "00e9af47fefb2bc03fefa8c7b02b697c09457aada667b632d1243ea7f2f37130",
+      "bytes": 3456,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/hook-inspection.json",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\hook-inspection.json",
+      "sha256": "4e368fcf33aea85163df8046b2c2c1d2d046e3f0a491a3cbe4a4c0e56dc216f0",
+      "bytes": 3233,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/hook-status.json",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\hook-status.json",
+      "sha256": "f7938416b8144c3a7b9f21aa2db0d271414a9c50e0f915b9747a9b3b01f88638",
+      "bytes": 916,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/output-double-buffer/candidate/.cannjudge-project.json",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\output-double-buffer\\candidate\\.cannjudge-project.json",
+      "sha256": "56490a9bb24c8cdce6f50f7c05d137e70a9dea8bb33bf8762a0b40f38330db07",
+      "bytes": 1391,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/output-double-buffer/candidate/CMakeLists.txt",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\output-double-buffer\\candidate\\CMakeLists.txt",
+      "sha256": "f111399c08fc725aa484f96ad7f99dc2eed769e2d694b2135f7cf4cce81851e9",
+      "bytes": 645,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/output-double-buffer/candidate/data_utils.h",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\output-double-buffer\\candidate\\data_utils.h",
+      "sha256": "1bdaae93c09b65e2615691a39bfd611122c09668d90e21809c52516f443bfd84",
+      "bytes": 1962,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/output-double-buffer/candidate/kernel.asc",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\output-double-buffer\\candidate\\kernel.asc",
+      "sha256": "3e045351d864b301183ab896cd53b91108e44fc795e70246f5b036928050312e",
+      "bytes": 19582,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/output-double-buffer/candidate/main.asc",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\output-double-buffer\\candidate\\main.asc",
+      "sha256": "edd8d27bf3b346dcbfae40025cfad4a790010e5b5800ac434f1c1b9a45763418",
+      "bytes": 5226,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/output-double-buffer/candidate/run.sh",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\output-double-buffer\\candidate\\run.sh",
+      "sha256": "6285cd1a901a619d0056209907bf2bcc34a7fa2d430ab41cf90f453196f20c56",
+      "bytes": 1109,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/output-double-buffer/candidate/scripts/AddRmsNormBias.py",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\output-double-buffer\\candidate\\scripts\\AddRmsNormBias.py",
+      "sha256": "e6bb5635644678b8044a5c76660d618e2b08d42d90c18de95145d39c038508a8",
+      "bytes": 2066,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/output-double-buffer/candidate/scripts/gen_data.py",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\output-double-buffer\\candidate\\scripts\\gen_data.py",
+      "sha256": "017d0f28983ff6ef072316a2f0b87bfb1f4ad6b58ffbe2bb0156628faf744681",
+      "bytes": 1074,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/output-double-buffer/candidate/scripts/verify_result.py",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\output-double-buffer\\candidate\\scripts\\verify_result.py",
+      "sha256": "08e312f94cbfbf986161040f46cf1fb2f67f3bede5edf31454cb827061b911ac",
+      "bytes": 4586,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/output-double-buffer/executor-report.md",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\output-double-buffer\\executor-report.md",
+      "sha256": "d4b5b5dff491ba2c7bdbe92fce448974208cd50a044c528c84b43134dba018b3",
+      "bytes": 3329,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/output-double-buffer/kernel.diff",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\output-double-buffer\\kernel.diff",
+      "sha256": "a1bc3aa07b43d5e2474d2eb6c716d0f6135c62c4c7ade23dde6b56e339b2c669",
+      "bytes": 1117,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/output-double-buffer/local-check-results.json",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\output-double-buffer\\local-check-results.json",
+      "sha256": "2be04a46a754826a6cbb5b3ed0d8dc84614e351a4293bdbded1a40ec138cb910",
+      "bytes": 24485,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/output-double-buffer/trace.jsonl",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\output-double-buffer\\trace.jsonl",
+      "sha256": "4c398c0daddbb8dd8ab3be22e50319bfdeaa2daedfd03761c37d19569fda0e78",
+      "bytes": 134961,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/platform-budget.json",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\platform-budget.json",
+      "sha256": "d6a4c915b9aea4561bd0d2fc63d855d6186091c68708c43ccbab7678d20b5fe2",
+      "bytes": 879,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/runs.jsonl",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\runs.jsonl",
+      "sha256": "605e25b89d3ef25b3a2f20f80d46c728e8bff33b4c32c08843a31475f525592b",
+      "bytes": 3055,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/usage.json",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\usage.json",
+      "sha256": "104798a371ff42c441be65272f1137caae974e6eab4518e9fe5a88ef36ed24a8",
+      "bytes": 2168,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/weight-prefetch/candidate/.cannjudge-project.json",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\weight-prefetch\\candidate\\.cannjudge-project.json",
+      "sha256": "56490a9bb24c8cdce6f50f7c05d137e70a9dea8bb33bf8762a0b40f38330db07",
+      "bytes": 1391,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/weight-prefetch/candidate/CMakeLists.txt",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\weight-prefetch\\candidate\\CMakeLists.txt",
+      "sha256": "f111399c08fc725aa484f96ad7f99dc2eed769e2d694b2135f7cf4cce81851e9",
+      "bytes": 645,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/weight-prefetch/candidate/data_utils.h",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\weight-prefetch\\candidate\\data_utils.h",
+      "sha256": "1bdaae93c09b65e2615691a39bfd611122c09668d90e21809c52516f443bfd84",
+      "bytes": 1962,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/weight-prefetch/candidate/kernel.asc",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\weight-prefetch\\candidate\\kernel.asc",
+      "sha256": "5e14d05892324619412bf50352b851cf5cea8a0d9e09a7e3a94b944f0de8e01b",
+      "bytes": 19729,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/weight-prefetch/candidate/main.asc",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\weight-prefetch\\candidate\\main.asc",
+      "sha256": "edd8d27bf3b346dcbfae40025cfad4a790010e5b5800ac434f1c1b9a45763418",
+      "bytes": 5226,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/weight-prefetch/candidate/run.sh",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\weight-prefetch\\candidate\\run.sh",
+      "sha256": "6285cd1a901a619d0056209907bf2bcc34a7fa2d430ab41cf90f453196f20c56",
+      "bytes": 1109,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/weight-prefetch/candidate/scripts/AddRmsNormBias.py",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\weight-prefetch\\candidate\\scripts\\AddRmsNormBias.py",
+      "sha256": "e6bb5635644678b8044a5c76660d618e2b08d42d90c18de95145d39c038508a8",
+      "bytes": 2066,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/weight-prefetch/candidate/scripts/gen_data.py",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\weight-prefetch\\candidate\\scripts\\gen_data.py",
+      "sha256": "017d0f28983ff6ef072316a2f0b87bfb1f4ad6b58ffbe2bb0156628faf744681",
+      "bytes": 1074,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/weight-prefetch/candidate/scripts/verify_result.py",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\weight-prefetch\\candidate\\scripts\\verify_result.py",
+      "sha256": "08e312f94cbfbf986161040f46cf1fb2f67f3bede5edf31454cb827061b911ac",
+      "bytes": 4586,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/weight-prefetch/executor-report.md",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\weight-prefetch\\executor-report.md",
+      "sha256": "beac1ba20805ec42ad3c02f0ae02721783aaba19e1faf89bbc46af107463af92",
+      "bytes": 2587,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/weight-prefetch/kernel.diff",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\weight-prefetch\\kernel.diff",
+      "sha256": "69955686c2bd0e5eef7040916381915f73d5ad957f0afa1396c2ef2aca5dc366",
+      "bytes": 1479,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/weight-prefetch/local-check-results.json",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\weight-prefetch\\local-check-results.json",
+      "sha256": "fb9ae49af76378efb0b4a37d574e9e7767914ece4a303b106a620a7a315e69e5",
+      "bytes": 12334,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-20261007/weight-prefetch/trace.jsonl",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-20261007\\weight-prefetch\\trace.jsonl",
+      "sha256": "bd14a3cbb4b884ca6c5558138295423c64a0deaa373df217d20592fc34837972",
+      "bytes": 88652,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-native-pilot-report.md",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-native-pilot-report.md",
+      "sha256": "56832c98e3ffd959f30c4684e88a7a344a70bc437dd883f97849b52285e02c29",
+      "bytes": 9479,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "docs/experiments/cann-runs.jsonl",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\docs\\experiments\\cann-runs.jsonl",
+      "sha256": "4430e6f9751f246050b742145d5f9499722feb77b04ab50b6862333b0acf4dc1",
+      "bytes": 108104,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "scripts/reviewer/cann-candidate-check.py",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\scripts\\reviewer\\cann-candidate-check.py",
+      "sha256": "c721fcc5ce41d23b10ea454bf5bb298214149e8c10a50bca5787beffcfb4eb5e",
+      "bytes": 4022,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "scripts/reviewer/cann-delivery-ab.mjs",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\scripts\\reviewer\\cann-delivery-ab.mjs",
+      "sha256": "199d4120e643c049601c5f36e20ee2d31552fcdd0345b0a936e3f653ac40de84",
+      "bytes": 11293,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "scripts/reviewer/cann-delivery-ab.py",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\scripts\\reviewer\\cann-delivery-ab.py",
+      "sha256": "2e4b46d6c5222ddd4546a30e7b08bfaeee2004ff2a7fe810d393cdf48559d558",
+      "bytes": 22209,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "scripts/reviewer/cann-delivery-status.ts",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\scripts\\reviewer\\cann-delivery-status.ts",
+      "sha256": "05cf9d157388a515337a9b72870b7c9495854f30e90648ebfdef87645630745a",
+      "bytes": 2175,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "scripts/reviewer/cann-evidence-check.py",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\scripts\\reviewer\\cann-evidence-check.py",
+      "sha256": "fef51bbcae42f9aeaaba04c055e0a41c35372804504a9db6025beec6565ae06e",
+      "bytes": 3838,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "scripts/reviewer/delivery-evidence/README.md",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\scripts\\reviewer\\delivery-evidence\\README.md",
+      "sha256": "52546694a21b70645946d4e7c9323912516325045ca27d7975561ef7c82dc519",
+      "bytes": 708,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "scripts/reviewer/delivery-evidence/SKILL.md",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\scripts\\reviewer\\delivery-evidence\\SKILL.md",
+      "sha256": "42d59969f449748ac6ee279cc0c448f0e4227922f75df1374a8172d9b2099241",
+      "bytes": 1739,
+      "kind": "byte_preserving_copy"
+    },
+    {
+      "path": "src/worker-pool.ts",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\src\\worker-pool.ts",
+      "sha256": "412f99173f4897fe20a0f432d1074afb75a49011a548f9638a114516cd967962",
+      "bytes": 9243,
+      "source_sha256": "a135629105ffbe2a5a0f626dabae55fd34d20eecca9fdb0610959e093a8ef97b",
+      "kind": "git_text_normalized_copy"
+    },
+    {
+      "path": "tests/cann-delivery-evidence.test.ts",
+      "source_path": "D:\\Projects\\Legion-reviewer-fix\\tests\\cann-delivery-evidence.test.ts",
+      "sha256": "bbe5959672c91c73c31483fe934f82c8d7be189e8842c25341229477c6c7e14c",
+      "bytes": 7462,
+      "kind": "byte_preserving_copy"
+    }
+  ],
+  "excluded": [
+    "repeated raw HTTP responses",
+    "full ranking pages and other participants' rows",
+    "CLI sessions and credentials",
+    "virtual environments and external SDK checkout"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "description": "Pilot-scoped CANN candidate evidence check. Requires native hook trust; no platform operations.",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash|apply_patch|Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "D:/python/Python312/python.exe -B -X utf8 D:/Projects/Legion-reviewer-fix/scripts/reviewer/cann-candidate-check.py --conditions D:/Projects/Legion-reviewer-fix/docs/experiments/cann-native-pilot-20261007/conditions.json --origin hook",
+            "commandWindows": "D:/python/Python312/python.exe -B -X utf8 D:/Projects/Legion-reviewer-fix/scripts/reviewer/cann-candidate-check.py --conditions D:/Projects/Legion-reviewer-fix/docs/experiments/cann-native-pilot-20261007/conditions.json --origin hook",
+            "timeout": 15,
+            "statusMessage": "保存 CANN 候选文件与 SHA 检查"
+          }
+        ]
+      }
+    ]
+  }
+}
